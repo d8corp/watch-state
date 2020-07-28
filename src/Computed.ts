@@ -1,4 +1,4 @@
-import {Watch, lock, State} from '.'
+import {Watch, lock, State, destructor} from '.'
 import stateValues from './stateValues'
 
 interface ComputedValues {
@@ -6,12 +6,30 @@ interface ComputedValues {
 }
 
 class Computed <T = any> {
-  state = new State<T>()
-  constructor (public target: () => T) {
-    new Watch(() => this.state.value = target())
-  }
+  _value: State<T> = new State()
+  _watchersCount = 0
+  _watcher: Watch
+  constructor (public target: () => T) {}
   get value (): T {
-    return this.state.value
+    if (destructor(() => {
+      this._watchersCount--
+      if (!this._watchersCount) {
+        this._watcher.destructor()
+      }
+    })) {
+      this._watchersCount++
+    }
+    if (!this._watchersCount) {
+      return this.target()
+    }
+    if (!this._watcher) {
+      lock(() => {
+        this._watcher = new Watch(() => {
+          this._value.value = this.target()
+        })
+      })
+    }
+    return this._value.value
   }
 }
 

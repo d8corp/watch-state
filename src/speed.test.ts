@@ -159,8 +159,8 @@ describe('watch-state: performance', () => {
   })
   describe('create computed', () => {
     test('watch-state: Computed', () => {
-      expect(perf(() => new Computed(() => {}))).toBeLessThan(1885)
-      expect(perf(() => new Computed(() => {}))).toBeGreaterThan(1731)
+      expect(perf(() => new Computed(() => {}))).toBeLessThan(2080)
+      expect(perf(() => new Computed(() => {}))).toBeGreaterThan(2018)
     })
     test('mobx: computed', () => {
       expect(perf(() => computed(() => {}))).toBeLessThan(1396)
@@ -183,7 +183,7 @@ describe('watch-state: performance', () => {
           return ''
         }
       }
-      expect(perf(() => new User())).toBeLessThan(3134)
+      expect(perf(() => new User())).toBeLessThan(3138)
       expect(perf(() => new User())).toBeGreaterThan(2378)
     })
   })

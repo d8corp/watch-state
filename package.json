@@ -1,0 +1,50 @@
+{
+  "name": "watch-state",
+  "version": "0.0.0",
+  "description": "The simplest watcher for your state",
+  "main": "index.js",
+  "module": "index.es6.js",
+  "private": true,
+  "scripts": {
+    "build": "bin/release -rollup",
+    "test": "jest",
+    "patch": "bin/release -patch -rollup",
+    "minor": "bin/release -minor -rollup",
+    "major": "bin/release -major -rollup"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/d8corp/watch-state.git"
+  },
+  "keywords": [
+    "watch",
+    "state",
+    "stateful",
+    "reaction",
+    "reactions",
+    "react",
+    "reactive",
+    "observe",
+    "observable",
+    "front-end"
+  ],
+  "author": "Mikhail Lysikov <d8corp@mail.ru>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/d8corp/watch-state/issues"
+  },
+  "homepage": "https://github.com/d8corp/watch-state",
+  "devDependencies": {
+    "@types/jest": "^26.0.7",
+    "jest": "^26.1.0",
+    "core-js": "^3.6.5",
+    "minimist": ">=0.2.1",
+    "mobx": "^5.15.4",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.23.0",
+    "rollup-plugin-terser": "^6.1.0",
+    "rollup-plugin-typescript2": "^0.27.1",
+    "ts-jest": "^26.1.4",
+    "typescript": "4.0.0-dev.20200728"
+  }
+}

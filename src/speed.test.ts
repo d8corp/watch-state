@@ -1,4 +1,5 @@
-import watch, {State, Watch, state, Computed, computed as c} from '.'
+import watch, {State, Watch, state} from '.'
+import Computed, {computed as c} from './Computed'
 import {autorun, observable, computed} from 'mobx'
 
 function perf (callback: () => void, ms = 1000) {

@@ -1,5 +1,9 @@
-import Watch, {lock, State} from '.'
+import {Watch, lock, State} from '.'
 import stateValues from './stateValues'
+
+interface ComputedValues {
+  [key: string]: Computed
+}
 
 class Computed <T = any> {
   state = new State<T>()
@@ -17,11 +21,17 @@ function computed (target, propertyKey, descriptor) {
   return {
     ...descriptor,
     get () {
-      const values = stateValues(this)
+      const values: ComputedValues = stateValues(this) as ComputedValues
       if (!(propertyKey in values)) {
-        values[propertyKey] = new Computed(get.bind(this))
+        lock(() => values[propertyKey] = new Computed(get.bind(this)))
       }
       return values[propertyKey].value
     }
   }
+}
+
+export default Computed
+
+export {
+  computed
 }

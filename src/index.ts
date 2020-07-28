@@ -8,9 +8,6 @@ interface Destructor {
 interface StateValues {
   [key: string]: State
 }
-interface ComputedValues {
-  [key: string]: Computed
-}
 
 let activeWatcher: Watch
 let activeWatchers: Set<Watch>
@@ -87,15 +84,6 @@ class State <T = any> {
     }
   }
 }
-class Computed <T = any> {
-  state = new State<T>()
-  constructor (public target: () => T) {
-    new Watch(() => this.state.value = target())
-  }
-  get value (): T {
-    return this.state.value
-  }
-}
 
 function watch (target: WatchTarget): Watch {
   return new Watch(target)
@@ -129,21 +117,6 @@ function state (target, propertyKey) {
     },
     enumerable: true
   })
-}
-
-function computed (target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>): TypedPropertyDescriptor<any>
-function computed (target, propertyKey, descriptor) {
-  const {get} = descriptor
-  return {
-    ...descriptor,
-    get () {
-      const values: ComputedValues = stateValues(this) as ComputedValues
-      if (!(propertyKey in values)) {
-        lock(() => values[propertyKey] = new Computed(get.bind(this)))
-      }
-      return values[propertyKey].value
-    }
-  }
 }
 
 function action <T> (target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>): TypedPropertyDescriptor<T> | void
@@ -188,11 +161,9 @@ export default watch
 export {
   State,
   Watch,
-  Computed,
   Destructor,
   watch,
   reset,
-  computed,
   action,
   lock,
   destructor,

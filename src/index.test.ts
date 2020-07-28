@@ -1,4 +1,5 @@
-import {watch, State, reset, state, lock, computed, Computed, action, destructor} from '.'
+import {watch, State, reset, state, lock, action, destructor} from '.'
+import Computed, {computed} from './Computed'
 
 describe('watch-state', () => {
   test('simple', () => {

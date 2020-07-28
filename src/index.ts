@@ -1,13 +1,19 @@
+import stateValues from './stateValues'
+
 type WatchTarget = (first: boolean) => any
 
 interface Destructor {
   (): any
 }
+interface StateValues {
+  [key: string]: State
+}
+interface ComputedValues {
+  [key: string]: Computed
+}
 
 let activeWatcher: Watch
 let activeWatchers: Set<Watch>
-
-const STATE_VALUES = Symbol('state values')
 
 class Watch {
   private _destructors: Set<Destructor>
@@ -107,14 +113,14 @@ function state (target: Object, propertyKey: PropertyKey): void
 function state (target, propertyKey) {
   Object.defineProperty(target, propertyKey, {
     get (): any {
-      const values = getCache(this)
+      const values = stateValues(this)
       if (!(propertyKey in values)) {
         values[propertyKey] = new State()
       }
       return values[propertyKey].value
     },
     set (v: any): void {
-      const values = getCache(this)
+      const values: StateValues = stateValues(this) as StateValues
       if (!(propertyKey in values)) {
         values[propertyKey] = new State(v)
       } else {
@@ -131,7 +137,7 @@ function computed (target, propertyKey, descriptor) {
   return {
     ...descriptor,
     get () {
-      const values = getCache(this)
+      const values: ComputedValues = stateValues(this) as ComputedValues
       if (!(propertyKey in values)) {
         lock(() => values[propertyKey] = new Computed(get.bind(this)))
       }
@@ -175,13 +181,6 @@ function destructor (destructor: Destructor): boolean {
 
 function reset () {
   activeWatchers = activeWatcher = undefined
-}
-
-function getCache (target) {
-  if (!(STATE_VALUES in target)) {
-    target[STATE_VALUES] = {}
-  }
-  return target[STATE_VALUES]
 }
 
 export default watch

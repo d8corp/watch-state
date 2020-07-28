@@ -17,10 +17,7 @@
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "jsx": "react",
-    "jsxFactory": "Component.create",
-    "jsxFragmentFactory": "Component.fragment"
+    "resolveJsonModule": true
   },
   "include": [
     "src"

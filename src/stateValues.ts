@@ -1,5 +1,6 @@
 const VALUES = Symbol('state values')
-import {Computed, State} from '.'
+import {State} from '.'
+import Computed from './Computed'
 
 interface StateValues {
   [key: string]: State | Computed

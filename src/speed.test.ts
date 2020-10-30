@@ -44,7 +44,7 @@ describe('watch-state: performance', () => {
   describe('watch state', () => {
     test('watch-state', () => {
       const color = new State('red')
-      expect(perf(() => watch(() => color.value))).toBeLessThan(541)
+      expect(perf(() => watch(() => color.value))).toBeLessThan(555)
       expect(perf(() => watch(() => color.value))).toBeGreaterThan(391)
     })
     test('mobx', () => {
@@ -152,15 +152,15 @@ describe('watch-state: performance', () => {
             this.value = value
           }
         }
-        expect(perf(() => new Color())).toBeLessThan(184)
+        expect(perf(() => new Color())).toBeLessThan(185)
         expect(perf(() => new Color())).toBeGreaterThan(163)
       })
     })
   })
   describe('create computed', () => {
     test('watch-state: Computed', () => {
-      expect(perf(() => new Computed(() => {}))).toBeLessThan(2080)
-      expect(perf(() => new Computed(() => {}))).toBeGreaterThan(2018)
+      expect(perf(() => new Computed(() => {}))).toBeLessThan(2186)
+      expect(perf(() => new Computed(() => {}))).toBeGreaterThan(1993)
     })
     test('mobx: computed', () => {
       expect(perf(() => computed(() => {}))).toBeLessThan(1396)
@@ -183,7 +183,7 @@ describe('watch-state: performance', () => {
           return ''
         }
       }
-      expect(perf(() => new User())).toBeLessThan(3138)
+      expect(perf(() => new User())).toBeLessThan(3154)
       expect(perf(() => new User())).toBeGreaterThan(2378)
     })
   })
@@ -197,7 +197,7 @@ describe('watch-state: performance', () => {
             return `${this.name} ${this.surname[0]}`
           }
         }
-        expect(perf(() => new User())).toBeLessThan(1506)
+        expect(perf(() => new User())).toBeLessThan(1526)
         expect(perf(() => new User())).toBeGreaterThan(1196)
       })
       test('mobx: computed', () => {
@@ -208,7 +208,7 @@ describe('watch-state: performance', () => {
             return `${this.name} ${this.surname[0]}`
           }
         }
-        expect(perf(() => new User())).toBeLessThan(153)
+        expect(perf(() => new User())).toBeLessThan(154)
         expect(perf(() => new User())).toBeGreaterThan(85)
       })
     })

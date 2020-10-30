@@ -291,7 +291,7 @@ describe('watch-state', () => {
 
     expect(count).toBe(4)
   })
-  test('first destructor', async () => {
+  test('update destructor', async () => {
     class Timer {
       @state counting = true
       @state count = 0
@@ -300,8 +300,8 @@ describe('watch-state', () => {
     let count
     watch(() => {
       if (timer.counting) {
-        watch(first => {
-          if (first) {
+        watch(update => {
+          if (!update) {
             const interval = setInterval(() => timer.count++, 50)
             destructor(() => clearInterval(interval))
           }

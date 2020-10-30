@@ -1,25 +1,25 @@
 import stateValues from './stateValues'
 
-type WatchTarget = (first: boolean) => any
+// Watch
+let activeWatcher: Watch
 
+interface WatchTarget {
+  (update: boolean): any
+}
 interface Destructor {
   (): any
 }
-interface StateValues {
-  [key: string]: State
-}
-
-let activeWatcher: Watch
-let activeWatchers: Set<Watch>
 
 class Watch {
   private _destructors: Set<Destructor>
   private _children: Set<Watch>
+  rendered: true
   constructor (public target: WatchTarget) {
-    this.render(true)
+    this.render()
   }
-  render (first: boolean): void {
-    if (!first) {
+  render (): void {
+    const {rendered = false} = this
+    if (rendered) {
       this.clear()
     }
     if (activeWatcher) {
@@ -27,8 +27,9 @@ class Watch {
     }
     const prevWatcher = activeWatcher
     activeWatcher = this
-    this.target(first)
+    this.target(rendered)
     activeWatcher = prevWatcher
+    this.rendered = true
   }
   destructor () {
     this.clear()
@@ -54,8 +55,16 @@ class Watch {
     return this._children || (this._children = new Set())
   }
 }
+
+function watch (target: WatchTarget): Watch {
+  return new Watch(target)
+}
+
+// State
+let activeWatchers: Set<Watch>
+
 class State <T = any> {
-  watchers: Set<Watch> = new Set()
+  private watchers: Set<Watch> = new Set()
   constructor(public target?: T) {}
   get value (): T {
     const currentWatcher = activeWatcher
@@ -77,7 +86,7 @@ class State <T = any> {
           }
         } else {
           for (const watcher of watchers) {
-            watcher.render(false)
+            watcher.render()
           }
         }
       }
@@ -85,9 +94,6 @@ class State <T = any> {
   }
 }
 
-function watch (target: WatchTarget): Watch {
-  return new Watch(target)
-}
 function lock (target) {
   const prevWatcher = activeWatcher
   activeWatcher = undefined
@@ -97,6 +103,10 @@ function lock (target) {
 }
 
 // decorators
+interface StateValues {
+  [key: string]: State
+}
+
 function state (target: Object, propertyKey: PropertyKey): void
 function state (target, propertyKey) {
   Object.defineProperty(target, propertyKey, {
@@ -131,7 +141,7 @@ function action (target, propertyKey?, descriptor?) {
         const result = target.apply(this, arguments)
         activeWatchers = undefined
         for (const watcher of watchers) {
-          watcher.render(false)
+          watcher.render()
         }
         return result
       }

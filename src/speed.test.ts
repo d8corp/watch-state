@@ -44,8 +44,8 @@ describe('watch-state: performance', () => {
   describe('watch state', () => {
     test('watch-state', () => {
       const color = new State('red')
-      expect(perf(() => watch(() => color.value))).toBeLessThan(555)
-      expect(perf(() => watch(() => color.value))).toBeGreaterThan(391)
+      expect(perf(() => watch(() => color.value))).toBeLessThan(890)
+      expect(perf(() => watch(() => color.value))).toBeGreaterThan(552)
     })
     test('mobx', () => {
       const color = observable.box('red')
@@ -115,7 +115,7 @@ describe('watch-state: performance', () => {
           }
         }
         expect(perf(() => new Color())).toBeLessThan(232)
-        expect(perf(() => new Color())).toBeGreaterThan(215)
+        expect(perf(() => new Color())).toBeGreaterThan(211)
       })
     })
     describe('two', () => {
@@ -141,7 +141,7 @@ describe('watch-state: performance', () => {
           }
         }
         expect(perf(() => new Color())).toBeLessThan(158)
-        expect(perf(() => new Color())).toBeGreaterThan(145)
+        expect(perf(() => new Color())).toBeGreaterThan(144)
       })
       test('mobx: observable.ref', () => {
         class Color {
@@ -163,7 +163,7 @@ describe('watch-state: performance', () => {
       expect(perf(() => new Computed(() => {}))).toBeGreaterThan(1993)
     })
     test('mobx: computed', () => {
-      expect(perf(() => computed(() => {}))).toBeLessThan(1396)
+      expect(perf(() => computed(() => {}))).toBeLessThan(1408)
       expect(perf(() => computed(() => {}))).toBeGreaterThan(1200)
     })
   })
@@ -197,7 +197,7 @@ describe('watch-state: performance', () => {
             return `${this.name} ${this.surname[0]}`
           }
         }
-        expect(perf(() => new User())).toBeLessThan(1526)
+        expect(perf(() => new User())).toBeLessThan(1550)
         expect(perf(() => new User())).toBeGreaterThan(1196)
       })
       test('mobx: computed', () => {

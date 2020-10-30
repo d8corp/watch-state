@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "target": "ES6",
+    "target": "ES5",
     "lib": [
       "dom",
       "dom.iterable",
@@ -17,7 +17,8 @@
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "declaration": true
   },
   "include": [
     "src"

@@ -17,7 +17,8 @@ export default [{
   },
   plugins: [
     typescript({
-      typescript: require('typescript'),
+      rollupCommonJSResolveHack: false,
+      clean: true,
     })
   ]
 }, {
@@ -29,7 +30,8 @@ export default [{
   },
   plugins: [
     typescript({
-      typescript: require('typescript'),
+      rollupCommonJSResolveHack: false,
+      clean: true,
       tsconfigOverride: {
         compilerOptions: {
           target: 'es6'
@@ -48,7 +50,8 @@ export default [{
   },
   plugins: [
     typescript({
-      typescript: require('typescript')
+      rollupCommonJSResolveHack: false,
+      clean: true,
     })
   ]
 }]

@@ -1,4 +1,4 @@
-import {watch, State, reset, state, lock, action, destructor} from '.'
+import {watch, State, reset, state, lock, action, onDestructor} from '.'
 import Computed, {computed} from './Computed'
 
 describe('watch-state', () => {
@@ -103,8 +103,16 @@ describe('watch-state', () => {
     // test('multiple loop', () => {
     //   const state1 = new State(0)
     //   const state2 = new State(0)
-    //   watch(() => state2.value = state1.value + 1)
-    //   expect(() => watch(() => state1.value = state2.value + 1)).toThrow()
+    //   watch(() => {
+    //     console.log(`state2.value = ${state1.value} + 1`)
+    //     state2.value = state1.value + 1
+    //   })
+    //   expect(() => watch(() => {
+    //     const text = `state1.value = ${state2.value} + 1`
+    //     console.log('<', text)
+    //     state1.value = state2.value + 1
+    //     console.log('>', text)
+    //   })).toThrow()
     //   reset()
     // })
   })
@@ -260,7 +268,7 @@ describe('watch-state', () => {
       if (timer.counting) {
         watch(() => {
           const interval = setInterval(() => timer.count++, 50)
-          destructor(() => clearInterval(interval))
+          onDestructor(() => clearInterval(interval))
         })
         watch(() => count = timer.count)
       }
@@ -303,7 +311,7 @@ describe('watch-state', () => {
         watch(update => {
           if (!update) {
             const interval = setInterval(() => timer.count++, 50)
-            destructor(() => clearInterval(interval))
+            onDestructor(() => clearInterval(interval))
           }
         })
         count = timer.count

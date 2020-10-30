@@ -1,4 +1,4 @@
-import {Watch, lock, State, destructor} from '.'
+import {Watch, lock, State, onDestructor} from '.'
 import stateValues from './stateValues'
 
 interface ComputedValues {
@@ -11,7 +11,7 @@ class Computed <T = any> {
   _watcher: Watch
   constructor (public target: () => T) {}
   get value (): T {
-    if (destructor(() => {
+    if (onDestructor(() => {
       this._watchersCount--
       if (!this._watchersCount) {
         this._watcher.destructor()
@@ -36,8 +36,7 @@ class Computed <T = any> {
 function computed (target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>): TypedPropertyDescriptor<any>
 function computed (target, propertyKey, descriptor) {
   const {get} = descriptor
-  return {
-    ...descriptor,
+  return Object.assign({}, descriptor, {
     get () {
       const values: ComputedValues = stateValues(this) as ComputedValues
       if (!(propertyKey in values)) {
@@ -45,11 +44,12 @@ function computed (target, propertyKey, descriptor) {
       }
       return values[propertyKey].value
     }
-  }
+  })
 }
 
 export default Computed
 
 export {
-  computed
+  Computed,
+  computed,
 }

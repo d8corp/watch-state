@@ -10,12 +10,12 @@ interface DestructorOrCleaner {
 class Watch {
   private destructors: DestructorOrCleaner[]
   private cleaners: DestructorOrCleaner[]
-  rendered: true
+  private rendered: true
   constructor (public target: WatchTarget) {
     this.update()
   }
   update (): void {
-    this.clear()
+    this.clear(this.cleaners)
     onClear(() => this.destructor())
     const prevWatcher = scope.activeWatcher
     scope.activeWatcher = this
@@ -24,22 +24,16 @@ class Watch {
     this.rendered = true
   }
   destructor () {
-    const {destructors} = this
-    if (destructors) {
-      for (let i = 0; i < destructors.length; i++) {
-        destructors[i]()
-      }
-      this.destructors = undefined
-    }
+    this.clear(this.destructors)
   }
-  private clear () {
-    const {cleaners} = this
-    if (cleaners) {
-      for (let i = 0; i < cleaners.length; i++) {
-        cleaners[i]()
+  private clear (callbacks: DestructorOrCleaner[]) {
+    if (callbacks) {
+      for (let i = 0; i < callbacks.length; i++) {
+        callbacks[i]()
       }
-      this.cleaners = undefined
     }
+    this.cleaners = undefined
+    this.destructors = undefined
   }
   onDestructor (callback: DestructorOrCleaner) {
     if (this.destructors) {

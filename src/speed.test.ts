@@ -160,7 +160,7 @@ describe('watch-state: performance', () => {
   describe('create computed', () => {
     test('watch-state: Computed', () => {
       expect(perf(() => new Computed(() => {}))).toBeLessThan(2186)
-      expect(perf(() => new Computed(() => {}))).toBeGreaterThan(1993)
+      expect(perf(() => new Computed(() => {}))).toBeGreaterThan(1944)
     })
     test('mobx: computed', () => {
       expect(perf(() => computed(() => {}))).toBeLessThan(1408)

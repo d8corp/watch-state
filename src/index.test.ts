@@ -303,15 +303,19 @@ describe('watch-state', () => {
     class Timer {
       @state counting = true
       @state count = 0
+      start () {
+        const interval = setInterval(() => this.count++, 50)
+        onDestructor(() => clearInterval(interval))
+      }
     }
     const timer = new Timer()
+
     let count
     watch(() => {
       if (timer.counting) {
         watch(update => {
           if (!update) {
-            const interval = setInterval(() => timer.count++, 50)
-            onDestructor(() => clearInterval(interval))
+            timer.start()
           }
         })
         count = timer.count

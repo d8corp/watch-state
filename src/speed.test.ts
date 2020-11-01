@@ -1,6 +1,6 @@
 import watch, {State, Watch, state} from '.'
 import Computed, {computed as c} from './Computed'
-import {autorun, observable, computed} from 'mobx'
+import {autorun, observable, computed, reaction} from 'mobx'
 
 function perf (callback: () => void, ms = 1000) {
   let count = 0
@@ -19,8 +19,8 @@ describe('watch-state: performance', () => {
   })
   describe('create state', () => {
     test('watch-state: State', () => {
-      expect(perf(() => new State())).toBeLessThan(2302)
-      expect(perf(() => new State())).toBeGreaterThan(1865)
+      expect(perf(() => new State())).toBeLessThan(2988)
+      expect(perf(() => new State())).toBeGreaterThan(2741)
     })
     test('mobx: observable.box', () => {
       expect(perf(() => observable.box())).toBeLessThan(1303)
@@ -62,8 +62,8 @@ describe('watch-state: performance', () => {
             this.value = value
           }
         }
-        expect(perf(() => new Color())).toBeLessThan(1993)
-        expect(perf(() => new Color())).toBeGreaterThan(1784)
+        expect(perf(() => new Color())).toBeLessThan(2669)
+        expect(perf(() => new Color())).toBeGreaterThan(2551)
       })
       test('mobx: observable', () => {
         class Color {
@@ -115,7 +115,7 @@ describe('watch-state: performance', () => {
           }
         }
         expect(perf(() => new Color())).toBeLessThan(232)
-        expect(perf(() => new Color())).toBeGreaterThan(211)
+        expect(perf(() => new Color())).toBeGreaterThan(210)
       })
     })
     describe('two', () => {
@@ -128,8 +128,8 @@ describe('watch-state: performance', () => {
             this.value = value
           }
         }
-        expect(perf(() => new Color())).toBeLessThan(1515)
-        expect(perf(() => new Color())).toBeGreaterThan(1309)
+        expect(perf(() => new Color())).toBeLessThan(2241)
+        expect(perf(() => new Color())).toBeGreaterThan(2092)
       })
       test('mobx: observable', () => {
         class Color {
@@ -141,7 +141,7 @@ describe('watch-state: performance', () => {
           }
         }
         expect(perf(() => new Color())).toBeLessThan(158)
-        expect(perf(() => new Color())).toBeGreaterThan(144)
+        expect(perf(() => new Color())).toBeGreaterThan(141)
       })
       test('mobx: observable.ref', () => {
         class Color {
@@ -159,8 +159,8 @@ describe('watch-state: performance', () => {
   })
   describe('create computed', () => {
     test('watch-state: Computed', () => {
-      expect(perf(() => new Computed(() => {}))).toBeLessThan(2186)
-      expect(perf(() => new Computed(() => {}))).toBeGreaterThan(1944)
+      expect(perf(() => new Computed(() => {}))).toBeLessThan(2776)
+      expect(perf(() => new Computed(() => {}))).toBeGreaterThan(2572)
     })
     test('mobx: computed', () => {
       expect(perf(() => computed(() => {}))).toBeLessThan(1408)
@@ -197,8 +197,8 @@ describe('watch-state: performance', () => {
             return `${this.name} ${this.surname[0]}`
           }
         }
-        expect(perf(() => new User())).toBeLessThan(1550)
-        expect(perf(() => new User())).toBeGreaterThan(1196)
+        expect(perf(() => new User())).toBeLessThan(2291)
+        expect(perf(() => new User())).toBeGreaterThan(2197)
       })
       test('mobx: computed', () => {
         class User {
@@ -211,6 +211,63 @@ describe('watch-state: performance', () => {
         expect(perf(() => new User())).toBeLessThan(154)
         expect(perf(() => new User())).toBeGreaterThan(85)
       })
+    })
+  })
+  describe('update', () => {
+    test('watch-state', () => {
+      const state = new State(0)
+      watch(() => state.value)
+      expect(perf(() => state.value++)).toBeLessThan(1595)
+      state.value = 0
+      expect(perf(() => state.value++)).toBeGreaterThan(904)
+    })
+    test('mobx:autorun', () => {
+      const state = observable.box(0)
+      autorun(() => state.get())
+      expect(perf(() => state.set(state.get() + 1))).toBeLessThan(756)
+      state.set(0)
+      expect(perf(() => state.set(state.get() + 1))).toBeGreaterThan(702)
+    })
+    test('mobx:reaction', () => {
+      const state = observable.box(0)
+      reaction(() => state.get(), () => {})
+      expect(perf(() => state.set(state.get() + 1))).toBeLessThan(756)
+      state.set(0)
+      expect(perf(() => state.set(state.get() + 1))).toBeGreaterThan(674)
+    })
+  })
+  describe('complex', () => {
+    test('watch-state', () => {
+      expect(perf(() => {
+        const state = new State(1000)
+        const watcher = watch(() => state.value)
+        while (state.value--) {}
+        watcher.destructor()
+      })).toBeLessThan(4.48)
+      expect(perf(() => {
+        const state = new State(1000)
+        const watcher = watch(() => state.value)
+        while (state.value--) {}
+        watcher.destructor()
+      })).toBeGreaterThan(3.807)
+    })
+    test('mobx:autorun', () => {
+      expect(perf(() => {
+        const state = observable.box(1000)
+        const disposer = autorun(() => state.get())
+        while (state.get()) {
+          state.set(state.get() - 1)
+        }
+        disposer()
+      })).toBeLessThan(1.148)
+      expect(perf(() => {
+        const state = observable.box(1000)
+        const disposer = autorun(() => state.get())
+        while (state.get()) {
+          state.set(state.get() - 1)
+        }
+        disposer()
+      })).toBeGreaterThan(1.056)
     })
   })
 })

@@ -2,12 +2,15 @@ import {Watch, onClear, scope} from './Watch'
 import stateValues from './stateValues'
 
 class State <T = any> {
-  private watchers: Set<Watch> = new Set()
-  constructor(private target?: T) {}
+  private _watchers: Set<Watch>
+  private target: T
+  constructor(value?: T) {
+    this.target = value
+  }
   get value (): T {
     const {activeWatcher} = scope
     const {watchers} = this
-    if (activeWatcher && !this.watchers.has(activeWatcher)) {
+    if (activeWatcher && !watchers.has(activeWatcher)) {
       watchers.add(activeWatcher)
       onClear(update => {
         if (!update || watchers === this.watchers) {
@@ -22,7 +25,7 @@ class State <T = any> {
       this.target = value
       const {watchers} = this
       if (watchers.size) {
-        this.watchers = new Set()
+        this._watchers = undefined
         if (scope.actionWatchers) {
           watchers.forEach(watcher => scope.actionWatchers.add(watcher))
         } else {
@@ -30,6 +33,9 @@ class State <T = any> {
         }
       }
     }
+  }
+  private get watchers (): Set<Watch> {
+    return this._watchers || (this._watchers = new Set())
   }
 }
 

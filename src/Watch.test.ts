@@ -1,4 +1,4 @@
-import watch, {Watch, onClear, onUpdate, onDestructor} from './Watch'
+import Watch, {watch, onClear, onUpdate, onDestructor} from './Watch'
 
 describe('watch', () => {
   test('returns Watch', () => {

@@ -7,14 +7,10 @@ interface Scope {
 
 const scope: Scope = {}
 
-function reset () {
-  scope.actionWatchers = scope.activeWatcher = undefined
-}
 
 export default scope
 
 export {
   scope,
-  reset,
   Scope,
 }

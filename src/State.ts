@@ -1,15 +1,19 @@
-import scope from './Scope'
-import {Watch, onClear} from './Watch'
+import {Watch, onClear, scope} from './Watch'
 import stateValues from './stateValues'
 
 class State <T = any> {
   private watchers: Set<Watch> = new Set()
-  constructor(public target?: T) {}
+  constructor(private target?: T) {}
   get value (): T {
-    const currentWatcher = scope.activeWatcher
-    if (currentWatcher && !this.watchers.has(currentWatcher)) {
-      this.watchers.add(currentWatcher)
-      onClear(() => this.watchers.delete(currentWatcher))
+    const {activeWatcher} = scope
+    const {watchers} = this
+    if (activeWatcher && !this.watchers.has(activeWatcher)) {
+      watchers.add(activeWatcher)
+      onClear(update => {
+        if (!update || watchers === this.watchers) {
+          watchers.delete(activeWatcher)
+        }
+      })
     }
     return this.target
   }
@@ -55,9 +59,12 @@ function state (target, propertyKey) {
   })
 }
 
-export default state
+export default State
 
 export {
   State,
   state,
 }
+
+export * from './Watch'
+export * from './stateValues'

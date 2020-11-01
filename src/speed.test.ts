@@ -23,7 +23,7 @@ describe('watch-state: performance', () => {
       expect(perf(() => new State())).toBeGreaterThan(1865)
     })
     test('mobx: observable.box', () => {
-      expect(perf(() => observable.box())).toBeLessThan(1294)
+      expect(perf(() => observable.box())).toBeLessThan(1303)
       expect(perf(() => observable.box())).toBeGreaterThan(1093)
     })
   })
@@ -44,7 +44,7 @@ describe('watch-state: performance', () => {
   describe('watch state', () => {
     test('watch-state', () => {
       const color = new State('red')
-      expect(perf(() => watch(() => color.value))).toBeLessThan(890)
+      expect(perf(() => watch(() => color.value))).toBeLessThan(918)
       expect(perf(() => watch(() => color.value))).toBeGreaterThan(552)
     })
     test('mobx', () => {
@@ -94,7 +94,7 @@ describe('watch-state: performance', () => {
             this.value = value
           }
         }
-        expect(perf(() => new Color())).toBeLessThan(1893)
+        expect(perf(() => new Color())).toBeLessThan(1896)
         expect(perf(() => new Color())).toBeGreaterThan(1604)
       })
       test('mobx: observable', () => {
@@ -152,7 +152,7 @@ describe('watch-state: performance', () => {
             this.value = value
           }
         }
-        expect(perf(() => new Color())).toBeLessThan(185)
+        expect(perf(() => new Color())).toBeLessThan(187)
         expect(perf(() => new Color())).toBeGreaterThan(163)
       })
     })

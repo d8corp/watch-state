@@ -80,21 +80,14 @@ function onClear (callback: WatchTarget): boolean {
   return false
 }
 
-function lock (target) {
-  const prevWatcher = scope.activeWatcher
-  scope.activeWatcher = undefined
-  const result = target()
-  scope.activeWatcher = prevWatcher
-  return result
-}
-
-export default watch
+export default Watch
 
 export {
   Watch,
   onDestructor,
   onUpdate,
   onClear,
-  lock,
   watch,
 }
+
+export * from './Scope'

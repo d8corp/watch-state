@@ -1,4 +1,4 @@
-# watch state
+# watch-state
 [![NPM](https://img.shields.io/npm/v/watch-state.svg)](https://github.com/d8corp/watch-state/blob/master/CHANGELOG.md)
 [![minzipped size](https://img.shields.io/bundlephobia/minzip/watch-state)](https://github.com/d8corp/watch-state/blob/master/watchState.min.js)
 [![downloads](https://img.shields.io/npm/dm/watch-state.svg)](https://www.npmjs.com/package/watch-state)

@@ -1,6 +1,6 @@
 {
   "name": "watch-state",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "The simplest watcher for your state",
   "main": "index.js",
   "module": "index.es6.js",

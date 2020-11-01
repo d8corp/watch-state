@@ -1,26 +1,23 @@
 interface WatchTarget {
     (update: boolean): any;
 }
-interface DestructorOrCleaner {
-    (): any;
-}
 declare class Watch {
     target: WatchTarget;
     private destructors;
     private cleaners;
-    rendered: true;
+    private rendered;
     constructor(target: WatchTarget);
     update(): void;
     destructor(): void;
     private clear;
-    onDestructor(callback: DestructorOrCleaner): void;
-    onUpdate(callback: DestructorOrCleaner): void;
-    onClear(callback: DestructorOrCleaner): void;
+    onDestructor(callback: WatchTarget): void;
+    onUpdate(callback: WatchTarget): void;
+    onClear(callback: WatchTarget): void;
 }
 declare function watch(target: WatchTarget): Watch;
-declare function onDestructor(callback: DestructorOrCleaner): boolean;
-declare function onUpdate(callback: DestructorOrCleaner): boolean;
-declare function onClear(callback: DestructorOrCleaner): boolean;
+declare function onDestructor(callback: WatchTarget): boolean;
+declare function onUpdate(callback: WatchTarget): boolean;
+declare function onClear(callback: WatchTarget): boolean;
 declare function lock(target: any): any;
 export default watch;
 export { Watch, onDestructor, onUpdate, onClear, lock, watch, };

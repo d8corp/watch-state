@@ -5,6 +5,12 @@ import {terser} from 'rollup-plugin-terser'
 const def = {
   input: {
     index: 'src/index.ts',
+    Scope: 'src/Scope.ts',
+    Action: 'src/Action.ts',
+    Computed: 'src/Computed.ts',
+    State: 'src/State.ts',
+    stateValue: 'src/stateValues.ts',
+    Watch: 'src/Watch.ts',
   }
 }
 
@@ -12,7 +18,7 @@ export default [{
   ...def,
   output: {
     dir: 'lib',
-    entryFileNames: pkg.main,
+    entryFileNames: '[name]' + pkg.main.replace('index', ''),
     format: 'cjs'
   },
   plugins: [
@@ -25,7 +31,7 @@ export default [{
   ...def,
   output: {
     dir: 'lib',
-    entryFileNames: pkg.module,
+    entryFileNames: '[name]' + pkg.module.replace('index', ''),
     format: 'es'
   },
   plugins: [
@@ -40,7 +46,7 @@ export default [{
     })
   ]
 }, {
-  ...def,
+  input: 'src/index.ts',
   output: {
     dir: 'lib',
     entryFileNames: 'watch-state.min.js',

@@ -11,6 +11,7 @@ const def = {
     State: 'src/State.ts',
     stateValue: 'src/stateValues.ts',
     Watch: 'src/Watch.ts',
+    utils: 'src/utils.ts',
   }
 }
 

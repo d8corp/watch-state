@@ -1,10 +1,12 @@
 declare class State<T = any> {
-    target?: T;
+    private target?;
     private watchers;
     constructor(target?: T);
     get value(): T;
     set value(value: T);
 }
 declare function state(target: Object, propertyKey: PropertyKey): void;
-export default state;
+export default State;
 export { State, state, };
+export * from './Watch';
+export * from './stateValues';

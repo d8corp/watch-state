@@ -59,42 +59,47 @@ describe('state', () => {
       expect(state.value).toBe('foo')
       expect(result).toBe('bar')
     })
-
     test('condition', () => {
-      let count = 0
+      let count1 = 0
+      let count2 = 0
       const run = new State(true)
       const state = new State('foo')
       let result
       watch(() => {
-        count++
+        count1++
         if (run.value) {
+          count2++
           result = state.value
         }
       })
       expect(result).toBe('foo')
       expect(state.value).toBe('foo')
-      expect(count).toBe(1)
+      expect(count1).toBe(1)
+      expect(count2).toBe(1)
       expect(run.value).toBe(true)
 
       state.value = 'bar'
 
       expect(result).toBe('bar')
       expect(state.value).toBe('bar')
-      expect(count).toBe(2)
+      expect(count1).toBe(2)
+      expect(count2).toBe(2)
       expect(run.value).toBe(true)
 
       run.value = false
 
       expect(result).toBe('bar')
       expect(state.value).toBe('bar')
-      expect(count).toBe(3)
+      expect(count1).toBe(3)
+      expect(count2).toBe(2)
       expect(run.value).toBe(false)
 
       state.value = 'baz'
 
       expect(result).toBe('bar')
       expect(state.value).toBe('baz')
-      expect(count).toBe(3)
+      expect(count1).toBe(3)
+      expect(count2).toBe(2)
       expect(run.value).toBe(false)
     })
     test('set state in watch', () => {
@@ -121,43 +126,69 @@ describe('state', () => {
       expect(state1.value).toBe('baz')
       expect(state2.value).toBe('(baz)')
     })
-    test('auto-remove', () => {
-      let count = 0
-      const run = new State(true)
-      const state = new State('foo')
-      let result
-      watch(() => {
-        count++
-        if (run.value) {
-          watch(() => result = state.value)
-        }
+    describe('deep', () => {
+      test('auto-remove', () => {
+        let count = 0
+        const run = new State(true)
+        const state = new State('foo')
+        let result
+        watch(() => {
+          count++
+          if (run.value) {
+            watch(() => result = state.value)
+          }
+        })
+        expect(result).toBe('foo')
+        expect(state.value).toBe('foo')
+        expect(count).toBe(1)
+        expect(run.value).toBe(true)
+
+        state.value = 'bar'
+
+        expect(result).toBe('bar')
+        expect(state.value).toBe('bar')
+        expect(count).toBe(1)
+        expect(run.value).toBe(true)
+
+        run.value = false
+
+        expect(result).toBe('bar')
+        expect(state.value).toBe('bar')
+        expect(count).toBe(2)
+        expect(run.value).toBe(false)
+
+        state.value = 'baz'
+
+        expect(result).toBe('bar')
+        expect(state.value).toBe('baz')
+        expect(count).toBe(2)
+        expect(run.value).toBe(false)
       })
-      expect(result).toBe('foo')
-      expect(state.value).toBe('foo')
-      expect(count).toBe(1)
-      expect(run.value).toBe(true)
+      test('double value', () => {
+        const state = new State()
+        let render1 = []
+        let render2 = []
 
-      state.value = 'bar'
+        watch(() => {
+          render1.push([state.value, state.value])
+          watch(() => {
+            render2.push([state.value, state.value])
+          })
+        })
+        expect(render1.length).toBe(1)
+        expect(render2.length).toBe(1)
+        expect(render1[0]).toEqual([undefined, undefined])
+        expect(render2[0]).toEqual([undefined, undefined])
 
-      expect(result).toBe('bar')
-      expect(state.value).toBe('bar')
-      expect(count).toBe(1)
-      expect(run.value).toBe(true)
-
-      run.value = false
-
-      expect(result).toBe('bar')
-      expect(state.value).toBe('bar')
-      expect(count).toBe(2)
-      expect(run.value).toBe(false)
-
-      state.value = 'baz'
-
-      expect(result).toBe('bar')
-      expect(state.value).toBe('baz')
-      expect(count).toBe(2)
-      expect(run.value).toBe(false)
+        state.value = true
+        expect(render1.length).toBe(2)
+        expect(render2.length).toBe(2)
+        expect(render1[1]).toEqual([true, true])
+        expect(render2[1]).toEqual([true, true])
+      })
     })
+  })
+  describe('decorators', () => {
     test('timeout', async () => {
       class Timer {
         @state counting = true
@@ -290,33 +321,5 @@ describe('state', () => {
 
       expect(count).toBe(4)
     })
-
-    describe('deep', () => {
-      test('double value', () => {
-        const state = new State()
-        let render1 = []
-        let render2 = []
-
-        watch(() => {
-          render1.push([state.value, state.value])
-          watch(() => {
-            render2.push([state.value, state.value])
-          })
-        })
-        expect(render1.length).toBe(1)
-        expect(render2.length).toBe(1)
-        expect(render1[0]).toEqual([undefined, undefined])
-        expect(render2[0]).toEqual([undefined, undefined])
-
-        state.value = true
-        expect(render1.length).toBe(2)
-        expect(render2.length).toBe(2)
-        expect(render1[1]).toEqual([true, true])
-        expect(render2[1]).toEqual([true, true])
-      })
-    })
-  })
-  describe('decorators', () => {
-
   })
 })

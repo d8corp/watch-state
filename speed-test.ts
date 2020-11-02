@@ -1,92 +1,9 @@
-import colors from 'colors'
+import perfocode, {describe, test} from 'perfocode'
 import watch, {State, Watch, state} from './src'
 import Computed, {computed as c} from './src/Computed'
 import {autorun, observable, computed, reaction} from 'mobx'
-import fs from 'fs'
 
-let currentTimeout = 200
-let file = {}
-const deep = []
-
-function perf (callback: () => void, ms = currentTimeout): number {
-  let count = 0
-  const endTime = Date.now() + ms
-  do {
-    callback()
-    count++
-  } while (Date.now() < endTime)
-  return count / ms
-}
-
-function getDeep (): string {
-  let result = ''
-  for (let i = 0; i < deep.length; i++) {
-    result += '│'
-  }
-  return result
-}
-
-function describe (name: string, callback: () => any, timeout = currentTimeout) {
-  const beforeTimeout = currentTimeout
-  currentTimeout = timeout
-  console.log(getDeep() + '╒ ' + name)
-  deep.push(name)
-  callback()
-  deep.pop()
-  console.log(getDeep() + '╘ ' + name)
-  currentTimeout = beforeTimeout
-}
-
-function test (test: string, callback: () => any, timeout = currentTimeout) {
-  const value = perf(callback, timeout)
-  let minColor = colors.gray
-  let maxColor = colors.gray
-  let beforeMin = ''
-  let beforeMax = ''
-  let afterMin = ''
-  let afterMax = ''
-  let object = file
-  for (const name of deep) {
-    if (!(name in object)) {
-      object[name] = {}
-    }
-    object = object[name]
-  }
-  if (test in object) {
-    if (value < object[test].min) {
-      minColor = colors.red
-      beforeMin = colors.gray(object[test].min + ' < ')
-      object[test].min = value
-    } else if (value > object[test].max) {
-      maxColor = colors.green
-      beforeMax = colors.gray(' > ' + object[test].max)
-      object[test].max = value
-    }
-  } else {
-    minColor = colors.yellow
-    maxColor = colors.yellow
-    object[test] = {
-      min: value,
-      max: value,
-    }
-  }
-  let deepPrefix = getDeep()
-  if (deepPrefix) {
-    deepPrefix = deepPrefix.slice(0, -1) + '╞'
-  }
-  console.log(`${deepPrefix} ${test}: ${minColor(`${object[test].min} < `)}${beforeMin}${value}${beforeMax}${maxColor(` > ${object[test].max}`)}`)
-}
-
-function performanceTest (output: string, callback: () => any, timeout = currentTimeout) {
-  currentTimeout = timeout
-  try {
-    file = JSON.parse(fs.readFileSync(output + '.json') as unknown as string)
-  } catch (e) {}
-  callback()
-  fs.writeFileSync(output + '.json', JSON.stringify(file, null, 2))
-}
-
-performanceTest('speed-test', () => {
+perfocode('speed-test', () => {
   test('empty test', () => {})
   describe('create', () => {
     describe('state', () => {

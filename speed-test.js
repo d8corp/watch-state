@@ -1,13 +1,11 @@
 'use strict';
 
-var colors = require('colors');
+var perfocode = require('perfocode');
 var mobx = require('mobx');
-var fs = require('fs');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-var colors__default = /*#__PURE__*/_interopDefaultLegacy(colors);
-var fs__default = /*#__PURE__*/_interopDefaultLegacy(fs);
+var perfocode__default = /*#__PURE__*/_interopDefaultLegacy(perfocode);
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -213,100 +211,23 @@ function computed(target, propertyKey, descriptor) {
     });
 }
 
-let currentTimeout = 200;
-let file = {};
-const deep = [];
-function perf(callback, ms = currentTimeout) {
-    let count = 0;
-    const endTime = Date.now() + ms;
-    do {
-        callback();
-        count++;
-    } while (Date.now() < endTime);
-    return count / ms;
-}
-function getDeep() {
-    let result = '';
-    for (let i = 0; i < deep.length; i++) {
-        result += '│';
-    }
-    return result;
-}
-function describe(name, callback, timeout = currentTimeout) {
-    const beforeTimeout = currentTimeout;
-    currentTimeout = timeout;
-    console.log(getDeep() + '╒ ' + name);
-    deep.push(name);
-    callback();
-    deep.pop();
-    console.log(getDeep() + '╘ ' + name);
-    currentTimeout = beforeTimeout;
-}
-function test(test, callback, timeout = currentTimeout) {
-    const value = perf(callback, timeout);
-    let minColor = colors__default['default'].gray;
-    let maxColor = colors__default['default'].gray;
-    let beforeMin = '';
-    let beforeMax = '';
-    let object = file;
-    for (const name of deep) {
-        if (!(name in object)) {
-            object[name] = {};
-        }
-        object = object[name];
-    }
-    if (test in object) {
-        if (value < object[test].min) {
-            minColor = colors__default['default'].red;
-            beforeMin = colors__default['default'].gray(object[test].min + ' < ');
-            object[test].min = value;
-        }
-        else if (value > object[test].max) {
-            maxColor = colors__default['default'].green;
-            beforeMax = colors__default['default'].gray(' > ' + object[test].max);
-            object[test].max = value;
-        }
-    }
-    else {
-        minColor = colors__default['default'].yellow;
-        maxColor = colors__default['default'].yellow;
-        object[test] = {
-            min: value,
-            max: value,
-        };
-    }
-    let deepPrefix = getDeep();
-    if (deepPrefix) {
-        deepPrefix = deepPrefix.slice(0, -1) + '╞';
-    }
-    console.log(`${deepPrefix} ${test}: ${minColor(`${object[test].min} < `)}${beforeMin}${value}${beforeMax}${maxColor(` > ${object[test].max}`)}`);
-}
-function performanceTest(output, callback, timeout = currentTimeout) {
-    currentTimeout = timeout;
-    try {
-        file = JSON.parse(fs__default['default'].readFileSync(output + '.json'));
-    }
-    catch (e) { }
-    callback();
-    fs__default['default'].writeFileSync(output + '.json', JSON.stringify(file, null, 2));
-}
-performanceTest('speed-test', () => {
-    test('empty test', () => { });
-    describe('create', () => {
-        describe('state', () => {
-            test('watch-state', () => new State());
-            test('mobx: observable.box', () => mobx.observable.box());
+perfocode__default['default']('speed-test', () => {
+    perfocode.test('empty test', () => { });
+    perfocode.describe('create', () => {
+        perfocode.describe('state', () => {
+            perfocode.test('watch-state', () => new State());
+            perfocode.test('mobx: observable.box', () => mobx.observable.box());
         });
-        describe('watch', () => {
-            test('watch-state: Watch', () => new Watch(() => { }));
-            test('watch-state: watch', () => watch(() => { }));
-            test('mobx: autorun', () => mobx.autorun(() => { }));
+        perfocode.describe('watch', () => {
+            perfocode.test('watch-state: Watch', () => new Watch(() => { }));
+            perfocode.test('watch-state: watch', () => watch(() => { }));
+            perfocode.test('mobx: autorun', () => mobx.autorun(() => { }));
         });
-        describe('computed', () => {
-            test('watch-state', () => new Computed(() => { }));
-            test('mobx', () => mobx.computed(() => { }));
+        perfocode.describe('computed', () => {
+            perfocode.test('watch-state', () => new Computed(() => { }));
+            perfocode.test('mobx', () => mobx.computed(() => { }));
         });
-        describe('computed decorator', () => {
+        perfocode.describe('computed decorator', () => {
             class User {
                 get fullName() {
                     return '';
@@ -323,10 +244,10 @@ performanceTest('speed-test', () => {
             __decorate([
                 mobx.computed
             ], UserMobx.prototype, "fullName", null);
-            test('watch-state', () => new User());
-            test('mobx', () => new UserMobx());
+            perfocode.test('watch-state', () => new User());
+            perfocode.test('mobx', () => new UserMobx());
         });
-        describe('computed and state decorators', () => {
+        perfocode.describe('computed and state decorators', () => {
             class User {
                 constructor() {
                     this.name = 'Mike';
@@ -363,29 +284,29 @@ performanceTest('speed-test', () => {
             __decorate([
                 mobx.computed
             ], UserMobx.prototype, "fullName", null);
-            test('watch-state', () => new User());
-            test('mobx', () => new UserMobx());
+            perfocode.test('watch-state', () => new User());
+            perfocode.test('mobx', () => new UserMobx());
         });
     });
-    describe('update', () => {
+    perfocode.describe('update', () => {
         const state = new State(0);
         const stateMobx1 = mobx.observable.box(0);
         const stateMobx2 = mobx.observable.box(0);
         watch(() => state.value);
         mobx.autorun(() => stateMobx1.get());
         mobx.reaction(() => stateMobx2.get(), () => { });
-        test('watch-state', () => state.value++);
-        test('mobx: autorun', () => stateMobx1.set(stateMobx1.get() + 1));
-        test('mobx: reaction', () => stateMobx2.set(stateMobx2.get() + 1));
+        perfocode.test('watch-state', () => state.value++);
+        perfocode.test('mobx: autorun', () => stateMobx1.set(stateMobx1.get() + 1));
+        perfocode.test('mobx: reaction', () => stateMobx2.set(stateMobx2.get() + 1));
     });
-    describe('watch state', () => {
+    perfocode.describe('watch state', () => {
         const wsColor = new State('red');
         const mobxColor = mobx.observable.box('red');
-        test('watch-state', () => watch(() => wsColor.value));
-        test('mobx', () => mobx.autorun(() => mobxColor.get()));
+        perfocode.test('watch-state', () => watch(() => wsColor.value));
+        perfocode.test('mobx', () => mobx.autorun(() => mobxColor.get()));
     });
-    describe('state decorator', () => {
-        describe('one', () => {
+    perfocode.describe('state decorator', () => {
+        perfocode.describe('one', () => {
             class Color {
                 constructor(value = 'red') {
                     this.value = value;
@@ -410,11 +331,11 @@ performanceTest('speed-test', () => {
             __decorate([
                 mobx.observable.ref
             ], Mobx2Color.prototype, "value", void 0);
-            test('watch-state', () => new Color());
-            test('mobx: observable', () => new Mobx1Color());
-            test('mobx: observable.ref', () => new Mobx2Color());
+            perfocode.test('watch-state', () => new Color());
+            perfocode.test('mobx: observable', () => new Mobx1Color());
+            perfocode.test('mobx: observable.ref', () => new Mobx2Color());
         });
-        describe('one with default', () => {
+        perfocode.describe('one with default', () => {
             class Color {
                 constructor(value = 'red') {
                     this.value = 'black';
@@ -442,11 +363,11 @@ performanceTest('speed-test', () => {
             __decorate([
                 mobx.observable.ref
             ], Mobx2Color.prototype, "value", void 0);
-            test('watch-state', () => new Color());
-            test('mobx: observable', () => new Mobx1Color());
-            test('mobx: observable.ref', () => new Mobx2Color());
+            perfocode.test('watch-state', () => new Color());
+            perfocode.test('mobx: observable', () => new Mobx1Color());
+            perfocode.test('mobx: observable.ref', () => new Mobx2Color());
         });
-        describe('two', () => {
+        perfocode.describe('two', () => {
             class Color {
                 constructor(key = 'test', value = 'red') {
                     this.key = key;
@@ -483,19 +404,19 @@ performanceTest('speed-test', () => {
             __decorate([
                 mobx.observable.ref
             ], Mobx2Color.prototype, "value", void 0);
-            test('watch-state', () => new Color());
-            test('mobx: observable', () => new Mobx1Color());
-            test('mobx: observable.ref', () => new Mobx2Color());
+            perfocode.test('watch-state', () => new Color());
+            perfocode.test('mobx: observable', () => new Mobx1Color());
+            perfocode.test('mobx: observable.ref', () => new Mobx2Color());
         });
     });
-    describe('complex', () => {
-        test('watch-state', () => {
+    perfocode.describe('complex', () => {
+        perfocode.test('watch-state', () => {
             const state = new State(1000);
             const watcher = watch(() => state.value);
             while (state.value--) { }
             watcher.destructor();
         });
-        test('mobx', () => {
+        perfocode.test('mobx', () => {
             const state = mobx.observable.box(1000);
             const disposer = mobx.autorun(() => state.get());
             while (state.get()) {

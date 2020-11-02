@@ -52,14 +52,16 @@ describe('watch-state', () => {
     //   const state1 = new State(0)
     //   const state2 = new State(0)
     //   watch(() => {
-    //     console.log(`state2.value = ${state1.value} + 1`)
+    //     const text = `state2.value = ${state1.value} + 1`
+    //     console.log(`1 ==> ${text}`)
     //     state2.value = state1.value + 1
+    //     console.log(`1 <== ${text}`)
     //   })
     //   expect(() => watch(() => {
     //     const text = `state1.value = ${state2.value} + 1`
-    //     console.log('<', text)
+    //     console.log(`2 ==> ${text}`)
     //     state1.value = state2.value + 1
-    //     console.log('>', text)
+    //     console.log(`2 <== ${text}`, state1.value)
     //   })).toThrow()
     //   reset()
     // })

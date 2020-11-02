@@ -10,6 +10,8 @@
   "scripts": {
     "build": "bin/release -rollup",
     "test": "jest",
+    "speed:test": "node speed-test.js",
+    "speed:update": "rollup -c rollup.speed.config.js",
     "patch": "bin/release -patch -rollup",
     "minor": "bin/release -minor -rollup",
     "major": "bin/release -major -rollup"
@@ -37,7 +39,9 @@
   },
   "homepage": "https://github.com/d8corp/watch-state",
   "devDependencies": {
+    "@types/colors": "^1.2.1",
     "@types/jest": "^26.0.15",
+    "colors": "^1.4.0",
     "core-js": "^3.6.5",
     "jest": "^26.6.1",
     "minimist": ">=0.2.1",

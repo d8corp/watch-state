@@ -26,6 +26,11 @@ export default [{
     typescript({
       rollupCommonJSResolveHack: false,
       clean: true,
+      tsconfigOverride: {
+        compilerOptions: {
+          module: 'esnext'
+        }
+      }
     })
   ]
 }, {
@@ -41,7 +46,8 @@ export default [{
       clean: true,
       tsconfigOverride: {
         compilerOptions: {
-          target: 'es6'
+          target: 'es6',
+          module: 'esnext'
         }
       }
     })
@@ -59,6 +65,11 @@ export default [{
     typescript({
       rollupCommonJSResolveHack: false,
       clean: true,
+      tsconfigOverride: {
+        compilerOptions: {
+          module: 'esnext'
+        }
+      }
     })
   ]
 }]

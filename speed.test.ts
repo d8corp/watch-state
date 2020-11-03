@@ -3,7 +3,7 @@ import watch, {State, Watch, state} from './src'
 import Computed, {computed as c} from './src/Computed'
 import {autorun, observable, computed, reaction} from 'mobx'
 
-perfocode('speed-test', () => {
+perfocode('speed.test', () => {
   test('empty test', () => {})
   describe('create', () => {
     describe('state', () => {

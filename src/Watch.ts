@@ -11,7 +11,7 @@ class Watch {
   constructor (public target: WatchTarget) {
     this.update()
   }
-  update (): void {
+  update (): this {
     this.clear(this.cleaners, this.rendered)
     onClear(() => this.destructor())
     const prevWatcher = scope.activeWatcher
@@ -19,11 +19,13 @@ class Watch {
     this.target(this.rendered)
     scope.activeWatcher = prevWatcher
     this.rendered = true
+    return this
   }
-  destructor () {
+  destructor (): this {
     this.clear(this.destructors, false)
+    return this
   }
-  private clear (callbacks: WatchTarget[], update: boolean) {
+  private clear (callbacks: WatchTarget[], update: boolean): this {
     if (callbacks) {
       for (let i = 0; i < callbacks.length; i++) {
         callbacks[i](update)
@@ -31,24 +33,28 @@ class Watch {
     }
     this.cleaners = undefined
     this.destructors = undefined
+    return this
   }
-  onDestructor (callback: WatchTarget) {
+  onDestructor (callback: WatchTarget): this {
     if (this.destructors) {
       this.destructors.push(callback)
     } else {
       this.destructors = [callback]
     }
+    return this
   }
-  onUpdate (callback: WatchTarget) {
+  onUpdate (callback: WatchTarget): this {
     if (this.cleaners) {
       this.cleaners.push(callback)
     } else {
       this.cleaners = [callback]
     }
+    return this
   }
-  onClear (callback: WatchTarget) {
+  onClear (callback: WatchTarget): this {
     this.onUpdate(callback)
     this.onDestructor(callback)
+    return this
   }
 }
 

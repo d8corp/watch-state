@@ -235,7 +235,7 @@ describe('watch', () => {
     })
   })
   describe('update argument', () => {
-    test('watch target', () => {
+    test('update', () => {
       let updated: boolean
       const watcher = watch(update => updated = update)
       expect(updated).toBe(false)

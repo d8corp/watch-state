@@ -1,5 +1,4 @@
-import {Watch, State, onDestructor, stateValues} from './State'
-import {lock} from './utils'
+import {Watch, State, stateValues, unwatch} from './State'
 
 interface ComputedValues {
   [key: string]: Computed
@@ -7,25 +6,14 @@ interface ComputedValues {
 
 class Computed <T = any> {
   _value: State<T> = new State()
-  _watchersCount = 0
   _watcher: Watch
   constructor (public target: () => T) {}
+  destructor () {
+    this._watcher.destructor()
+  }
   get value (): T {
-    const destructor = () => {
-      this._watchersCount--
-      if (!this._watchersCount) {
-        this._watcher.destructor()
-        this._watcher = undefined
-      }
-    }
-    if (onDestructor(destructor)) {
-      this._watchersCount++
-    }
-    if (!this._watchersCount) {
-      return this.target()
-    }
     if (!this._watcher) {
-      lock(() => {
+      unwatch(() => {
         this._watcher = new Watch(() => {
           this._value.value = this.target()
         })
@@ -42,7 +30,7 @@ function computed (target, propertyKey, descriptor) {
     get () {
       const values: ComputedValues = stateValues(this) as ComputedValues
       if (!(propertyKey in values)) {
-        lock(() => values[propertyKey] = new Computed(get.bind(this)))
+        unwatch(() => values[propertyKey] = new Computed(get.bind(this)))
       }
       return values[propertyKey].value
     }

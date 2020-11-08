@@ -1,4 +1,4 @@
-import {watch, State, reset, state, lock} from '.'
+import {watch, State, reset, state, unwatch} from '.'
 
 describe('utils', () => {
   test('lock', () => {
@@ -10,7 +10,7 @@ describe('utils', () => {
     const test = new Test()
     let result
     watch(() => {
-      lock(() => test.count++)
+      unwatch(() => test.count++)
       if (test.watch) {
         result = test.value
       }

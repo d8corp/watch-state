@@ -80,6 +80,14 @@ function onClear (callback: WatchTarget): boolean {
   return false
 }
 
+function unwatch (target: () => any) {
+  const prevWatcher = scope.activeWatcher
+  scope.activeWatcher = undefined
+  const result = target()
+  scope.activeWatcher = prevWatcher
+  return result
+}
+
 export default Watch
 
 export {
@@ -88,6 +96,7 @@ export {
   onUpdate,
   onClear,
   watch,
+  unwatch,
 }
 
 export * from './Scope'

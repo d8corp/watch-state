@@ -71,6 +71,35 @@ describe('Computed', () => {
       expect(user.fullName).toBe('Mike M.')
       expect(count).toBe(2)
     })
+    test('returns an array', () => {
+      let count = 0
+      class Test {
+        @state value = []
+        @computed get sorted () {
+          count++
+          return this.value.sort()
+        }
+      }
+      const test = new Test()
+      const log = []
+      expect(test.sorted).toEqual([])
+      expect(test.sorted).toEqual([])
+      expect(test.sorted).toEqual([])
+      expect(count).toBe(1)
+      watch(() => log.push(test.sorted))
+
+      expect(log.length).toBe(1)
+      expect(count).toBe(1)
+      expect(log[0]).toEqual([])
+
+      test.value = ['b', 'c', 'a']
+
+      expect(log.length).toBe(2)
+      expect(count).toBe(2)
+      expect(log[1]).toEqual(['a', 'b', 'c'])
+      expect(test.sorted).toEqual(['a', 'b', 'c'])
+      expect(count).toBe(2)
+    })
   })
   describe('class', () => {
     test('fullName', () => {
@@ -105,7 +134,7 @@ describe('Computed', () => {
       expect(fullName.value).toBe('Mike D.')
       expect(count).toBe(1)
       expect(fullName.value).toBe('Mike D.')
-      expect(count).toBe(2)
+      expect(count).toBe(1)
 
       let resultCount = 0
       let result
@@ -114,17 +143,17 @@ describe('Computed', () => {
         resultCount++
         result = fullName.value
       })
-      expect(count).toBe(3)
+      expect(count).toBe(1)
       expect(resultCount).toBe(1)
       expect(result).toBe('Mike D.')
 
       surname.value = 'D8'
-      expect(count).toBe(4)
+      expect(count).toBe(2)
       expect(resultCount).toBe(1)
       expect(result).toBe('Mike D.')
 
       surname.value = 'Mighty'
-      expect(count).toBe(5)
+      expect(count).toBe(3)
       expect(resultCount).toBe(2)
       expect(result).toBe('Mike M.')
     })

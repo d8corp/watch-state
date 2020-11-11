@@ -7,17 +7,17 @@ declare class Watch {
     private cleaners;
     private rendered;
     constructor(target: WatchTarget);
-    update(): void;
-    destructor(): void;
+    update(): this;
+    destructor(): this;
     private clear;
-    onDestructor(callback: WatchTarget): void;
-    onUpdate(callback: WatchTarget): void;
-    onClear(callback: WatchTarget): void;
+    onDestructor(callback: WatchTarget): this;
+    onUpdate(callback: WatchTarget): this;
+    onClear(callback: WatchTarget): this;
 }
 declare function watch(target: WatchTarget): Watch;
 declare function onDestructor(callback: WatchTarget): boolean;
-declare function onUpdate(callback: WatchTarget): boolean;
 declare function onClear(callback: WatchTarget): boolean;
+declare function unwatch(target: () => any): any;
 export default Watch;
-export { Watch, onDestructor, onUpdate, onClear, watch, };
+export { Watch, onDestructor, onClear, watch, unwatch, };
 export * from './Scope';

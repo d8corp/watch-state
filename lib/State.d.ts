@@ -1,10 +1,12 @@
+import { Watch } from './Watch';
 declare class State<T = any> {
     private _watchers;
     private target;
     constructor(value?: T);
     get value(): T;
     set value(value: T);
-    private get watchers();
+    update(): void;
+    get watchers(): Set<Watch>;
 }
 declare function state(target: Object, propertyKey: PropertyKey): void;
 export default State;

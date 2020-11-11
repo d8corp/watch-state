@@ -48,7 +48,9 @@ interface StateValues {
 
 function state (target: Object, propertyKey: PropertyKey): void
 function state (target, propertyKey, desc?) {
-  const value = desc ? desc.value || desc.initializer() : undefined
+  const value = desc ? (
+    desc.initializer ? desc.initializer() : desc.value
+  ) : undefined
   return {
     get (): any {
       const values = stateValues(this)

@@ -26,5 +26,5 @@ function action (target, propertyKey?, descriptor?) {
 export default action
 
 export {
-  action
+  action,
 }

@@ -1,5 +1,6 @@
 import action from './Action'
-import {state, watch} from './State'
+import {watch} from './State'
+import state from './decorators/state'
 
 describe('action', () => {
   test('brackets', () => {

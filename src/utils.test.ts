@@ -1,4 +1,5 @@
-import {watch, State, reset, state, unwatch} from '.'
+import {watch, State, reset, unwatch} from '.'
+import state from './decorators/state'
 
 describe('utils', () => {
   test('lock', () => {

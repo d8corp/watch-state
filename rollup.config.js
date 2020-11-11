@@ -12,6 +12,9 @@ const def = {
     stateValue: 'src/stateValues.ts',
     Watch: 'src/Watch.ts',
     utils: 'src/utils.ts',
+    'decorators/index': 'src/decorators/index.ts',
+    'decorators/state': 'src/decorators/state.ts',
+    'decorators/computed': 'src/decorators/computed.ts',
   }
 }
 

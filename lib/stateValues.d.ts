@@ -1,7 +1,7 @@
 import Computed, { State } from './Computed';
-interface StateValues {
+interface StateOrComputedValues {
     [key: string]: State | Computed;
 }
-declare function stateValues(target: object): StateValues;
+declare function stateValues(target: object): StateOrComputedValues;
 export default stateValues;
-export { stateValues, StateValues, };
+export { stateValues, StateOrComputedValues, };

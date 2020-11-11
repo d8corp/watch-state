@@ -5,3 +5,4 @@ export * from './Watch';
 export * from './State';
 export * from './Computed';
 export * from './utils';
+export * from './decorators';

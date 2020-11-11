@@ -1,8 +1,4 @@
-import {Watch, State, stateValues, unwatch} from './State'
-
-interface ComputedValues {
-  [key: string]: Computed
-}
+import {Watch, State, unwatch} from './State'
 
 class Computed <T = any> {
   _value: State<T> = new State()
@@ -27,26 +23,11 @@ class Computed <T = any> {
   }
 }
 
-function computed (target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>): void
-function computed (target, propertyKey, descriptor) {
-  const {get: originalGet} = descriptor
-  return {
-    get () {
-      const values: ComputedValues = stateValues(this) as ComputedValues
-      if (!(propertyKey in values)) {
-        unwatch(() => values[propertyKey] = new Computed(originalGet.bind(this)))
-      }
-      return values[propertyKey].value
-    },
-    enumerable: true
-  }
-}
 
 export default Computed
 
 export {
   Computed,
-  computed,
 }
 
 export * from './State'

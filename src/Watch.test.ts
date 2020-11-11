@@ -1,4 +1,4 @@
-import Watch, {watch, onClear, onUpdate, onDestructor} from './Watch'
+import Watch, {watch, onClear, onDestructor} from './Watch'
 
 describe('watch', () => {
   test('returns Watch', () => {
@@ -88,44 +88,6 @@ describe('watch', () => {
         expect(test).toBe(0)
         watcher.update()
         expect(test).toBe(0)
-      })
-    })
-    describe('function', () => {
-      test('deep 1', () => {
-        let test = 0
-        const watcher = watch(() => onUpdate(() => test++))
-
-        expect(test).toBe(0)
-        watcher.update()
-        expect(test).toBe(1)
-        watcher.update()
-        expect(test).toBe(2)
-        watcher.destructor()
-        expect(test).toBe(2)
-        watcher.update()
-        expect(test).toBe(2)
-        watcher.update()
-        expect(test).toBe(3)
-      })
-      test('deep 2', () => {
-        let test1 = 0
-        let test2 = 0
-        let watcher2: Watch
-        const watcher1 = watch(() => {
-          onUpdate(() => test1++)
-          watcher2 = watch(() => onUpdate(() => test2++))
-        })
-        let watcherTest = watcher2
-        expect(test1).toBe(0)
-        expect(test2).toBe(0)
-        watcher2.update()
-        expect(test1).toBe(0)
-        expect(test2).toBe(1)
-        expect(watcherTest).toBe(watcher2)
-        watcher1.update()
-        expect(test1).toBe(1)
-        expect(test2).toBe(1)
-        expect(watcherTest).not.toBe(watcher2)
       })
     })
   })

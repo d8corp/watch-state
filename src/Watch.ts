@@ -70,14 +70,6 @@ function onDestructor (callback: WatchTarget): boolean {
   return false
 }
 
-function onUpdate (callback: WatchTarget): boolean {
-  if (scope.activeWatcher) {
-    scope.activeWatcher.onUpdate(callback)
-    return true
-  }
-  return false
-}
-
 function onClear (callback: WatchTarget): boolean {
   if (scope.activeWatcher) {
     scope.activeWatcher.onClear(callback)
@@ -99,7 +91,6 @@ export default Watch
 export {
   Watch,
   onDestructor,
-  onUpdate,
   onClear,
   watch,
   unwatch,

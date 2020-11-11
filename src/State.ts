@@ -23,18 +23,21 @@ class State <T = any> {
   set value (value: T) {
     if (value !== this.target) {
       this.target = value
-      const {watchers} = this
-      if (watchers.size) {
-        this._watchers = undefined
-        if (scope.actionWatchers) {
-          watchers.forEach(watcher => scope.actionWatchers.add(watcher))
-        } else {
-          watchers.forEach(watcher => watcher.update())
-        }
+      this.update()
+    }
+  }
+  update () {
+    const {watchers} = this
+    if (watchers.size) {
+      this._watchers = undefined
+      if (scope.actionWatchers) {
+        watchers.forEach(watcher => scope.actionWatchers.add(watcher))
+      } else {
+        watchers.forEach(watcher => watcher.update())
       }
     }
   }
-  private get watchers (): Set<Watch> {
+  get watchers (): Set<Watch> {
     return this._watchers || (this._watchers = new Set())
   }
 }

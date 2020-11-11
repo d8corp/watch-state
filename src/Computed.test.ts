@@ -86,7 +86,8 @@ describe('Computed', () => {
       expect(test.sorted).toEqual([])
       expect(test.sorted).toEqual([])
       expect(count).toBe(1)
-      watch(() => log.push(test.sorted))
+
+      const watcher = watch(() => log.push(test.sorted))
 
       expect(log.length).toBe(1)
       expect(count).toBe(1)
@@ -99,6 +100,19 @@ describe('Computed', () => {
       expect(log[1]).toEqual(['a', 'b', 'c'])
       expect(test.sorted).toEqual(['a', 'b', 'c'])
       expect(count).toBe(2)
+
+      watcher.destructor()
+
+      expect(log.length).toBe(2)
+      expect(count).toBe(2)
+      expect(test.sorted).toEqual(['a', 'b', 'c'])
+      expect(count).toBe(2)
+
+      test.value = ['2', '3', '1']
+      expect(count).toBe(2)
+      expect(test.sorted).toEqual(['1', '2', '3'])
+      expect(test.sorted).toEqual(['1', '2', '3'])
+      expect(count).toBe(3)
     })
   })
   describe('class', () => {
@@ -156,6 +170,41 @@ describe('Computed', () => {
       expect(count).toBe(3)
       expect(resultCount).toBe(2)
       expect(result).toBe('Mike M.')
+    })
+    test('double creating', () => {
+      let count = 0
+      const state = new State(0)
+      class Test {
+        @computed get test () {
+          count++
+          return state.value
+        }
+      }
+      const test1 = new Test()
+      expect(count).toBe(0)
+      expect(test1.test).toBe(0)
+      expect(count).toBe(1)
+      expect(test1.test).toBe(0)
+      expect(count).toBe(1)
+
+      state.value = 1
+      expect(count).toBe(1)
+      expect(test1.test).toBe(1)
+      expect(count).toBe(2)
+
+      const test2 = new Test()
+      expect(count).toBe(2)
+      expect(test2.test).toBe(1)
+      expect(count).toBe(3)
+      expect(test2.test).toBe(1)
+      expect(count).toBe(3)
+
+      state.value = 2
+      expect(count).toBe(3)
+      expect(test2.test).toBe(2)
+      expect(count).toBe(4)
+      expect(test2.test).toBe(2)
+      expect(count).toBe(4)
     })
   })
 })

@@ -1,9 +1,14 @@
 import scope from './Scope'
 
-function action <T> (target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>): TypedPropertyDescriptor<T> | void
+function action <T> (target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>): void
 function action <T> (callback: T): T
 function action (target, propertyKey?, descriptor?) {
-  if (typeof target === 'function') {
+  if (descriptor) {
+    return {
+      value: action(descriptor.value),
+      enumerable: true
+    }
+  } else {
     return function () {
       if (scope.actionWatchers) {
         return target.apply(this, arguments)
@@ -15,10 +20,6 @@ function action (target, propertyKey?, descriptor?) {
         return result
       }
     }
-  } else {
-    return Object.assign({}, descriptor, {
-      value: action(descriptor.value)
-    })
   }
 }
 

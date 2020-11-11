@@ -47,12 +47,13 @@ interface StateValues {
 }
 
 function state (target: Object, propertyKey: PropertyKey): void
-function state (target, propertyKey) {
-  Object.defineProperty(target, propertyKey, {
+function state (target, propertyKey, desc?) {
+  const value = desc ? desc.value || desc.initializer() : undefined
+  return {
     get (): any {
       const values = stateValues(this)
       if (!(propertyKey in values)) {
-        values[propertyKey] = new State()
+        values[propertyKey] = new State(value)
       }
       return values[propertyKey].value
     },
@@ -65,7 +66,7 @@ function state (target, propertyKey) {
       }
     },
     enumerable: true
-  })
+  }
 }
 
 export default State

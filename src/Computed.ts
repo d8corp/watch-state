@@ -27,18 +27,19 @@ class Computed <T = any> {
   }
 }
 
-function computed (target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>): TypedPropertyDescriptor<any>
+function computed (target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>): void
 function computed (target, propertyKey, descriptor) {
-  const {get} = descriptor
-  return Object.assign({}, descriptor, {
+  const {get: originalGet} = descriptor
+  return {
     get () {
       const values: ComputedValues = stateValues(this) as ComputedValues
       if (!(propertyKey in values)) {
-        unwatch(() => values[propertyKey] = new Computed(get.bind(this)))
+        unwatch(() => values[propertyKey] = new Computed(originalGet.bind(this)))
       }
       return values[propertyKey].value
-    }
-  })
+    },
+    enumerable: true
+  }
 }
 
 export default Computed

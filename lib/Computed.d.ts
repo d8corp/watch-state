@@ -7,7 +7,7 @@ declare class Computed<T = any> {
     destructor(): void;
     get value(): T;
 }
-declare function computed(target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>): TypedPropertyDescriptor<any>;
+declare function computed(target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>): void;
 export default Computed;
 export { Computed, computed, };
 export * from './State';

@@ -40,7 +40,7 @@ count.value++
 // console.log(1)
 ```
 ##### Update argument:
-You can check if watch target is running first by `update` argument.
+You can check if the watching ran first by `update` argument.
 ```javascript
 const count = new State(0)
 
@@ -56,13 +56,13 @@ count.value++
 ##### Deep watch:
 You can use `watch` inside watcher. Each watcher reacts on that states which used only inside it.
 ```javascript
-const watchState = new State(true)
+const watching = new State(true)
 const state = new State(0)
 let test = 0
 
 watch(() => {
   test++
-  if (watchState.value) {
+  if (watching.value) {
     watch(() => console.log(state.value))
   }
 })
@@ -71,15 +71,34 @@ watch(() => {
 state.value++
 // console.log(1), test = 1
 
-watchState.value = false
+watching.value = false
 // test = 2
 
 state.value++
 // nothing happens
 ```
-### Interface
+##### Decorators:
+You can use decorators with `watch-sate`
+```javascript
+import {watch, state} from 'watch-state'
+
+class Counter {
+  @state value = 0
+}
+
+const counter = new Counter()
+
+watch(() => console.log(counter.value))
+// console.log(0)
+
+counter.value++
+// console.log(1)
+```
+##### Computed
+
+### Other interface
 ##### Watch.destructor()
-You can stop watching by `destructor` method of `Watch`
+You can stop watching by `destructor` method of `Watch`.
 ```javascript
 const count = new State(0)
 
@@ -94,8 +113,18 @@ watcher.destructor()
 count.value++
 // nothing happens
 ```
+##### Watch.update()
+Forced update
+```javascript
+let count = 0
+const watcher = watch(() => console.log(++count))
+// console.log(1)
+
+watcher.update()
+// console.log(2)
+```
 ##### Watch.onDestructor()
-You can react on destruction of `Watch` by `onDestructor` method
+You can react on destruction of `Watch` by `onDestructor` method.
 ```javascript
 const watcher = watch(() => {})
 
@@ -104,7 +133,7 @@ watcher.onDestructor(() => console.log('destructor'))
 watcher.destructor()
 // console.log('destructor')
 ```
-`onDestructor` returns `this` so you can use **fluent interface**
+`onDestructor` returns `this` so you can use **fluent interface**.
 ```javascript
 const watcher = watch(() => {})
   .onDestructor(() => console.log('destructor'))
@@ -112,7 +141,7 @@ const watcher = watch(() => {})
 watcher.destructor()
 // console.log('destructor')
 ```
-Or you can use `onDestructor` function inside a watcher
+Or you can use `onDestructor` function inside a watcher.
 ```javascript
 import {watch, onDestructor} from 'watch-state'
 
@@ -124,7 +153,6 @@ const watcher = watch(() => {
 watcher.destructor()
 // console.log('destructor')
 ```
-##### onUpdate:
 ## Issues
 If you find a bug or have a suggestion, please file an issue on [GitHub](https://github.com/d8corp/watch-state/issues)  
 [![issues](https://img.shields.io/github/issues-raw/d8corp/watch-state)](https://github.com/d8corp/watch-state/issues)  

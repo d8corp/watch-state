@@ -77,6 +77,7 @@ watching.value = false
 state.value++
 // nothing happens
 ```
+##### Computed:
 ##### Decorators:
 You can use decorators with `watch-sate`
 ```javascript
@@ -94,7 +95,6 @@ watch(() => console.log(counter.value))
 counter.value++
 // console.log(1)
 ```
-##### Computed
 
 ### Other interface
 ##### Watch.destructor()

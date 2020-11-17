@@ -26,6 +26,9 @@ new Watch(() => console.log(count.value))
 
 count.value++
 // console.log(1)
+
+count.value++
+// console.log(2)
 ```
 ##### Update argument:
 You can check if the watching ran first by `update` argument.
@@ -39,9 +42,12 @@ new Watch(update => {
 
 count.value++
 // console.log(true, 1)
+
+count.value++
+// console.log(true, 2)
 ```
 ##### Deep watch:
-You can use `watch` inside watcher. Each watcher reacts on that states which used only inside it.
+You can use `Watch` inside watcher. Each watcher reacts on that states which used only inside it.
 ```javascript
 const watching = new State(true)
 const state = new State(0)
@@ -50,7 +56,7 @@ let test = 0
 new Watch(() => {
   test++
   if (watching.value) {
-    watch(() => console.log(state.value))
+    new Watch(() => console.log(state.value))
   }
 })
 // console.log(0), test = 1
@@ -86,7 +92,7 @@ surname.value = 'Mighty'
 The computing will be triggered only when a state inside the cache will be changed.
 So you can modify data only when it's needed.
 ```javascript
-const list = new State(['foo', 'baz', 'bar'])
+const list = new State(['foo', 'bar', 'baz'])
 
 const sortedList = new Cache(() => {
   console.log('computing')
@@ -94,11 +100,13 @@ const sortedList = new Cache(() => {
 })
 // nothing happens
 
-console.log(sortedList.value)
+const value = sortedList.value
 // console.log('computing')
+
+console.log(sortedList.value)
 // console.log(['bar', 'baz', 'foo'])
 
-console.log(test === sortedList.value)
+console.log(value === sortedList.value)
 // console.log(true)
 
 list.value = ['b', 'c', 'a']
@@ -107,6 +115,30 @@ list.value = ['b', 'c', 'a']
 console.log(sortedList.value)
 // console.log('computing')
 // console.log(['a', 'b', 'c'])
+```
+##### Mixed:
+`Mixed` works like `Cache` but you can mix some states and usual variables.
+```javascript
+class Component {
+  count = 0
+  @mixed get countText () {
+    return this.count++ ? `Updated: ${this.count - 1}` : null
+  }
+  @watch render () {
+    console.log(this.countText ? this.countText : 'First render')
+  }
+}
+
+const component = new Component()
+
+const rendering = component.render()
+// console.log('First render')
+
+rendering.update()
+// console.log('Updated: 1')
+
+rendering.update()
+// console.log('Updated: 2')
 ```
 ##### Event:
 Use `Event` when you change several states to run their watchers after the event finished.
@@ -133,22 +165,31 @@ setFullName('Michael Mighty')
 ```
 ##### Decorators:
 You can use decorators with `watch-sate`.  
-Available: `watch` `state` `cache` `event`
+*Available:* `watch` `state` `cache` `mixed` `event`
 ```javascript
-import {watch, state, cache, event} from 'watch-state'
+import {watch, state, cache, event, mixed} from 'watch-state'
 
 class Counter {
+  // fields
   @state value = 1
-  @event tick () {
-    this.value++
+
+  // accessors
+  @mixed get sqrt () {
+    return Math.sqrt(this.value)
   }
   @cache get square () {
     return this.value ** 2
+  }
+
+  // methods
+  @event tick () {
+    this.value++
   }
   @watch run () {
     console.log(this.value, this.square)
   }
 }
+
 
 const counter = new Counter()
 

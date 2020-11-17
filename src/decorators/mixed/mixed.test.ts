@@ -1,4 +1,4 @@
-import {Watch, State, mixed, state} from '../..'
+import {Watch, State, mixed, state, watch} from '../..'
 
 describe('mixed', () => {
   test('fullName', () => {
@@ -179,5 +179,32 @@ describe('mixed', () => {
     expect(log[3]).toEqual(['cache1', 1])
     expect(log[4]).toEqual(['cache2', 1, 1])
     expect(log[5]).toEqual(['watch', 1])
+  })
+  test('Component example', () => {
+    const log = []
+    class Component {
+      count = 0
+      @mixed get countText () {
+        return this.count++ ? `Updated: ${this.count - 1}` : null
+      }
+      @watch render (): Watch {
+        log.push(this.countText ? this.countText : 'First render')
+        return
+      }
+    }
+
+    const component = new Component()
+
+    const rendering = component.render()
+    expect(log.length).toBe(1)
+    expect(log[0]).toBe('First render')
+
+    rendering.update()
+    expect(log.length).toBe(2)
+    expect(log[1]).toBe('Updated: 1')
+
+    rendering.update()
+    expect(log.length).toBe(3)
+    expect(log[2]).toBe('Updated: 2')
   })
 })

@@ -1,11 +1,11 @@
 import {Watch, State} from '../..'
-import Mixed from '.'
+import Mixer from '.'
 
-describe('Mixed', () => {
+describe('Mixer', () => {
   test('fullName', () => {
     const name = new State('Mike')
     const surname = new State('Deight')
-    const fullName = new Mixed(() => `${name.value} ${surname.value[0]}.`)
+    const fullName = new Mixer(() => `${name.value} ${surname.value[0]}.`)
     let result, count = 0
     new Watch(() => {
       count++
@@ -26,7 +26,7 @@ describe('Mixed', () => {
     let count = 0
     const name = new State('Mike')
     const surname = new State('Deight')
-    const fullName = new Mixed(() => {
+    const fullName = new Mixer(() => {
       count++
       return `${name.value} ${surname.value[0]}.`
     })

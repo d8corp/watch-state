@@ -116,12 +116,12 @@ console.log(sortedList.value)
 // console.log('computing')
 // console.log(['a', 'b', 'c'])
 ```
-##### Mixed:
-`Mixed` works like `Cache` but you can mix some states and usual variables.
+##### Mixer:
+`Mixer` works like `Cache` but you can mix some states and usual variables.
 ```javascript
 class Component {
   count = 0
-  @mixed get countText () {
+  @mixer get countText () {
     return this.count++ ? `Updated: ${this.count - 1}` : null
   }
   @watch render () {
@@ -165,16 +165,16 @@ setFullName('Michael Mighty')
 ```
 ##### Decorators:
 You can use decorators with `watch-sate`.  
-*Available:* `watch` `state` `cache` `mixed` `event`
+*Available:* `watch` `state` `cache` `mixer` `event`
 ```javascript
-import {watch, state, cache, event, mixed} from 'watch-state'
+import {watch, state, cache, event, mixer} from 'watch-state'
 
 class Counter {
   // fields
   @state value = 1
 
   // accessors
-  @mixed get sqrt () {
+  @mixer get sqrt () {
     return Math.sqrt(this.value)
   }
   @cache get square () {
@@ -200,7 +200,21 @@ counter.tick()
 // console.log(2, 4)
 ```
 ##### Typescript support:
+Generics of `State`
+```typescript
+const key = new State<string | number>()
 
+key.value = false
+// error, you can use only streng or number
+```
+Generics of `Cache` or `Mixer`
+```typescript
+new Cache<string>(() => false)
+// error, target of cache should return string
+
+new Mixer<string>(() => false)
+// error, target of mixer should return string
+```
 ### Other interface
 ##### Watch.destructor()
 You can stop watching by `destructor` method of `Watch`.

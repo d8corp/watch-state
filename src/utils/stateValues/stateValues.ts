@@ -1,11 +1,11 @@
 import State from '../../classes/State'
 import Cache from '../../classes/Cache'
-import Mixed from '../../classes/Mixed'
+import Mixer from '../../classes/Mixer'
 
 const VALUES = Symbol('state values')
 
 interface StateOrComputedValues {
-  [key: string]: State | Cache | Mixed
+  [key: string]: State | Cache | Mixer
 }
 
 function stateValues (target: object): StateOrComputedValues {

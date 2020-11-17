@@ -4,7 +4,7 @@ import Watch from '../Watch'
 import State from '../State'
 import scope from '../../utils/scope'
 
-class Mixed <T = any> {
+class Mixer <T = any> {
   public state: State<T> = new State<T>()
   public watcher: Watch
   private newValue?: T
@@ -41,8 +41,8 @@ class Mixed <T = any> {
 }
 
 
-export default Mixed
+export default Mixer
 
 export {
-  Mixed,
+  Mixer,
 }

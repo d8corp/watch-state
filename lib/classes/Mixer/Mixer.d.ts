@@ -1,6 +1,6 @@
 import Watch from '../Watch';
 import State from '../State';
-declare class Mixed<T = any> {
+declare class Mixer<T = any> {
     protected target: () => T;
     state: State<T>;
     watcher: Watch;
@@ -10,5 +10,5 @@ declare class Mixed<T = any> {
     checkWatcher(): void;
     get value(): T;
 }
-export default Mixed;
-export { Mixed, };
+export default Mixer;
+export { Mixer, };

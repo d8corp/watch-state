@@ -1,6 +1,6 @@
-import {Watch, State, mixed, state, watch} from '../..'
+import {Watch, State, mixer, state, watch} from '../..'
 
-describe('mixed', () => {
+describe('mixer', () => {
   test('fullName', () => {
     let renderCount = 0
     let getCount = 0
@@ -8,7 +8,7 @@ describe('mixed', () => {
     class User {
       @state name = 'Mike'
       @state surname = 'Deight'
-      @mixed get fullName () {
+      @mixer get fullName () {
         getCount++
         return `${this.name} ${this.surname[0]}.`
       }
@@ -47,7 +47,7 @@ describe('mixed', () => {
       @state private = false
       @state name = 'Mike'
       @state surname = 'Deight'
-      @mixed get fullName () {
+      @mixer get fullName () {
         return `${this.name} ${this.surname[0]}.`
       }
     }
@@ -76,7 +76,7 @@ describe('mixed', () => {
     let count = 0
     class Test {
       @state value = []
-      @mixed get sorted () {
+      @mixer get sorted () {
         count++
         return this.value.sort()
       }
@@ -117,7 +117,7 @@ describe('mixed', () => {
     let count = 0
     const state = new State(0)
     class Test {
-      @mixed get test () {
+      @mixer get test () {
         count++
         return state.value
       }
@@ -153,11 +153,11 @@ describe('mixed', () => {
 
     class Test {
       @state state1 = 0
-      @mixed get cache1 () {
+      @mixer get cache1 () {
         log.push(['cache1', this.state1])
         return this.state1
       }
-      @mixed get cache2 () {
+      @mixer get cache2 () {
         log.push(['cache2', this.state1, this.cache1])
         return this.cache1
       }
@@ -184,7 +184,7 @@ describe('mixed', () => {
     const log = []
     class Component {
       count = 0
-      @mixed get countText () {
+      @mixer get countText () {
         return this.count++ ? `Updated: ${this.count - 1}` : null
       }
       @watch render (): Watch {

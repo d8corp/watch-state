@@ -1,6 +1,6 @@
 # watch-state
 [![NPM](https://img.shields.io/npm/v/watch-state.svg)](https://github.com/d8corp/watch-state/blob/master/CHANGELOG.md)
-[![minzipped size](https://img.shields.io/bundlephobia/minzip/watch-state)](https://github.com/d8corp/watch-state/blob/master/watchState.min.js)
+[![minzipped size](https://img.shields.io/bundlephobia/minzip/watch-state)](https://bundlephobia.com/result?p=watch-state)
 [![downloads](https://img.shields.io/npm/dm/watch-state.svg)](https://www.npmjs.com/package/watch-state)
 [![license](https://img.shields.io/npm/l/watch-state)](https://github.com/d8corp/watch-state/blob/master/LICENSE)  
 The simplest watcher of your state.
@@ -71,7 +71,8 @@ state.value++
 // nothing happens
 ```
 ##### Cache:
-You may cache computed values. If the result has a primitive type the watcher will not be triggered when new result is the same.
+You may cache computed values.
+The watcher will not be triggered while new result is the same.
 ```javascript
 const name = new State('Mike')
 const surname = new State('Deight')
@@ -119,25 +120,25 @@ console.log(sortedList.value)
 ##### Mixer:
 `Mixer` works like `Cache` but you can mix some states and usual variables.
 ```javascript
-class Component {
-  count = 0
-  @mixer get countText () {
-    return this.count++ ? `Updated: ${this.count - 1}` : null
-  }
-  @watch render () {
-    console.log(this.countText ? this.countText : 'First render')
-  }
-}
+let count = 0
 
-const component = new Component()
+const text = new Mixer(() => {
+  return count++ ? (
+    `Updated: ${count - 1}`
+  ) : null
+})
 
-const rendering = component.render()
+const watcher = new Watch(() => {
+  console.log(
+    text.value ? text.value : 'First render'
+  )
+})
 // console.log('First render')
 
-rendering.update()
+watcher.update()
 // console.log('Updated: 1')
 
-rendering.update()
+watcher.update()
 // console.log('Updated: 2')
 ```
 ##### Event:
@@ -199,15 +200,15 @@ counter.run()
 counter.tick()
 // console.log(2, 4)
 ```
-##### Typescript support:
-Generics of `State`
+##### Typescript:
+Generic of `State`
 ```typescript
 const key = new State<string | number>()
 
 key.value = false
 // error, you can use only streng or number
 ```
-Generics of `Cache` or `Mixer`
+Generic of `Cache` or `Mixer`
 ```typescript
 new Cache<string>(() => false)
 // error, target of cache should return string
@@ -215,7 +216,7 @@ new Cache<string>(() => false)
 new Mixer<string>(() => false)
 // error, target of mixer should return string
 ```
-### Other interface
+### Other
 ##### Watch.destructor()
 You can stop watching by `destructor` method of `Watch`.
 ```javascript

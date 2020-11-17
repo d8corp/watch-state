@@ -1,27 +1,37 @@
+import scope from '../../utils/scope'
 import unwatch from '../../utils/unwatch'
 import Watch from '../Watch'
 import State from '../State'
 
 class Cache <T = any> {
-  _value: State<T> = new State()
-  _watcher: Watch
-  constructor (public target: () => T) {}
+  public state: State<T> = new State<T>()
+  public watcher: Watch
+  constructor (protected target: () => T) {}
   destructor () {
-    this._watcher?.destructor()
+    this.watcher?.destructor()
   }
-  get value (): T {
-    if (!this._watcher) {
+  checkWatcher () {
+    if (!this.watcher) {
       unwatch(() => {
-        this._watcher = new Watch(update => {
-          if (!update || this._value.watchers.size) {
-            this._value.value = this.target()
-          } else {
-            this._watcher = undefined
+        const watcher = this.watcher = new Watch(update => {
+          if (watcher === this.watcher) {
+            if (!update || this.state.watchers.size || this.state.caches.size) {
+              const oldActiveCache = scope.activeCache
+              scope.activeCache = this
+              this.state.value = this.target()
+              scope.activeCache = oldActiveCache
+            } else {
+              this.watcher = undefined
+            }
           }
         })
       })
     }
-    return this._value.value
+  }
+
+  get value (): T {
+    this.checkWatcher()
+    return this.state.value
   }
 }
 

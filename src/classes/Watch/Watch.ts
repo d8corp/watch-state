@@ -9,10 +9,12 @@ class Watch {
   private destructors: WatchTarget[]
   private cleaners: WatchTarget[]
   private rendered: boolean = false
-  constructor (public target: WatchTarget) {
+  public updating: boolean = false
+  constructor (private readonly target: WatchTarget) {
     this.update()
   }
   update (): this {
+    this.updating = true
     this.clear(this.cleaners, this.rendered)
     onClear(() => this.destructor())
     const prevWatcher = scope.activeWatcher
@@ -20,6 +22,7 @@ class Watch {
     this.target(this.rendered)
     scope.activeWatcher = prevWatcher
     this.rendered = true
+    this.updating = false
     return this
   }
   destructor (): this {
@@ -58,8 +61,6 @@ class Watch {
     return this
   }
 }
-
-
 
 export default Watch
 

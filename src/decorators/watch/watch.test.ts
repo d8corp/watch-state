@@ -1,4 +1,4 @@
-import {watch, state} from '../..'
+import {watch, state, cache, event} from '../..'
 
 describe('watch', () => {
   test('simple', () => {
@@ -24,5 +24,31 @@ describe('watch', () => {
     test.value = 1
     expect(logger.length).toBe(2)
     expect(logger[1]).toBe(1)
+  })
+  test('combine', () => {
+    const log = []
+    class Counter {
+      @state value = 1
+      @event tick () {
+        this.value++
+      }
+      @cache get square () {
+        return this.value ** 2
+      }
+      @watch run () {
+        log.push([this.value, this.square])
+      }
+    }
+
+    const counter = new Counter()
+    expect(log.length).toBe(0)
+
+    counter.run()
+    expect(log.length).toBe(1)
+    expect(log[0]).toEqual([1, 1])
+
+    counter.tick()
+    expect(log.length).toBe(2)
+    expect(log[1]).toEqual([2, 4])
   })
 })

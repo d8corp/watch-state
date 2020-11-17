@@ -1,27 +1,163 @@
 import perfocode, {describe, test} from 'perfocode'
-import watch, {State, Watch, state} from './src'
-import Computed, {computed as c} from './src/Computed'
-import {autorun, observable, computed, reaction} from 'mobx'
+import {State, Watch, state, Cache, cache, createEvent} from './src'
+import {autorun, observable, computed, reaction, action} from 'mobx'
 
 perfocode('speed.test', () => {
   test('empty test', () => {})
-  describe('create', () => {
+  describe('empty create', () => {
     describe('state', () => {
       test('watch-state', () => new State())
-      test('mobx: observable.box', () => observable.box())
+      test('mobx', () => observable.box())
     })
     describe('watch', () => {
-      test('watch-state: Watch', () => new Watch(() => {}))
-      test('watch-state: watch', () => watch(() => {}))
-      test('mobx: autorun', () => autorun(() => {}))
+      test('watch-state', () => new Watch(() => {}).destructor())
+      test('mobx: autorun', () => autorun(() => {})())
+      test('mobx: reaction', () => reaction(() => {}, () => {})())
     })
     describe('computed', () => {
-      test('watch-state', () => new Computed(() => {}))
+      test('watch-state', () => new Cache(() => {}).destructor())
       test('mobx', () => computed(() => {}))
     })
-    describe('computed decorator', () => {
+  })
+  describe('watch state', () => {
+    const wsColor = new State('red')
+    const mobxColor1 = observable.box('red')
+    const mobxColor2 = observable.box('red')
+
+    test('watch-state', () => new Watch(() => wsColor.value).destructor())
+    test('mobx: autorun', () => autorun(() => mobxColor1.get())())
+    test('mobx: reaction', () => reaction(() => mobxColor2.get(), () => {})())
+  })
+  describe('update', () => {
+    const state = new State(0)
+    const stateMobx1 = observable.box(0)
+    const stateMobx2 = observable.box(0)
+
+    const watcher = new Watch(() => state.value)
+    const dispatcher1 = autorun(() => stateMobx1.get())
+    const dispatcher2 = reaction(() => stateMobx2.get(), () => {})
+
+    test('watch-state', () => state.value++)
+    watcher.destructor()
+    test('mobx: autorun', () => stateMobx1.set(stateMobx1.get() + 1))
+    dispatcher1()
+    test('mobx: reaction', () => stateMobx2.set(stateMobx2.get() + 1))
+    dispatcher2()
+  })
+  describe('decorators', () => {
+    describe('state decorator', () => {
+      describe('one empty', () => {
+        class Color {
+          @state value
+        }
+        class Mobx1Color {
+          @observable value
+        }
+        class Mobx2Color {
+          @observable.ref value
+        }
+
+        test('watch-state', () => new Color())
+        test('mobx: observable', () => new Mobx1Color())
+        test('mobx: observable.ref', () => new Mobx2Color())
+      })
+      describe('one set in constructor', () => {
+        class Color {
+          @state value
+          constructor (value = 'red') {
+            this.value = value
+          }
+        }
+        class Mobx1Color {
+          @observable value
+          constructor (value = 'red') {
+            this.value = value
+          }
+        }
+        class Mobx2Color {
+          @observable.ref value
+          constructor (value = 'red') {
+            this.value = value
+          }
+        }
+
+        test('watch-state', () => new Color())
+        test('mobx: observable', () => new Mobx1Color())
+        test('mobx: observable.ref', () => new Mobx2Color())
+      })
+      describe('one with default', () => {
+        class Color {
+          @state value = 'black'
+        }
+        class Mobx1Color {
+          @observable value = 'black'
+        }
+        class Mobx2Color {
+          @observable.ref value = 'black'
+        }
+
+        test('watch-state', () => new Color())
+        test('mobx: observable', () => new Mobx1Color())
+        test('mobx: observable.ref', () => new Mobx2Color())
+      })
+      describe('one with default and set in constructor', () => {
+        class Color {
+          @state value = 'black'
+          constructor (value = 'red') {
+            this.value = value
+          }
+        }
+        class Mobx1Color {
+          @observable value = 'black'
+          constructor (value = 'red') {
+            this.value = value
+          }
+        }
+        class Mobx2Color {
+          @observable.ref value = 'black'
+          constructor (value = 'red') {
+            this.value = value
+          }
+        }
+
+        test('watch-state', () => new Color())
+        test('mobx: observable', () => new Mobx1Color())
+        test('mobx: observable.ref', () => new Mobx2Color())
+      })
+      describe('two', () => {
+        class Color {
+          @state key
+          @state value
+          constructor (key = 'test', value = 'red') {
+            this.key = key
+            this.value = value
+          }
+        }
+        class Mobx1Color {
+          @observable key
+          @observable value
+          constructor (key = 'test', value = 'red') {
+            this.key = key
+            this.value = value
+          }
+        }
+        class Mobx2Color {
+          @observable.ref key
+          @observable.ref value
+          constructor (key = 'test', value = 'red') {
+            this.key = key
+            this.value = value
+          }
+        }
+
+        test('watch-state', () => new Color())
+        test('mobx: observable', () => new Mobx1Color())
+        test('mobx: observable.ref', () => new Mobx2Color())
+      })
+    })
+    describe('cache decorator', () => {
       class User {
-        @c get fullName () {
+        @cache get fullName () {
           return ''
         }
       }
@@ -33,11 +169,11 @@ perfocode('speed.test', () => {
       test('watch-state', () => new User())
       test('mobx', () => new UserMobx())
     })
-    describe('computed and state decorators', () => {
+    describe('cache and state decorators', () => {
       class User {
         @state name = 'Mike'
         @state surname = 'Mighty'
-        @c get fullName () {
+        @cache get fullName () {
           return `${this.name} ${this.surname[0]}`
         }
       }
@@ -53,110 +189,54 @@ perfocode('speed.test', () => {
       test('mobx', () => new UserMobx())
     })
   })
-  describe('update', () => {
-    const state = new State(0)
-    const stateMobx1 = observable.box(0)
-    const stateMobx2 = observable.box(0)
-
-    watch(() => state.value)
-    autorun(() => stateMobx1.get())
-    reaction(() => stateMobx2.get(), () => {})
-
-    test('watch-state', () => state.value++)
-    test('mobx: autorun', () => stateMobx1.set(stateMobx1.get() + 1))
-    test('mobx: reaction', () => stateMobx2.set(stateMobx2.get() + 1))
-  })
-  describe('watch state', () => {
-    const wsColor = new State('red')
-    const mobxColor = observable.box('red')
-
-    test('watch-state', () => watch(() => wsColor.value))
-    test('mobx', () => autorun(() => mobxColor.get()))
-  })
-  describe('state decorator', () => {
-    describe('one', () => {
-      class Color {
-        @state value
-        constructor (value = 'red') {
-          this.value = value
+  describe('event', () => {
+    describe('without event x10', () => {
+      const state1 = new State(0)
+      const state2 = observable.box(0)
+      const watcher1 = new Watch(() => state1.value)
+      const watcher2 = autorun(() => state2.get())
+      test('watch-state', () => {
+        for (let i = 0; i < 10; i++) {
+          state1.value++
         }
-      }
-      class Mobx1Color {
-        @observable value
-        constructor (value = 'red') {
-          this.value = value
+      })
+      watcher1.destructor()
+      test('mobx', () => {
+        for (let i = 0; i < 10; i++) {
+          state2.set(state2.get() + 1)
         }
-      }
-      class Mobx2Color {
-        @observable.ref value
-        constructor (value = 'red') {
-          this.value = value
-        }
-      }
-
-      test('watch-state', () => new Color())
-      test('mobx: observable', () => new Mobx1Color())
-      test('mobx: observable.ref', () => new Mobx2Color())
+      })
+      watcher2()
     })
-    describe('one with default', () => {
-      class Color {
-        @state value = 'black'
-        constructor (value = 'red') {
-          this.value = value
+    describe('with event x10', () => {
+      const state1 = new State(0)
+      const state2 = observable.box(0)
+      const watcher1 = new Watch(() => state1.value)
+      const watcher2 = autorun(() => state2.get())
+      const event1 = createEvent(() => {
+        for (let i = 0; i < 10; i++) {
+          state1.value++
         }
-      }
-      class Mobx1Color {
-        @observable value = 'black'
-        constructor (value = 'red') {
-          this.value = value
+      })
+      const event2 = action(() => {
+        for (let i = 0; i < 10; i++) {
+          state2.set(state2.get() + 1)
         }
-      }
-      class Mobx2Color {
-        @observable.ref value = 'black'
-        constructor (value = 'red') {
-          this.value = value
-        }
-      }
-
-      test('watch-state', () => new Color())
-      test('mobx: observable', () => new Mobx1Color())
-      test('mobx: observable.ref', () => new Mobx2Color())
-    })
-    describe('two', () => {
-      class Color {
-        @state key
-        @state value
-        constructor (key = 'test', value = 'red') {
-          this.key = key
-          this.value = value
-        }
-      }
-      class Mobx1Color {
-        @observable key
-        @observable value
-        constructor (key = 'test', value = 'red') {
-          this.key = key
-          this.value = value
-        }
-      }
-      class Mobx2Color {
-        @observable.ref key
-        @observable.ref value
-        constructor (key = 'test', value = 'red') {
-          this.key = key
-          this.value = value
-        }
-      }
-
-      test('watch-state', () => new Color())
-      test('mobx: observable', () => new Mobx1Color())
-      test('mobx: observable.ref', () => new Mobx2Color())
+      })
+      test('watch-state', () => {
+        event1()
+      })
+      watcher1.destructor()
+      test('mobx', () => {
+        event2()
+      })
+      watcher2()
     })
   })
   describe('complex', () => {
     test('watch-state', () => {
       const state = new State(1000)
-      const watcher = watch(() => state.value)
+      const watcher = new Watch(() => state.value)
       while (state.value--) {}
       watcher.destructor()
     })
@@ -169,4 +249,4 @@ perfocode('speed.test', () => {
       disposer()
     })
   })
-})
+}, 300)

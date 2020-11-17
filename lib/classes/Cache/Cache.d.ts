@@ -1,11 +1,12 @@
 import Watch from '../Watch';
 import State from '../State';
 declare class Cache<T = any> {
-    target: () => T;
-    _value: State<T>;
-    _watcher: Watch;
+    protected target: () => T;
+    state: State<T>;
+    watcher: Watch;
     constructor(target: () => T);
     destructor(): void;
+    checkWatcher(): void;
     get value(): T;
 }
 export default Cache;

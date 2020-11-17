@@ -148,4 +148,36 @@ describe('cache', () => {
     expect(test2.test).toBe(2)
     expect(count).toBe(4)
   })
+  test('deep cache', () => {
+    const log = []
+
+    class Test {
+      @state state1 = 0
+      @cache get cache1 () {
+        log.push(['cache1', this.state1])
+        return this.state1
+      }
+      @cache get cache2 () {
+        log.push(['cache2', this.state1, this.cache1])
+        return this.cache1
+      }
+    }
+
+    const test = new Test()
+    expect(log.length).toBe(0)
+
+    new Watch(() => {
+      log.push(['watch', test.cache2])
+    })
+    expect(log.length).toBe(3)
+    expect(log[0]).toEqual(['cache1', 0])
+    expect(log[1]).toEqual(['cache2', 0, 0])
+    expect(log[2]).toEqual(['watch', 0])
+
+    test.state1++
+    expect(log.length).toBe(6)
+    expect(log[3]).toEqual(['cache1', 1])
+    expect(log[4]).toEqual(['cache2', 1, 1])
+    expect(log[5]).toEqual(['watch', 1])
+  })
 })

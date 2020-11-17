@@ -1,11 +1,15 @@
+import Cache from '../Cache';
 import Watch from '../Watch';
 export declare class State<T = any> {
-    private _watchers;
-    private target;
+    watchers: Set<Watch>;
+    caches: Set<Cache>;
+    target: T;
     constructor(value?: T);
+    getValue(): T;
+    setValue(value: T): void;
     get value(): T;
     set value(value: T);
     update(): void;
-    get watchers(): Set<Watch>;
+    updateCache(): void;
 }
 export default State;

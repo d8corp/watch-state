@@ -17,18 +17,6 @@ yarn add watch-state
 ##### Simple example:
 You can create an instance of `State` and **watch** its **value**.
 ```javascript
-import {watch, State} from 'watch-state'
-
-const count = new State(0)
-
-watch(() => console.log(count.value))
-// console.log(0)
-
-count.value++
-// console.log(1)
-```
-`watch` is a function which returns instance of `Watch`, the next example equals the previous.
-```javascript
 import {Watch, State} from 'watch-state'
 
 const count = new State(0)
@@ -44,14 +32,13 @@ You can check if the watching ran first by `update` argument.
 ```javascript
 const count = new State(0)
 
-watch(update => console.log(update, count.value))
+new Watch(update => {
+  console.log(update, count.value)
+})
 // console.log(false, 0)
 
 count.value++
 // console.log(true, 1)
-
-count.value++
-// console.log(true, 2)
 ```
 ##### Deep watch:
 You can use `watch` inside watcher. Each watcher reacts on that states which used only inside it.
@@ -60,7 +47,7 @@ const watching = new State(true)
 const state = new State(0)
 let test = 0
 
-watch(() => {
+new Watch(() => {
   test++
   if (watching.value) {
     watch(() => console.log(state.value))
@@ -77,24 +64,101 @@ watching.value = false
 state.value++
 // nothing happens
 ```
-##### Computed:
-##### Decorators:
-You can use decorators with `watch-sate`
+##### Cache:
+You may cache computed values. If the result has a primitive type the watcher will not be triggered when new result is the same.
 ```javascript
-import {watch, state} from 'watch-state'
+const name = new State('Mike')
+const surname = new State('Deight')
+
+const fullName = new Cache(() => (
+  `${name.value} ${surname.value[0]}`
+))
+
+new Watch(() => console.log(fullName.value))
+// console.log('Mike D')
+
+surname.value = 'D8'
+// nothing happens
+
+surname.value = 'Mighty'
+// console.log('Mike M')
+```
+The computing will be triggered only when a state inside the cache will be changed.
+So you can modify data only when it's needed.
+```javascript
+const list = new State(['foo', 'baz', 'bar'])
+
+const sortedList = new Cache(() => {
+  console.log('computing')
+  return list.value.sort()
+})
+// nothing happens
+
+console.log(sortedList.value)
+// console.log('computing')
+// console.log(['bar', 'baz', 'foo'])
+
+console.log(test === sortedList.value)
+// console.log(true)
+
+list.value = ['b', 'c', 'a']
+// nothing happens
+
+console.log(sortedList.value)
+// console.log('computing')
+// console.log(['a', 'b', 'c'])
+```
+##### Event:
+Use `Event` when you change several states to run their watchers after the event finished.
+```javascript
+const name = new State('Mike')
+const surname = new State('Deight')
+
+const setFullName = createEvent(fullName => {
+
+  const [newName, newSurname] = fullName.split(' ')
+
+  name.value = newName
+  surname.value = newSurname
+
+})
+
+new Watch(() => {
+  console.log(name.value, surname.value)
+})
+// console.log('Mike', 'Deight')
+
+setFullName('Michael Mighty')
+// console.log('Michael', 'Mighty')
+```
+##### Decorators:
+You can use decorators with `watch-sate`.  
+Available: `watch` `state` `cache` `event`
+```javascript
+import {watch, state, cache, event} from 'watch-state'
 
 class Counter {
-  @state value = 0
+  @state value = 1
+  @event tick () {
+    this.value++
+  }
+  @cache get square () {
+    return this.value ** 2
+  }
+  @watch run () {
+    console.log(this.value, this.square)
+  }
 }
 
 const counter = new Counter()
 
-watch(() => console.log(counter.value))
-// console.log(0)
+counter.run()
+// console.log(1, 1)
 
-counter.value++
-// console.log(1)
+counter.tick()
+// console.log(2, 4)
 ```
+##### Typescript support:
 
 ### Other interface
 ##### Watch.destructor()

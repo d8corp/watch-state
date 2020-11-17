@@ -1,36 +1,57 @@
 import scope from '../../utils/scope'
-import onClear from '../../utils/onClear'
+import createEvent from '../../utils/createEvent'
+import Cache from '../Cache'
 import Watch from '../Watch'
 
 export class State <T = any> {
-  private _watchers: Set<Watch>
-  private target: T
-  constructor(value?: T) {
+  public watchers: Set<Watch> = new Set()
+  public caches: Set<Cache> = new Set()
+  public target: T
+  constructor (value?: T) {
     this.target = value
   }
-  get value (): T {
-    const {activeWatcher} = scope
-    const {watchers} = this
-    if (activeWatcher && !watchers.has(activeWatcher)) {
-      watchers.add(activeWatcher)
-      onClear(update => {
-        if (!update || watchers === this.watchers) {
-          watchers.delete(activeWatcher)
+  getValue (): T {
+    const {activeWatcher, activeCache} = scope
+    const {watchers, caches} = this
+
+    if (activeWatcher) {
+      if (activeCache) {
+        if (!caches.has(activeCache)) {
+          caches.add(activeCache)
+          activeWatcher.onClear(update => {
+            if (!update || caches === this.caches) {
+              caches.delete(activeCache)
+            }
+          })
         }
-      })
+      } else if (!watchers.has(activeWatcher)) {
+        watchers.add(activeWatcher)
+        activeWatcher.onClear(update => {
+          if (!update || watchers === this.watchers) {
+            watchers.delete(activeWatcher)
+          }
+        })
+      }
     }
     return this.target
   }
-  set value (value: T) {
+  setValue (value: T) {
     if (value !== this.target) {
       this.target = value
       this.update()
     }
   }
+  public get value (): T {
+    return this.getValue()
+  }
+  public set value (value: T) {
+    this.setValue(value)
+  }
   update () {
+    this.updateCache()
     const {watchers} = this
     if (watchers.size) {
-      this._watchers = undefined
+      this.watchers = new Set()
       if (scope.activeWatchers) {
         watchers.forEach(watcher => scope.activeWatchers.add(watcher))
       } else {
@@ -38,8 +59,22 @@ export class State <T = any> {
       }
     }
   }
-  get watchers (): Set<Watch> {
-    return this._watchers || (this._watchers = new Set())
+  updateCache () {
+    const {caches} = this
+    if (caches.size) {
+      this.caches = new Set()
+      const watchers = []
+      caches.forEach(cache => {
+        const {watcher} = cache
+        if (watcher) {
+          if (cache.state.watchers.size) {
+            watchers.push(cache)
+          }
+          cache.watcher = undefined
+        }
+      })
+      createEvent(() => watchers.forEach(cache => cache.checkWatcher()))()
+    }
   }
 }
 

@@ -2,10 +2,11 @@ interface WatchTarget {
     (update?: boolean): any;
 }
 declare class Watch {
-    target: WatchTarget;
+    private readonly target;
     private destructors;
     private cleaners;
     private rendered;
+    updating: boolean;
     constructor(target: WatchTarget);
     update(): this;
     destructor(): this;

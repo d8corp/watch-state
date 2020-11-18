@@ -57,7 +57,10 @@ export default [{
       tsconfigOverride: {
         compilerOptions: {
           module: 'esnext'
-        }
+        },
+        exclude: [
+          'src/**/*.test.ts'
+        ]
       }
     })
   ]
@@ -76,7 +79,10 @@ export default [{
         compilerOptions: {
           target: 'es6',
           module: 'esnext'
-        }
+        },
+        exclude: [
+          'src/**/*.test.ts'
+        ]
       }
     })
   ]
@@ -96,7 +102,10 @@ export default [{
       tsconfigOverride: {
         compilerOptions: {
           module: 'esnext'
-        }
+        },
+        exclude: [
+          'src/**/*.test.ts'
+        ]
       }
     })
   ]

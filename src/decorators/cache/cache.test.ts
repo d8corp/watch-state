@@ -180,4 +180,41 @@ describe('cache', () => {
     expect(log[4]).toEqual(['cache2', 1, 1])
     expect(log[5]).toEqual(['watch', 1])
   })
+  test('double deep cache', () => {
+    const log = []
+
+    class Router {
+      @state _url = '/'
+      @cache get url () {
+        log.push(['url', this._url])
+        return this._url
+      }
+      @cache get path () {
+        const path = this.url.replace(/[?#].*/, '')
+        log.push(['path', path])
+        return path
+      }
+    }
+
+    const router = new Router()
+    expect(log.length).toBe(0)
+
+    new Watch(() => log.push(['watch', router.path]))
+
+    expect(log.length).toBe(3)
+    expect(log[0]).toEqual(['url', '/'])
+    expect(log[1]).toEqual(['path', '/'])
+    expect(log[2]).toEqual(['watch', '/'])
+
+    router._url = '/test'
+    expect(log.length).toBe(6)
+    expect(log[3]).toEqual(['url', '/test'])
+    expect(log[4]).toEqual(['path', '/test'])
+    expect(log[5]).toEqual(['watch', '/test'])
+
+    router._url = '/test?key=1'
+    expect(log.length).toBe(8)
+    expect(log[6]).toEqual(['url', '/test?key=1'])
+    expect(log[7]).toEqual(['path', '/test'])
+  })
 })

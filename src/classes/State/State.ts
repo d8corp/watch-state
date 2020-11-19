@@ -63,19 +63,27 @@ export class State <T = any> {
     const {caches} = this
     if (caches.size) {
       this.caches = new Set()
-      const watchers = []
-      caches.forEach(cache => {
-        const {watcher} = cache
-        if (watcher) {
-          if (cache.state.watchers.size) {
-            watchers.push(cache)
-          }
-          cache.watcher = undefined
-        }
-      })
+      const watchers = checkCaches(caches)
       createEvent(() => watchers.forEach(cache => cache.checkWatcher()))()
     }
   }
 }
 
 export default State
+
+
+function checkCaches (caches: Set<Cache>, watchers: Cache[] = []): Cache[] {
+  caches.forEach(cache => {
+    const {watcher, state} = cache
+    if (watcher) {
+      if (state.watchers.size) {
+        watchers.push(cache)
+      }
+      if (state.caches.size) {
+        checkCaches(state.caches, watchers)
+      }
+      cache.watcher = undefined
+    }
+  })
+  return watchers
+}

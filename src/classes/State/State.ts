@@ -82,7 +82,7 @@ function checkCaches (caches: Set<Cache>, watchers: Cache[] = []): Cache[] {
       if (state.caches.size) {
         checkCaches(state.caches, watchers)
       }
-      cache.watcher = undefined
+      cache.destructor()
     }
   })
   return watchers

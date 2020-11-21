@@ -8,20 +8,23 @@ class Cache <T = any> {
   public watcher: Watch
   constructor (protected target: () => T) {}
   destructor () {
-    this.watcher?.destructor()
+    const {watcher} = this
+    this.watcher = undefined
+    watcher?.destructor()
   }
   checkWatcher () {
     if (!this.watcher) {
       unwatch(() => {
-        const watcher = this.watcher = new Watch(update => {
-          if (watcher === this.watcher) {
+        let watcher
+        watcher = this.watcher = new Watch(update => {
+          if (!watcher || this.watcher === watcher) {
             if (!update || this.state.watchers.size || this.state.caches.size) {
               const oldActiveCache = scope.activeCache
               scope.activeCache = this
               this.state.value = this.target()
               scope.activeCache = oldActiveCache
             } else {
-              this.watcher = undefined
+              this.destructor()
             }
           }
         })

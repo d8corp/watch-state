@@ -141,6 +141,7 @@ watcher.update()
 watcher.update()
 // console.log('Updated: 2')
 ```
+> you cannot use `mixer` inside `cache`, it'll be fixed in the future
 ##### Event:
 Use `Event` when you change several states to run their watchers after the event finished.
 ```javascript

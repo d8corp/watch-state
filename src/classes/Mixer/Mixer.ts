@@ -7,23 +7,27 @@ import scope from '../../utils/scope'
 class Mixer <T = any> {
   public state: State<T> = new State<T>()
   public watcher: Watch
-  private newValue?: T
   constructor (protected target: () => T) {}
   destructor () {
     this.watcher?.destructor()
     this.watcher = undefined
   }
   checkWatcher () {
+    onClear(() => {
+      if (this.watcher && !this.watcher.updating) {
+        this.destructor()
+      }
+    })
     if (!this.watcher) {
-      onClear(() => this.destructor())
       unwatch(() => {
-        const watcher = this.watcher = new Watch(() => {
-          if (watcher === this.watcher) {
-            this.newValue = 'newValue' in this ? this.newValue : this.target()
-            if (this.state.target !== this.newValue) {
-              this.state.value = this.newValue
+        let watcher
+        watcher = this.watcher = new Watch(update => {
+          if (!watcher || watcher === this.watcher) {
+            if (!update || this.state.watchers.size || this.state.caches.size) {
+              this.state.value = this.target()
+            } else {
+              this.destructor()
             }
-            delete this.newValue
           }
         })
       })

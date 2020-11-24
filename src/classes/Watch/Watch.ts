@@ -30,13 +30,13 @@ class Watch {
     return this
   }
   private clear (callbacks: WatchTarget[], update: boolean): this {
+    this.cleaners = undefined
+    this.destructors = undefined
     if (callbacks) {
       for (let i = 0; i < callbacks.length; i++) {
         callbacks[i](update)
       }
     }
-    this.cleaners = undefined
-    this.destructors = undefined
     return this
   }
   onDestructor (callback: WatchTarget): this {

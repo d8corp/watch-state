@@ -38,7 +38,10 @@ export class State <T = any> {
   setValue (value: T) {
     if (value !== this.target) {
       this.target = value
+      const {activeWatcher} = scope
+      scope.activeWatcher = undefined
       this.update()
+      scope.activeWatcher = activeWatcher
     }
   }
   public get value (): T {

@@ -1,4 +1,4 @@
-import {Watch, State, mixer, state, watch} from '../..'
+import {Watch, State, mixer, state, watch, cache} from '../..'
 
 describe('mixer', () => {
   test('fullName', () => {
@@ -109,6 +109,7 @@ describe('mixer', () => {
     expect(count).toBe(6)
 
     test.value = ['2', '3', '1']
+    expect(log.length).toBe(2)
     expect(count).toBe(6)
     expect(test.sorted).toEqual(['1', '2', '3'])
     expect(count).toBe(7)
@@ -206,5 +207,141 @@ describe('mixer', () => {
     rendering.update()
     expect(log.length).toBe(3)
     expect(log[2]).toBe('Updated: 2')
+  })
+  describe('inside mixer', () => {
+    test('update', () => {
+      let mixer1Count = 0
+      let mixer2Count = 0
+      class Test {
+        text = 'State: '
+        @state state = 0
+        @mixer get mixer1 () {
+          mixer1Count++
+          return this.text + this.state
+        }
+        @mixer get mixer2 () {
+          mixer2Count++
+          return this.mixer1
+        }
+      }
+
+      const log = []
+      const test = new Test()
+
+      const watcher = new Watch(() => log.push(test.mixer2))
+
+      expect(mixer1Count).toBe(1)
+      expect(mixer2Count).toBe(1)
+      expect(log.length).toBe(1)
+      expect(log[0]).toBe('State: 0')
+
+      test.text = 'State is '
+      watcher.update()
+
+      expect(mixer1Count).toBe(2)
+      expect(mixer2Count).toBe(2)
+      expect(log.length).toBe(2)
+      expect(log[1]).toBe('State is 0')
+    })
+    test('state simply', () => {
+      let mixerCount = 0
+      class Test {
+        @state state = 0
+        @mixer get mixer1 () {
+          mixerCount++
+          return this.state
+        }
+      }
+
+      const log = []
+      const test = new Test()
+
+      new Watch(() => log.push(test.mixer1))
+      expect(mixerCount).toBe(1)
+
+      expect(log.length).toBe(1)
+      expect(log[0]).toBe(0)
+
+      test.state = 1
+
+      expect(mixerCount).toBe(2)
+
+      expect(log.length).toBe(2)
+      expect(log[1]).toBe(1)
+
+      test.state = 2
+
+      expect(mixerCount).toBe(3)
+      expect(log.length).toBe(3)
+      expect(log[2]).toBe(2)
+    })
+    test('state', () => {
+      let mixer1Count = 0
+      let mixer2Count = 0
+      class Test {
+        text = 'State: '
+        @state state = 0
+        @mixer get mixer1 () {
+          mixer1Count++
+          return this.text + this.state
+        }
+        @mixer get mixer2 () {
+          mixer2Count++
+          return this.mixer1
+        }
+      }
+
+      const log = []
+      const test = new Test()
+
+      const watcher = new Watch(() => log.push(test.mixer2))
+
+      expect(mixer1Count).toBe(1)
+      expect(mixer2Count).toBe(1)
+      expect(log.length).toBe(1)
+      expect(log[0]).toBe('State: 0')
+
+      test.text = 'State is '
+      test.state = 1
+
+      expect(mixer1Count).toBe(2)
+      expect(mixer2Count).toBe(2)
+      expect(log.length).toBe(2)
+      expect(log[1]).toBe('State is 1')
+
+      test.state = 2
+
+      expect(mixer1Count).toBe(3)
+      expect(mixer2Count).toBe(3)
+      expect(log.length).toBe(3)
+      expect(log[2]).toBe('State is 2')
+    })
+  })
+  test('inside cache', () => {
+    class Test {
+      text = 'State: '
+      @state state = 0
+      @mixer get mixer () {
+        return this.text + this.state
+      }
+      @cache get cache () {
+        return this.mixer
+      }
+    }
+
+    const log = []
+    const test = new Test()
+
+    const watcher = new Watch(() => log.push(test.cache))
+
+    expect(log.length).toBe(1)
+    expect(log[0]).toBe('State: 0')
+
+    test.text = 'State is '
+    watcher.update()
+
+    expect(log.length).toBe(2)
+    // TODO: add using mixer inside cache
+    // expect(log[1]).toBe('State is 0')
   })
 })

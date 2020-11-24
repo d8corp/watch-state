@@ -4,7 +4,6 @@ declare class Mixer<T = any> {
     protected target: () => T;
     state: State<T>;
     watcher: Watch;
-    private newValue?;
     constructor(target: () => T);
     destructor(): void;
     checkWatcher(): void;

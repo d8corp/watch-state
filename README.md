@@ -223,7 +223,7 @@ You can stop watching by `destructor` method of `Watch`.
 ```javascript
 const count = new State(0)
 
-const watcher = watch(() => console.log(count.value))
+const watcher = new Watch(() => console.log(count.value))
 // console.log(0)
 
 count.value++
@@ -238,7 +238,7 @@ count.value++
 Forced update
 ```javascript
 let count = 0
-const watcher = watch(() => console.log(++count))
+const watcher = new Watch(() => console.log(++count))
 // console.log(1)
 
 watcher.update()
@@ -247,7 +247,7 @@ watcher.update()
 ##### Watch.onDestructor()
 You can react on destruction of `Watch` by `onDestructor` method.
 ```javascript
-const watcher = watch(() => {})
+const watcher = new Watch(() => {})
 
 watcher.onDestructor(() => console.log('destructor'))
 
@@ -256,7 +256,7 @@ watcher.destructor()
 ```
 `onDestructor` returns `this` so you can use **fluent interface**.
 ```javascript
-const watcher = watch(() => {})
+const watcher = new Watch(() => {})
   .onDestructor(() => console.log('destructor'))
 
 watcher.destructor()
@@ -264,9 +264,9 @@ watcher.destructor()
 ```
 Or you can use `onDestructor` function inside a watcher.
 ```javascript
-import {watch, onDestructor} from 'watch-state'
+import {Watch, onDestructor} from 'watch-state'
 
-const watcher = watch(() => {
+const watcher = new Watch(() => {
   // do something
   onDestructor(() => console.log('destructor'))
 })

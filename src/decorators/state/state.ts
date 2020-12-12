@@ -1,4 +1,4 @@
-import stateValues from '../../utils/stateValues'
+import getDecors from '../../utils/getDecors'
 import State from '../../classes/State'
 
 interface StateValues {
@@ -11,14 +11,14 @@ function state (target: Object, propertyKey: string, desc?): any {
   ) : undefined
   return {
     get (): any {
-      const values = stateValues(this)
+      const values = getDecors(this)
       if (!(propertyKey in values)) {
         values[propertyKey] = new State(value)
       }
       return values[propertyKey].value
     },
     set (v: any): void {
-      const values: StateValues = stateValues(this) as StateValues
+      const values: StateValues = getDecors(this) as StateValues
       if (!(propertyKey in values)) {
         values[propertyKey] = new State(v)
       } else {

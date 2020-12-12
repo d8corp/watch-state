@@ -1,4 +1,4 @@
-import stateValues from '../../utils/stateValues'
+import getDecors from '../../utils/getDecors'
 import unwatch from '../../utils/unwatch'
 import Cache from '../../classes/Cache'
 
@@ -10,7 +10,7 @@ function cache (target: Object, propertyKey: string, descriptor: TypedPropertyDe
   const {value, get: originalGet = value} = descriptor
   return {
     get () {
-      const values: ComputedValues = stateValues(this) as ComputedValues
+      const values: ComputedValues = getDecors(this) as ComputedValues
       if (!(propertyKey in values)) {
         unwatch(() => values[propertyKey] = new Cache(originalGet.bind(this)))
       }

@@ -40,6 +40,10 @@ const def = {
     'utils/stateValues/stateValues': 'src/utils/stateValues/stateValues.ts',
     'utils/unwatch/index': 'src/utils/unwatch/index.ts',
     'utils/unwatch/unwatch': 'src/utils/unwatch/unwatch.ts',
+    'utils/getDecor/index': 'src/utils/getDecor/index.ts',
+    'utils/getDecor/getDecor': 'src/utils/getDecor/getDecor.ts',
+    'utils/getDecors/index': 'src/utils/getDecors/index.ts',
+    'utils/getDecors/getDecors': 'src/utils/getDecors/getDecors.ts',
   }
 }
 

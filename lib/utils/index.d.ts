@@ -5,3 +5,5 @@ export * from './reset';
 export * from './stateValues';
 export * from './onClear';
 export * from './onDestructor';
+export * from './getDecor';
+export * from './getDecors';

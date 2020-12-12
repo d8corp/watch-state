@@ -143,7 +143,7 @@ watcher.update()
 ```
 > you cannot use `mixer` inside `cache`, it'll be fixed in the future
 ##### Event:
-Use `Event` when you change several states to run their watchers after the event finished.
+Use `createEvent` when you change several states to run their watchers after the event finished.
 ```javascript
 const name = new State('Mike')
 const surname = new State('Deight')
@@ -223,7 +223,7 @@ You can stop watching by `destructor` method of `Watch`.
 ```javascript
 const count = new State(0)
 
-const watcher = watch(() => console.log(count.value))
+const watcher = new Watch(() => console.log(count.value))
 // console.log(0)
 
 count.value++
@@ -238,7 +238,7 @@ count.value++
 Forced update
 ```javascript
 let count = 0
-const watcher = watch(() => console.log(++count))
+const watcher = new Watch(() => console.log(++count))
 // console.log(1)
 
 watcher.update()
@@ -247,7 +247,7 @@ watcher.update()
 ##### Watch.onDestructor()
 You can react on destruction of `Watch` by `onDestructor` method.
 ```javascript
-const watcher = watch(() => {})
+const watcher = new Watch(() => {})
 
 watcher.onDestructor(() => console.log('destructor'))
 
@@ -256,7 +256,7 @@ watcher.destructor()
 ```
 `onDestructor` returns `this` so you can use **fluent interface**.
 ```javascript
-const watcher = watch(() => {})
+const watcher = new Watch(() => {})
   .onDestructor(() => console.log('destructor'))
 
 watcher.destructor()
@@ -264,9 +264,9 @@ watcher.destructor()
 ```
 Or you can use `onDestructor` function inside a watcher.
 ```javascript
-import {watch, onDestructor} from 'watch-state'
+import {Watch, onDestructor} from 'watch-state'
 
-const watcher = watch(() => {
+const watcher = new Watch(() => {
   // do something
   onDestructor(() => console.log('destructor'))
 })
@@ -274,6 +274,70 @@ const watcher = watch(() => {
 watcher.destructor()
 // console.log('destructor')
 ```
+### Unstable functionality
+##### getDecor
+You can get `State`, `Cache` or `Mixer` of decorated field by `getDecor`
+```javascript
+class Test {
+  @state field1 = 1
+}
+
+const test = new Test()
+const stateOfField1 = getDecor(test, 'field1')
+
+console.log(stateOfField1 instanceof State)
+// console.log(true)
+
+console.log(stateOfField1.value)
+// console.log(1)
+```
+Generic of `getDecor`.
+Provide `'state'`, `'cache'` or `'mixer'` as the first generic type and `typeof` the first argument as the second one.
+```typescript
+class Test {
+  @state field1 = 1
+}
+
+const test = new Test()
+const stateOfField1 = getDecor<'state', typeof test>(test, 'field1')
+
+stateOfField1.value = '2'
+// error, stateOfField1 State has number type
+```
+##### getDecors
+You can get a list with `State`, `Cache` or `Mixer` of target fields by `getDecors`
+```javascript
+class Test {
+  @state field1 = 1
+}
+
+const test = new Test()
+const decors = getDecors(test)
+
+console.log(Object.keys(decors))
+// console.log(['field1'])
+
+console.log(decors.field1.value)
+// console.log(1)
+```
+Generic of `getDecors`.
+
+Provide list of props equals `'state'`, `'cache'` or `'mixer'` as the first generic type
+and `typeof` the first argument as the second one.
+```typescript
+class Test {
+  @state field1 = 1
+}
+
+const test = new Test()
+const decors = getDecors<{field1: 'state'}, typeof test>(test)
+
+decors.field1.value = '2'
+// error, field1 has type of number
+```
+> If the first argument type of getDecor or getDecors equals `this` then provide `this` as the second generic prop
+> 
+> getDecors<{field1: 'state'}, this>(this)
 ## Issues
 If you find a bug or have a suggestion, please file an issue on [GitHub](https://github.com/d8corp/watch-state/issues)  
 [![issues](https://img.shields.io/github/issues-raw/d8corp/watch-state)](https://github.com/d8corp/watch-state/issues)  

@@ -1,18 +1,17 @@
 import State from '../../classes/State'
 import Cache from '../../classes/Cache'
 import Mixer from '../../classes/Mixer'
+import getDecors from '../getDecors'
 
-const VALUES = Symbol('state values')
+type Key = symbol | string | number
 
-interface StateOrComputedValues {
-  [key: string]: State | Cache | Mixer
+type StateOrComputedValues <K extends Key = Key> = {
+  [key in K]: State | Cache | Mixer
 }
 
+/** @deprecated - use `getDecors` instead of this */
 function stateValues (target: object): StateOrComputedValues {
-  if (!(VALUES in target)) {
-    target[VALUES] = {}
-  }
-  return target[VALUES]
+  return getDecors(target)
 }
 
 export default stateValues

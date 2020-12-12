@@ -1,4 +1,4 @@
-import stateValues from '../../utils/stateValues'
+import getDecors from '../../utils/getDecors'
 import unwatch from '../../utils/unwatch'
 import Mixer from '../../classes/Mixer'
 
@@ -10,7 +10,7 @@ function mixer (target: Object, propertyKey: string, descriptor: TypedPropertyDe
   const {value, get: originalGet = value} = descriptor
   return {
     get () {
-      const values: MixerValues = stateValues(this) as MixerValues
+      const values: MixerValues = getDecors(this) as MixerValues
       if (!(propertyKey in values)) {
         unwatch(() => values[propertyKey] = new Mixer(originalGet.bind(this)))
       }

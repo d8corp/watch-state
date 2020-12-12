@@ -143,7 +143,7 @@ watcher.update()
 ```
 > you cannot use `mixer` inside `cache`, it'll be fixed in the future
 ##### Event:
-Use `Event` when you change several states to run their watchers after the event finished.
+Use `createEvent` when you change several states to run their watchers after the event finished.
 ```javascript
 const name = new State('Mike')
 const surname = new State('Deight')
@@ -274,6 +274,70 @@ const watcher = new Watch(() => {
 watcher.destructor()
 // console.log('destructor')
 ```
+### Unstable functionality
+##### getDecor
+You can get `State`, `Cache` or `Mixer` of decorated field by `getDecor`
+```javascript
+class Test {
+  @state field1 = 1
+}
+
+const test = new Test()
+const stateOfField1 = getDecor(test, 'field1')
+
+console.log(stateOfField1 instanceof State)
+// console.log(true)
+
+console.log(stateOfField1.value)
+// console.log(1)
+```
+Generic of `getDecor`.
+Provide `'state'`, `'cache'` or `'mixer'` as the first generic type and `typeof` the first argument as the second one.
+```typescript
+class Test {
+  @state field1 = 1
+}
+
+const test = new Test()
+const stateOfField1 = getDecor<'state', typeof test>(test, 'field1')
+
+stateOfField1.value = '2'
+// error, stateOfField1 State has number type
+```
+##### getDecors
+You can get a list with `State`, `Cache` or `Mixer` of target fields by `getDecors`
+```javascript
+class Test {
+  @state field1 = 1
+}
+
+const test = new Test()
+const decors = getDecors(test)
+
+console.log(Object.keys(decors))
+// console.log(['field1'])
+
+console.log(decors.field1.value)
+// console.log(1)
+```
+Generic of `getDecors`.
+
+Provide list of props equals `'state'`, `'cache'` or `'mixer'` as the first generic type
+and `typeof` the first argument as the second one.
+```typescript
+class Test {
+  @state field1 = 1
+}
+
+const test = new Test()
+const decors = getDecors<{field1: 'state'}, typeof test>(test)
+
+decors.field1.value = '2'
+// error, field1 has type of number
+```
+> If the first argument type of getDecor or getDecors equals `this` then provide `this` as the second generic prop
+> 
+> getDecors<{field1: 'state'}, this>(this)
 ## Issues
 If you find a bug or have a suggestion, please file an issue on [GitHub](https://github.com/d8corp/watch-state/issues)  
 [![issues](https://img.shields.io/github/issues-raw/d8corp/watch-state)](https://github.com/d8corp/watch-state/issues)  

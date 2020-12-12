@@ -1,4 +1,8 @@
 # Changelog
+## v1.1
+### v1.1.0 [![12.12.2020](https://img.shields.io/date/1607790401)](https://github.com/d8corp/watch-state/tree/v1.1.0)
+- added `getDecor` and `getDecors`
+- deprecated `stateValues`
 ## v1.0
 ### v1.0.4 [![24.11.2020](https://img.shields.io/date/1606251184)](https://github.com/d8corp/watch-state/tree/v1.0.4)
 - fixed loop bug

@@ -10,6 +10,6 @@ export declare class State<T = any> {
     get value(): T;
     set value(value: T);
     update(): void;
-    updateCache(): void;
+    updateCache(): Cache<any>[];
 }
 export default State;

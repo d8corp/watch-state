@@ -1,5 +1,22 @@
 # Changelog
 ## v1.1
+### v1.1.1 [![02.01.2021](https://img.shields.io/date/1609546969)](https://github.com/d8corp/watch-state/tree/v1.1.1)
+- fixed a bug when a state in a cache in a watcher in a watcher which uses the state.
+```typescript
+const log = []
+const state = new State(1)
+const cache = new Cache(() => state.value + 1)
+
+new Watch(() => {
+  if (state.value) {
+    new Watch(() => log.push(cache.value))
+  }
+})
+expect(log).toEqual([2])
+
+state.value = 0
+expect(log).toEqual([2]) // was [2, 1]
+```
 ### v1.1.0 [![12.12.2020](https://img.shields.io/date/1607790401)](https://github.com/d8corp/watch-state/tree/v1.1.0)
 - added `getDecor` and `getDecors`
 - deprecated `stateValues`

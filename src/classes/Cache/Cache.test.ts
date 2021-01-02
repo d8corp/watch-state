@@ -56,4 +56,19 @@ describe('Cache', () => {
     expect(resultCount).toBe(2)
     expect(result).toBe('Mike M.')
   })
+  test('destructor', () => {
+    const log = []
+    const test = new State(1)
+    const test1 = new Cache(() => test.value + 1)
+
+    new Watch(() => {
+      if (test.value) {
+        new Watch(() => log.push(test1.value))
+      }
+    })
+    expect(log).toEqual([2])
+
+    test.value = 0
+    expect(log).toEqual([2])
+  })
 })

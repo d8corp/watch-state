@@ -97,7 +97,7 @@ const list = new State(['foo', 'bar', 'baz'])
 
 const sortedList = new Cache(() => {
   console.log('computing')
-  return list.value.sort()
+  return [...list.value].sort()
 })
 // nothing happens
 

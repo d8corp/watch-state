@@ -51,7 +51,7 @@ export class State <T = any> {
     this.setValue(value)
   }
   update () {
-    this.updateCache()
+    const caches = this.updateCache()
     const {watchers} = this
     if (watchers.size) {
       this.watchers = new Set()
@@ -61,13 +61,15 @@ export class State <T = any> {
         watchers.forEach(watcher => watcher.update())
       }
     }
+    if (caches) {
+      createEvent(() => caches.forEach(cache => cache.checkWatcher()))()
+    }
   }
   updateCache () {
     const {caches} = this
     if (caches.size) {
       this.caches = new Set()
-      const watchers = checkCaches(caches)
-      createEvent(() => watchers.forEach(cache => cache.checkWatcher()))()
+      return checkCaches(caches)
     }
   }
 }

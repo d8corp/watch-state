@@ -10,12 +10,14 @@ export class State <T = any> {
   constructor (value?: T) {
     this.target = value
   }
-  getValue (): T {
+  public get value (): T {
     const {activeWatcher, activeCache} = scope
-    const {watchers, caches} = this
 
     if (activeWatcher) {
+      const {watchers} = this
+
       if (activeCache) {
+        const {caches} = this
         if (!caches.has(activeCache)) {
           caches.add(activeCache)
           activeWatcher.onClear(update => {
@@ -35,7 +37,7 @@ export class State <T = any> {
     }
     return this.target
   }
-  setValue (value: T) {
+  public set value (value: T) {
     if (value !== this.target) {
       this.target = value
       const {activeWatcher} = scope
@@ -43,12 +45,6 @@ export class State <T = any> {
       this.update()
       scope.activeWatcher = activeWatcher
     }
-  }
-  public get value (): T {
-    return this.getValue()
-  }
-  public set value (value: T) {
-    this.setValue(value)
   }
   update () {
     const caches = this.updateCache()

@@ -2,6 +2,8 @@ import perfocode, {describe, test} from 'perfocode'
 import {State, Watch, state, Cache, cache, createEvent} from './src'
 import {autorun, observable, computed, reaction, action} from 'mobx'
 
+import {createStore} from 'redux'
+
 perfocode('speed.test', () => {
   test('empty test', () => {})
   describe('empty create', () => {
@@ -247,6 +249,21 @@ perfocode('speed.test', () => {
         state.set(state.get() - 1)
       }
       disposer()
+    })
+    test('redux', () => {
+      function reducer (state, action) {
+        if (action.type === 'DECREMENT') {
+          return {...state, count: state.count - 1}
+        }
+        return state
+      }
+      const store = createStore(reducer, {count: 1000})
+      const destructor = store.subscribe(() => store.getState().count)
+
+      while (store.getState().count) {
+        store.dispatch({type: 'DECREMENT'})
+      }
+      destructor()
     })
   })
 }, 300)

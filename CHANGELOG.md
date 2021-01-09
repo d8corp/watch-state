@@ -1,6 +1,6 @@
 # Changelog
 ## v1.1
-### v1.2.0 [![02.01.2021](https://img.shields.io/date/1609546969)](https://github.com/d8corp/watch-state/tree/v1.2.0)
+### v1.2.0 [![xx.xx.xxxx](https://img.shields.io/date/xxxxxxxxxx)](https://github.com/d8corp/watch-state/tree/v1.2.0)
 - reduced code
 - deprecated mixer
 ### v1.1.1 [![02.01.2021](https://img.shields.io/date/1609546969)](https://github.com/d8corp/watch-state/tree/v1.1.1)

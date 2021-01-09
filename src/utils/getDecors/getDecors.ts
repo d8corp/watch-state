@@ -32,4 +32,5 @@ export default getDecors
 export {
   getDecors,
   Decors,
+  Target
 }

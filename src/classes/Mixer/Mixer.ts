@@ -4,6 +4,7 @@ import Watch from '../Watch'
 import State from '../State'
 import scope from '../../utils/scope'
 
+/** @deprecated - use @watch-state/mixer */
 class Mixer <T = any> {
   public state: State<T> = new State<T>()
   public watcher: Watch
@@ -43,7 +44,6 @@ class Mixer <T = any> {
     }
   }
 }
-
 
 export default Mixer
 

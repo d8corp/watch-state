@@ -6,6 +6,7 @@ interface MixerValues {
   [key: string]: Mixer
 }
 
+/** @deprecated - use @watch-state/mixer */
 function mixer (target: Object, propertyKey: string, descriptor: TypedPropertyDescriptor<any>): TypedPropertyDescriptor<any> {
   const {value, get: originalGet = value} = descriptor
   return {

@@ -6,16 +6,16 @@
 The simplest watcher of your state.
 ### Installation
 npm
-```bash
+```shell
 npm i watch-state
 ```
 yarn
-```bash
+```shell
 yarn add watch-state
 ```
 ### Using
 ##### Simple example:
-You can create an instance of `State` and **watch** its **value**.
+You can create an instance of `State` and **watch** it's **value**.
 ```javascript
 import {Watch, State} from 'watch-state'
 
@@ -46,8 +46,83 @@ count.value++
 count.value++
 // console.log(true, 2)
 ```
+##### Force update of State
+You can run watchers of a state with `update` method.
+```typescript
+const count = new State(0)
+
+new Watch(() => {
+  console.log(count.value)
+})
+// console.log(0)
+
+count.update()
+// console.log(0)
+```
+##### Force update of Watch
+You can run a watcher even when it's states are not updated.
+```typescript
+const count = new State(0)
+
+const watcher = new Watch(() => {
+  console.log(count.value)
+})
+// console.log(0)
+
+watcher.update()
+// console.log(0)
+```
+##### Destructor
+You can stop watching by `destructor` method of `Watch`.
+```javascript
+const count = new State(0)
+
+const watcher = new Watch(() => console.log(count.value))
+// console.log(0)
+
+count.value++
+// console.log(1)
+
+watcher.destructor()
+
+count.value++
+// nothing happens
+```
+##### Watch.onDestructor()
+You can react on destruction of `Watch` by `onDestructor` method.
+```javascript
+const watcher = new Watch(() => {})
+
+watcher.onDestructor(() => console.log('destructor'))
+
+watcher.destructor()
+// console.log('destructor')
+```
+`onDestructor` returns `this` so you can use **fluent interface**.
+```javascript
+const watcher = new Watch(() => {})
+  .onDestructor(() => console.log('destructor'))
+
+watcher.destructor()
+// console.log('destructor')
+```
+Or you can use `onDestructor` function inside a watcher.
+```javascript
+import {Watch, onDestructor} from 'watch-state'
+
+const watcher = new Watch(update => {
+  // do something
+  if (!update) {
+    onDestructor(() => console.log('destructor'))
+  }
+})
+
+watcher.destructor()
+// console.log('destructor')
+```
 ##### Deep watch:
-You can use `Watch` inside watcher. Each watcher reacts on that states which used only inside it.
+You can use `Watch` inside a watcher.
+Each watcher reacts on that states which used only inside it.
 ```javascript
 const watching = new State(true)
 const state = new State(0)
@@ -117,31 +192,6 @@ console.log(sortedList.value)
 // console.log('computing')
 // console.log(['a', 'b', 'c'])
 ```
-##### Mixer:
-`Mixer` works like `Cache` but you can mix some states and usual variables.
-```javascript
-let count = 0
-
-const text = new Mixer(() => {
-  return count++ ? (
-    `Updated: ${count - 1}`
-  ) : null
-})
-
-const watcher = new Watch(() => {
-  console.log(
-    text.value ? text.value : 'First render'
-  )
-})
-// console.log('First render')
-
-watcher.update()
-// console.log('Updated: 1')
-
-watcher.update()
-// console.log('Updated: 2')
-```
-> you cannot use `mixer` inside `cache`, it'll be fixed in the future
 ##### Event:
 Use `createEvent` when you change several states to run their watchers after the event finished.
 ```javascript
@@ -167,18 +217,15 @@ setFullName('Michael Mighty')
 ```
 ##### Decorators:
 You can use decorators with `watch-sate`.  
-*Available:* `watch` `state` `cache` `mixer` `event`
+*Available:* `watch` `state` `cache` `event`
 ```javascript
-import {watch, state, cache, event, mixer} from 'watch-state'
+import {watch, state, cache, event} from 'watch-state'
 
 class Counter {
   // fields
   @state value = 1
 
   // accessors
-  @mixer get sqrt () {
-    return Math.sqrt(this.value)
-  }
   @cache get square () {
     return this.value ** 2
   }
@@ -201,6 +248,26 @@ counter.run()
 counter.tick()
 // console.log(2, 4)
 ```
+##### getState and getCache
+You can get `State` or `Cache` of a decorated field with `getState` and `getCache`.
+```typescript
+import {state, getState, Watch} from 'watch-state'
+
+class TodoList {
+  @state todos = []
+}
+
+const todoList = new TodoList()
+
+new Watch(() => console.log(todoList.todos))
+// console.log([])
+
+todoList.todos.push('Do something')
+// nothing happens
+
+getState(todoList, 'todos').update()
+// console.log(['Do something'])
+```
 ##### Typescript:
 Generic of `State`
 ```typescript
@@ -209,135 +276,17 @@ const key = new State<string | number>()
 key.value = false
 // error, you can use only streng or number
 ```
-Generic of `Cache` or `Mixer`
+Generic of `Cache`
 ```typescript
 new Cache<string>(() => false)
 // error, target of cache should return string
-
-new Mixer<string>(() => false)
-// error, target of mixer should return string
 ```
-### Other
-##### Watch.destructor()
-You can stop watching by `destructor` method of `Watch`.
-```javascript
-const count = new State(0)
-
-const watcher = new Watch(() => console.log(count.value))
-// console.log(0)
-
-count.value++
-// console.log(1)
-
-watcher.destructor()
-
-count.value++
-// nothing happens
+## Performance
+You can check the performance test with MobX.
+Clone the repo, install packages and run this command
+```shell
+npm run speed
 ```
-##### Watch.update()
-Forced update
-```javascript
-let count = 0
-const watcher = new Watch(() => console.log(++count))
-// console.log(1)
-
-watcher.update()
-// console.log(2)
-```
-##### Watch.onDestructor()
-You can react on destruction of `Watch` by `onDestructor` method.
-```javascript
-const watcher = new Watch(() => {})
-
-watcher.onDestructor(() => console.log('destructor'))
-
-watcher.destructor()
-// console.log('destructor')
-```
-`onDestructor` returns `this` so you can use **fluent interface**.
-```javascript
-const watcher = new Watch(() => {})
-  .onDestructor(() => console.log('destructor'))
-
-watcher.destructor()
-// console.log('destructor')
-```
-Or you can use `onDestructor` function inside a watcher.
-```javascript
-import {Watch, onDestructor} from 'watch-state'
-
-const watcher = new Watch(() => {
-  // do something
-  onDestructor(() => console.log('destructor'))
-})
-
-watcher.destructor()
-// console.log('destructor')
-```
-### Unstable functionality
-##### getDecor
-You can get `State`, `Cache` or `Mixer` of decorated field by `getDecor`
-```javascript
-class Test {
-  @state field1 = 1
-}
-
-const test = new Test()
-const stateOfField1 = getDecor(test, 'field1')
-
-console.log(stateOfField1 instanceof State)
-// console.log(true)
-
-console.log(stateOfField1.value)
-// console.log(1)
-```
-Generic of `getDecor`.
-Provide `'state'`, `'cache'` or `'mixer'` as the first generic type and `typeof` the first argument as the second one.
-```typescript
-class Test {
-  @state field1 = 1
-}
-
-const test = new Test()
-const stateOfField1 = getDecor<'state', typeof test>(test, 'field1')
-
-stateOfField1.value = '2'
-// error, stateOfField1 State has number type
-```
-##### getDecors
-You can get a list with `State`, `Cache` or `Mixer` of target fields by `getDecors`
-```javascript
-class Test {
-  @state field1 = 1
-}
-
-const test = new Test()
-const decors = getDecors(test)
-
-console.log(Object.keys(decors))
-// console.log(['field1'])
-
-console.log(decors.field1.value)
-// console.log(1)
-```
-Generic of `getDecors`.
-
-Provide list of props equals `'state'`, `'cache'` or `'mixer'` as the first generic type
-and `typeof` the first argument as the second one.
-```typescript
-class Test {
-  @state field1 = 1
-}
-
-const test = new Test()
-const decors = getDecors<{field1: 'state'}, typeof test>(test)
-
-decors.field1.value = '2'
-// error, field1 has type of number
-```
-> If the first argument type of getDecor or getDecors equals `this` then provide `this` as the second generic prop
-> 
-> getDecors<{field1: 'state'}, this>(this)
 ## Issues
 If you find a bug or have a suggestion, please file an issue on [GitHub](https://github.com/d8corp/watch-state/issues)  
 [![issues](https://img.shields.io/github/issues-raw/d8corp/watch-state)](https://github.com/d8corp/watch-state/issues)  

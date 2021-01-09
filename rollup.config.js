@@ -44,6 +44,10 @@ const def = {
     'utils/getDecor/getDecor': 'src/utils/getDecor/getDecor.ts',
     'utils/getDecors/index': 'src/utils/getDecors/index.ts',
     'utils/getDecors/getDecors': 'src/utils/getDecors/getDecors.ts',
+    'utils/getState/index': 'src/utils/getState/index.ts',
+    'utils/getState/getState': 'src/utils/getState/getState.ts',
+    'utils/getCache/index': 'src/utils/getCache/index.ts',
+    'utils/getCache/getCache': 'src/utils/getCache/getCache.ts',
   }
 }
 

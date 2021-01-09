@@ -5,8 +5,6 @@ export declare class State<T = any> {
     caches: Set<Cache>;
     target: T;
     constructor(value?: T);
-    getValue(): T;
-    setValue(value: T): void;
     get value(): T;
     set value(value: T);
     update(): void;

@@ -14,4 +14,4 @@ declare type Decors<K extends Mapping, T extends Target<keyof K>> = {
 };
 declare function getDecors<K extends Mapping, T extends Target>(target: T): Decors<K, T>;
 export default getDecors;
-export { getDecors, Decors, };
+export { getDecors, Decors, Target };

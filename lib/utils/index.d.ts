@@ -7,3 +7,5 @@ export * from './onClear';
 export * from './onDestructor';
 export * from './getDecor';
 export * from './getDecors';
+export * from './getState';
+export * from './getCache';

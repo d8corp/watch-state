@@ -11,6 +11,7 @@ type StateOrComputedValues <K extends Key = Key> = {
 
 /** @deprecated - use `getDecors` instead of this */
 function stateValues (target: object): StateOrComputedValues {
+  console.error('The stateValues function will be removed, please use getDecors')
   return getDecors(target)
 }
 

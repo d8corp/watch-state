@@ -11,6 +11,7 @@ interface Types <V = any> {
 
 /** @deprecated - use getState or getCache or getMixer from @watch-state/mixer */
 function getDecor <TT extends keyof Types, T extends object> (target: T, property: keyof T): Types<T[typeof property]>[TT] {
+  console.error('The getDecor function will be removed, please use getState or getCache')
   return getDecors(target)[property] as Types<T[typeof property]>[TT]
 }
 

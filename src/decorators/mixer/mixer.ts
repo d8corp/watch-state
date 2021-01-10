@@ -8,6 +8,7 @@ interface MixerValues {
 
 /** @deprecated - use @watch-state/mixer */
 function mixer (target: Object, propertyKey: string, descriptor: TypedPropertyDescriptor<any>): TypedPropertyDescriptor<any> {
+  console.error('The mixer decorator will be removed, please use @watch-state/mixer')
   const {value, get: originalGet = value} = descriptor
   return {
     get () {

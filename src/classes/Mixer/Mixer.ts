@@ -8,7 +8,9 @@ import scope from '../../utils/scope'
 class Mixer <T = any> {
   public state: State<T> = new State<T>()
   public watcher: Watch
-  constructor (protected target: () => T) {}
+  constructor (protected target: () => T) {
+    console.error('The Mixer class will be removed, please use @watch-state/mixer')
+  }
   destructor () {
     this.watcher?.destructor()
     this.watcher = undefined

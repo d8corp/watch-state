@@ -8,6 +8,15 @@ const deep = []
 
 const releaseDir = __dirname + '/../lib'
 
+// flags
+const flags = {
+  migration: process.argv.includes('-migration'),
+  patch: process.argv.includes('-patch'),
+  minor: process.argv.includes('-minor'),
+  major: process.argv.includes('-major'),
+  rollup: process.argv.includes('-rollup'),
+}
+
 start()
 
 async function start () {
@@ -22,9 +31,10 @@ async function start () {
   await publish()
   consoleEnd('deploying')
 }
+
 // steps
 async function rollUpUsage () {
-  if (process.argv.includes('-rollup')) {
+  if (flags.rollup) {
     consoleStart('converting js for browsers')
     await getPromise(resolve => exec(`rollup -c`, {}, resolve))
     consoleEnd('converting js for browsers')
@@ -49,17 +59,22 @@ async function copyLicense () {
 async function copyPackage () {
   consoleStart('copying package.json')
   const version = packageJSON.version.split('.')
-  if (process.argv.includes('-patch')) {
+  if (flags.patch) {
     version[2]++
   }
-  if (process.argv.includes('-minor')) {
+  if (flags.minor) {
     version[1]++
     version[2] = 0
   }
-  if (process.argv.includes('-major')) {
+  if (flags.major) {
+    version[0]++
     version[1] = 0
     version[2] = 0
+  }
+  if (flags.migration) {
     version[0]++
+    version[1] = 0
+    version[2] = '0-migration'
   }
   packageJSON.version = version.join('.')
   const updatingPackage = getPromise(resolve => fs.writeFile(__dirname + '/../package.json', JSON.stringify(packageJSON, null, 2) + '\n', 'utf8', resolve))
@@ -76,10 +91,11 @@ async function copyPackage () {
   consoleEnd('copying package.json')
 }
 async function publish () {
-  if (process.argv.includes('-patch') || process.argv.includes('-minor') || process.argv.includes('-major')) {
+  if (flags.patch || flags.minor || flags.major || flags.migration) {
     const date = (Date.now() / 1000) | 0
     consoleStart(`publishing v${packageJSON.version} ${date}`)
-    await getPromise(resolve => exec(`npm publish ${releaseDir}`, {}, resolve))
+    const tag =
+    await getPromise(resolve => exec(`npm publish ${releaseDir} --tag next`, {}, resolve))
     consoleEnd(`publishing v${packageJSON.version} ${date}`)
   }
 }

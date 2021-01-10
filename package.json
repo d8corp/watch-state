@@ -1,6 +1,6 @@
 {
   "name": "watch-state",
-  "version": "1.2.0",
+  "version": "2.0.0-migration",
   "description": "The simplest watcher for your state",
   "main": "index.js",
   "module": "index.es6.js",
@@ -13,7 +13,8 @@
     "speed": "ts-node speed.test.ts",
     "patch": "bin/release -patch -rollup",
     "minor": "bin/release -minor -rollup",
-    "major": "bin/release -major -rollup"
+    "major": "bin/release -major -rollup",
+    "migration": "bin/release -migration -rollup"
   },
   "repository": {
     "type": "git",

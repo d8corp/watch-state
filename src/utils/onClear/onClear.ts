@@ -1,5 +1,5 @@
 import scope from '../scope'
-import {WatchTarget} from '../../classes/Watch'
+import {WatchTarget} from 'src/classes/Watch'
 
 function onClear (callback: WatchTarget): boolean {
   if (scope.activeWatcher) {

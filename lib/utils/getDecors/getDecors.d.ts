@@ -1,10 +1,8 @@
 import State from '../../classes/State';
 import Cache from '../../classes/Cache';
-import Mixer from '../../classes/Mixer';
 interface Types<V = any> {
     state: State<V>;
     cache: Cache<V>;
-    mixer: Mixer<V>;
 }
 declare type Key = string | number | symbol;
 declare type Mapping<K extends Key = Key> = Record<K, keyof Types>;

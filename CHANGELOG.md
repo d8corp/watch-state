@@ -1,4 +1,11 @@
 # Changelog
+## v2.0
+To migrate from the first version please:
+ - update to `2.0.0-migration`
+ - fix all errors in the browser console or fix all deprecated functionality
+ - update to the second version
+### v2.0.0 [![10.01.2021](https://img.shields.io/date/1610235777)](https://github.com/d8corp/watch-state/tree/v2.0.0)
+- removed deprecated code
 ## v1.2
 ### v1.2.0 [![10.01.2021](https://img.shields.io/date/1610235777)](https://github.com/d8corp/watch-state/tree/v1.2.0)
 - reduced code

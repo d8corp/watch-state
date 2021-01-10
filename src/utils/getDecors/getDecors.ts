@@ -1,13 +1,11 @@
 import State from '../../classes/State'
 import Cache from '../../classes/Cache'
-import Mixer from '../../classes/Mixer'
 
 const VALUES = Symbol('state values')
 
 interface Types <V = any> {
   state: State<V>
   cache: Cache<V>
-  mixer: Mixer<V>
 }
 
 type Key = string | number | symbol

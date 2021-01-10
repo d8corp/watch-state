@@ -59,6 +59,7 @@ async function copyLicense () {
 async function copyPackage () {
   consoleStart('copying package.json')
   const version = packageJSON.version.split('.')
+  version[2] = version[2] | 0
   if (flags.patch) {
     version[2]++
   }

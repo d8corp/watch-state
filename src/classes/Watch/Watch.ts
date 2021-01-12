@@ -1,8 +1,8 @@
 import scope from '../../utils/scope'
 import onClear from '../../utils/onClear'
 
-interface WatchTarget {
-  (update?: boolean): any
+interface WatchTarget <R = any> {
+  (update?: boolean): R
 }
 
 class Watch {

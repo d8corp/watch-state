@@ -3,7 +3,7 @@
 [![minzipped size](https://img.shields.io/bundlephobia/minzip/watch-state)](https://bundlephobia.com/result?p=watch-state)
 [![downloads](https://img.shields.io/npm/dm/watch-state.svg)](https://www.npmjs.com/package/watch-state)
 [![license](https://img.shields.io/npm/l/watch-state)](https://github.com/d8corp/watch-state/blob/master/LICENSE)
-[![tests](https://github.com/d8corp/watch-state/workflows/test/badge.svg)](https://github.com/d8corp/watch-state)  
+[![tests](https://github.com/d8corp/watch-state/workflows/test/badge.svg)](https://d8corp.github.io/watch-state/coverage/lcov-report/)  
 The simplest watcher of your state.
 ### Installation
 npm

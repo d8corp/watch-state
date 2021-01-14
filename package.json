@@ -10,6 +10,7 @@
   "scripts": {
     "build": "bin/release -rollup",
     "test": "jest",
+    "test:coverage": "jest --coverage",
     "speed": "ts-node speed.test.ts",
     "patch": "bin/release -patch -rollup",
     "minor": "bin/release -minor -rollup",

@@ -15,6 +15,7 @@ const flags = {
   minor: process.argv.includes('-minor'),
   major: process.argv.includes('-major'),
   rollup: process.argv.includes('-rollup'),
+  next: process.argv.includes('-next'),
 }
 
 start()
@@ -95,8 +96,8 @@ async function publish () {
   if (flags.patch || flags.minor || flags.major || flags.migration) {
     const date = (Date.now() / 1000) | 0
     consoleStart(`publishing v${packageJSON.version} ${date}`)
-    const tag =
-    await getPromise(resolve => exec(`npm publish ${releaseDir} --tag next`, {}, resolve))
+    const tag = flags.next ? ' --tag next' : ''
+    await getPromise(resolve => exec(`npm publish ${releaseDir}${tag}`, {}, resolve))
     consoleEnd(`publishing v${packageJSON.version} ${date}`)
   }
 }

@@ -7,7 +7,7 @@ interface ComputedValues {
 }
 
 function cache (target: Object, propertyKey: string, descriptor: TypedPropertyDescriptor<any>): TypedPropertyDescriptor<any> {
-  const {value, get: originalGet = value} = descriptor
+  const {get: originalGet} = descriptor
   return {
     get () {
       const values: ComputedValues = getDecors(this) as ComputedValues

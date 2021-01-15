@@ -1,6 +1,10 @@
 import {Watch, State, cache, state} from '../..'
+import cache1 from '.'
 
 describe('cache', () => {
+  test('export default', () => {
+    expect(cache1).toBe(cache)
+  })
   test('fullName', () => {
     let renderCount = 0
     let getCount = 0

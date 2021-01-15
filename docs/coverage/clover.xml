@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1610658006211" clover="3.2.0">
-  <project timestamp="1610658006211" name="All files">
-    <metrics statements="272" coveredstatements="269" conditionals="75" coveredconditionals="60" methods="65" coveredmethods="59" elements="412" coveredelements="388" complexity="0" loc="272" ncloc="272" packages="20" files="36" classes="36"/>
+<coverage generated="1610719955737" clover="3.2.0">
+  <project timestamp="1610719955737" name="All files">
+    <metrics statements="272" coveredstatements="271" conditionals="73" coveredconditionals="64" methods="65" coveredmethods="65" elements="410" coveredelements="400" complexity="0" loc="272" ncloc="272" packages="20" files="36" classes="36"/>
     <package name="src">
       <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="index.ts" path="/Users/mihaillysikov/deight/watch-state/src/index.ts">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="1" count="13" type="stmt"/>
-        <line num="2" count="13" type="stmt"/>
-        <line num="3" count="13" type="stmt"/>
+        <line num="1" count="14" type="stmt"/>
+        <line num="2" count="14" type="stmt"/>
+        <line num="3" count="14" type="stmt"/>
       </file>
     </package>
     <package name="src.classes">
       <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="index.ts" path="/Users/mihaillysikov/deight/watch-state/src/classes/index.ts">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="1" count="13" type="stmt"/>
-        <line num="2" count="13" type="stmt"/>
-        <line num="3" count="13" type="stmt"/>
+        <line num="1" count="14" type="stmt"/>
+        <line num="2" count="14" type="stmt"/>
+        <line num="3" count="14" type="stmt"/>
       </file>
     </package>
     <package name="src.classes.Cache">
       <metrics statements="30" coveredstatements="29" conditionals="15" coveredconditionals="9" methods="8" coveredmethods="8"/>
       <file name="Cache.ts" path="/Users/mihaillysikov/deight/watch-state/src/classes/Cache/Cache.ts">
         <metrics statements="28" coveredstatements="27" conditionals="15" coveredconditionals="9" methods="7" coveredmethods="7"/>
-        <line num="1" count="13" type="stmt"/>
-        <line num="2" count="13" type="stmt"/>
-        <line num="3" count="13" type="stmt"/>
-        <line num="4" count="13" type="stmt"/>
-        <line num="6" count="13" type="stmt"/>
+        <line num="1" count="14" type="stmt"/>
+        <line num="2" count="14" type="stmt"/>
+        <line num="3" count="14" type="stmt"/>
+        <line num="4" count="14" type="stmt"/>
+        <line num="6" count="14" type="stmt"/>
         <line num="7" count="14" type="stmt"/>
         <line num="9" count="14" type="stmt"/>
-        <line num="10" count="13" type="stmt"/>
+        <line num="10" count="14" type="stmt"/>
         <line num="11" count="20" type="stmt"/>
         <line num="12" count="20" type="stmt"/>
         <line num="13" count="20" type="cond" truecount="3" falsecount="1"/>
@@ -46,32 +46,32 @@
         <line num="24" count="33" type="stmt"/>
         <line num="25" count="33" type="stmt"/>
         <line num="27" count="0" type="stmt"/>
-        <line num="35" count="13" type="stmt"/>
+        <line num="35" count="14" type="stmt"/>
         <line num="36" count="49" type="stmt"/>
         <line num="37" count="49" type="stmt"/>
-        <line num="39" count="13" type="stmt"/>
-        <line num="42" count="13" type="stmt"/>
-        <line num="45" count="13" type="stmt"/>
+        <line num="39" count="14" type="stmt"/>
+        <line num="42" count="14" type="stmt"/>
+        <line num="45" count="14" type="stmt"/>
       </file>
       <file name="index.ts" path="/Users/mihaillysikov/deight/watch-state/src/classes/Cache/index.ts">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="1" count="24" type="stmt"/>
-        <line num="2" count="13" type="stmt"/>
+        <line num="1" count="25" type="stmt"/>
+        <line num="2" count="14" type="stmt"/>
       </file>
     </package>
     <package name="src.classes.State">
       <metrics statements="58" coveredstatements="58" conditionals="34" coveredconditionals="31" methods="15" coveredmethods="15"/>
       <file name="State.ts" path="/Users/mihaillysikov/deight/watch-state/src/classes/State/State.ts">
         <metrics statements="56" coveredstatements="56" conditionals="34" coveredconditionals="31" methods="14" coveredmethods="14"/>
-        <line num="1" count="13" type="stmt"/>
-        <line num="2" count="13" type="stmt"/>
-        <line num="6" count="13" type="stmt"/>
-        <line num="7" count="60" type="stmt"/>
-        <line num="8" count="60" type="stmt"/>
-        <line num="11" count="60" type="stmt"/>
-        <line num="13" count="2554" type="stmt"/>
-        <line num="14" count="5108" type="stmt"/>
-        <line num="16" count="2554" type="cond" truecount="2" falsecount="0"/>
+        <line num="1" count="14" type="stmt"/>
+        <line num="2" count="14" type="stmt"/>
+        <line num="6" count="14" type="stmt"/>
+        <line num="7" count="63" type="stmt"/>
+        <line num="8" count="63" type="stmt"/>
+        <line num="11" count="63" type="stmt"/>
+        <line num="13" count="2557" type="stmt"/>
+        <line num="14" count="5114" type="stmt"/>
+        <line num="16" count="2557" type="cond" truecount="2" falsecount="0"/>
         <line num="17" count="2446" type="stmt"/>
         <line num="19" count="2446" type="cond" truecount="2" falsecount="0"/>
         <line num="20" count="52" type="stmt"/>
@@ -85,14 +85,14 @@
         <line num="31" count="2387" type="stmt"/>
         <line num="32" count="2357" type="cond" truecount="4" falsecount="0"/>
         <line num="33" count="1727" type="stmt"/>
-        <line num="38" count="2554" type="stmt"/>
+        <line num="38" count="2557" type="stmt"/>
         <line num="41" count="2384" type="cond" truecount="2" falsecount="0"/>
         <line num="42" count="2380" type="stmt"/>
         <line num="43" count="2380" type="stmt"/>
         <line num="44" count="2379" type="stmt"/>
         <line num="45" count="2379" type="stmt"/>
         <line num="46" count="116" type="stmt"/>
-        <line num="49" count="13" type="stmt"/>
+        <line num="49" count="14" type="stmt"/>
         <line num="50" count="2379" type="stmt"/>
         <line num="51" count="2379" type="stmt"/>
         <line num="52" count="2379" type="cond" truecount="2" falsecount="0"/>
@@ -102,13 +102,13 @@
         <line num="57" count="2313" type="stmt"/>
         <line num="60" count="116" type="cond" truecount="2" falsecount="0"/>
         <line num="61" count="16" type="stmt"/>
-        <line num="64" count="13" type="stmt"/>
+        <line num="64" count="14" type="stmt"/>
         <line num="65" count="2379" type="stmt"/>
         <line num="66" count="2379" type="cond" truecount="2" falsecount="0"/>
         <line num="67" count="16" type="stmt"/>
         <line num="68" count="16" type="stmt"/>
-        <line num="71" count="13" type="stmt"/>
-        <line num="73" count="13" type="stmt"/>
+        <line num="71" count="14" type="stmt"/>
+        <line num="73" count="14" type="stmt"/>
         <line num="76" count="34" type="cond" truecount="2" falsecount="0"/>
         <line num="77" count="18" type="stmt"/>
         <line num="78" count="40" type="stmt"/>
@@ -122,175 +122,175 @@
       </file>
       <file name="index.ts" path="/Users/mihaillysikov/deight/watch-state/src/classes/State/index.ts">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="1" count="52" type="stmt"/>
-        <line num="2" count="13" type="stmt"/>
+        <line num="1" count="56" type="stmt"/>
+        <line num="2" count="14" type="stmt"/>
       </file>
     </package>
     <package name="src.classes.Watch">
       <metrics statements="47" coveredstatements="47" conditionals="6" coveredconditionals="6" methods="10" coveredmethods="10"/>
       <file name="Watch.ts" path="/Users/mihaillysikov/deight/watch-state/src/classes/Watch/Watch.ts">
         <metrics statements="45" coveredstatements="45" conditionals="6" coveredconditionals="6" methods="9" coveredmethods="9"/>
-        <line num="1" count="13" type="stmt"/>
-        <line num="2" count="13" type="stmt"/>
-        <line num="8" count="13" type="stmt"/>
-        <line num="11" count="98" type="stmt"/>
-        <line num="12" count="98" type="stmt"/>
-        <line num="13" count="98" type="stmt"/>
-        <line num="14" count="98" type="stmt"/>
-        <line num="16" count="2436" type="stmt"/>
-        <line num="17" count="2436" type="stmt"/>
-        <line num="18" count="2436" type="stmt"/>
-        <line num="19" count="2435" type="stmt"/>
-        <line num="20" count="2435" type="stmt"/>
-        <line num="21" count="2435" type="stmt"/>
-        <line num="22" count="2435" type="stmt"/>
-        <line num="23" count="171" type="stmt"/>
-        <line num="24" count="171" type="stmt"/>
-        <line num="25" count="171" type="stmt"/>
-        <line num="26" count="171" type="stmt"/>
-        <line num="28" count="13" type="stmt"/>
+        <line num="1" count="14" type="stmt"/>
+        <line num="2" count="14" type="stmt"/>
+        <line num="8" count="14" type="stmt"/>
+        <line num="11" count="99" type="stmt"/>
+        <line num="12" count="99" type="stmt"/>
+        <line num="13" count="99" type="stmt"/>
+        <line num="14" count="99" type="stmt"/>
+        <line num="16" count="2437" type="stmt"/>
+        <line num="17" count="2437" type="stmt"/>
+        <line num="18" count="2437" type="stmt"/>
+        <line num="19" count="2436" type="stmt"/>
+        <line num="20" count="2436" type="stmt"/>
+        <line num="21" count="2436" type="stmt"/>
+        <line num="22" count="2436" type="stmt"/>
+        <line num="23" count="172" type="stmt"/>
+        <line num="24" count="172" type="stmt"/>
+        <line num="25" count="172" type="stmt"/>
+        <line num="26" count="172" type="stmt"/>
+        <line num="28" count="14" type="stmt"/>
         <line num="29" count="52" type="stmt"/>
         <line num="30" count="52" type="stmt"/>
-        <line num="32" count="13" type="stmt"/>
-        <line num="33" count="2487" type="stmt"/>
-        <line num="34" count="2487" type="stmt"/>
-        <line num="35" count="2487" type="cond" truecount="2" falsecount="0"/>
+        <line num="32" count="14" type="stmt"/>
+        <line num="33" count="2488" type="stmt"/>
+        <line num="34" count="2488" type="stmt"/>
+        <line num="35" count="2488" type="cond" truecount="2" falsecount="0"/>
         <line num="36" count="2372" type="stmt"/>
         <line num="37" count="2423" type="stmt"/>
-        <line num="40" count="2487" type="stmt"/>
-        <line num="42" count="13" type="stmt"/>
-        <line num="43" count="2479" type="cond" truecount="2" falsecount="0"/>
+        <line num="40" count="2488" type="stmt"/>
+        <line num="42" count="14" type="stmt"/>
+        <line num="43" count="2480" type="cond" truecount="2" falsecount="0"/>
         <line num="44" count="66" type="stmt"/>
-        <line num="46" count="2413" type="stmt"/>
-        <line num="48" count="2479" type="stmt"/>
-        <line num="50" count="13" type="stmt"/>
+        <line num="46" count="2414" type="stmt"/>
+        <line num="48" count="2480" type="stmt"/>
+        <line num="50" count="14" type="stmt"/>
         <line num="51" count="2465" type="cond" truecount="2" falsecount="0"/>
         <line num="52" count="64" type="stmt"/>
         <line num="54" count="2401" type="stmt"/>
         <line num="56" count="2465" type="stmt"/>
-        <line num="58" count="13" type="stmt"/>
+        <line num="58" count="14" type="stmt"/>
         <line num="59" count="2463" type="stmt"/>
         <line num="60" count="2463" type="stmt"/>
         <line num="61" count="2463" type="stmt"/>
-        <line num="63" count="13" type="stmt"/>
-        <line num="65" count="13" type="stmt"/>
-        <line num="68" count="13" type="stmt"/>
+        <line num="63" count="14" type="stmt"/>
+        <line num="65" count="14" type="stmt"/>
+        <line num="68" count="14" type="stmt"/>
       </file>
       <file name="index.ts" path="/Users/mihaillysikov/deight/watch-state/src/classes/Watch/index.ts">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="1" count="48" type="stmt"/>
-        <line num="2" count="13" type="stmt"/>
+        <line num="1" count="49" type="stmt"/>
+        <line num="2" count="14" type="stmt"/>
       </file>
     </package>
     <package name="src.decorators">
       <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="index.ts" path="/Users/mihaillysikov/deight/watch-state/src/decorators/index.ts">
         <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="1" count="13" type="stmt"/>
-        <line num="2" count="13" type="stmt"/>
-        <line num="3" count="13" type="stmt"/>
-        <line num="4" count="13" type="stmt"/>
+        <line num="1" count="14" type="stmt"/>
+        <line num="2" count="14" type="stmt"/>
+        <line num="3" count="14" type="stmt"/>
+        <line num="4" count="14" type="stmt"/>
       </file>
     </package>
     <package name="src.decorators.cache">
-      <metrics statements="14" coveredstatements="14" conditionals="4" coveredconditionals="3" methods="4" coveredmethods="3"/>
+      <metrics statements="14" coveredstatements="14" conditionals="2" coveredconditionals="2" methods="4" coveredmethods="4"/>
       <file name="cache.ts" path="/Users/mihaillysikov/deight/watch-state/src/decorators/cache/cache.ts">
-        <metrics statements="12" coveredstatements="12" conditionals="4" coveredconditionals="3" methods="3" coveredmethods="3"/>
-        <line num="1" count="13" type="stmt"/>
-        <line num="2" count="13" type="stmt"/>
-        <line num="3" count="13" type="stmt"/>
-        <line num="10" count="20" type="cond" truecount="1" falsecount="1"/>
+        <metrics statements="12" coveredstatements="12" conditionals="2" coveredconditionals="2" methods="3" coveredmethods="3"/>
+        <line num="1" count="14" type="stmt"/>
+        <line num="2" count="14" type="stmt"/>
+        <line num="3" count="14" type="stmt"/>
+        <line num="10" count="10" type="stmt"/>
         <line num="11" count="10" type="stmt"/>
         <line num="12" count="41" type="stmt"/>
         <line num="13" count="41" type="stmt"/>
         <line num="14" count="41" type="cond" truecount="2" falsecount="0"/>
         <line num="15" count="11" type="stmt"/>
         <line num="17" count="41" type="stmt"/>
-        <line num="23" count="13" type="stmt"/>
-        <line num="26" count="13" type="stmt"/>
+        <line num="23" count="14" type="stmt"/>
+        <line num="26" count="14" type="stmt"/>
       </file>
       <file name="index.ts" path="/Users/mihaillysikov/deight/watch-state/src/decorators/cache/index.ts">
-        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="1" count="13" type="stmt"/>
-        <line num="2" count="13" type="stmt"/>
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="1" count="15" type="stmt"/>
+        <line num="2" count="14" type="stmt"/>
       </file>
     </package>
     <package name="src.decorators.event">
-      <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="1"/>
+      <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
       <file name="event.ts" path="/Users/mihaillysikov/deight/watch-state/src/decorators/event/event.ts">
         <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="1" count="13" type="stmt"/>
-        <line num="3" count="13" type="stmt"/>
+        <line num="1" count="14" type="stmt"/>
+        <line num="3" count="14" type="stmt"/>
         <line num="4" count="2" type="stmt"/>
-        <line num="11" count="13" type="stmt"/>
+        <line num="11" count="14" type="stmt"/>
       </file>
       <file name="index.ts" path="/Users/mihaillysikov/deight/watch-state/src/decorators/event/index.ts">
-        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="1" count="13" type="stmt"/>
-        <line num="2" count="13" type="stmt"/>
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="1" count="15" type="stmt"/>
+        <line num="2" count="14" type="stmt"/>
       </file>
     </package>
     <package name="src.decorators.state">
-      <metrics statements="16" coveredstatements="15" conditionals="8" coveredconditionals="4" methods="4" coveredmethods="3"/>
+      <metrics statements="16" coveredstatements="16" conditionals="8" coveredconditionals="8" methods="4" coveredmethods="4"/>
       <file name="index.ts" path="/Users/mihaillysikov/deight/watch-state/src/decorators/state/index.ts">
-        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="1" count="13" type="stmt"/>
-        <line num="2" count="13" type="stmt"/>
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="1" count="15" type="stmt"/>
+        <line num="2" count="14" type="stmt"/>
       </file>
       <file name="state.ts" path="/Users/mihaillysikov/deight/watch-state/src/decorators/state/state.ts">
-        <metrics statements="14" coveredstatements="13" conditionals="8" coveredconditionals="4" methods="3" coveredmethods="3"/>
-        <line num="1" count="13" type="stmt"/>
-        <line num="2" count="13" type="stmt"/>
-        <line num="9" count="25" type="stmt"/>
-        <line num="12" count="25" type="stmt"/>
-        <line num="14" count="162" type="stmt"/>
-        <line num="15" count="162" type="cond" truecount="1" falsecount="1"/>
-        <line num="16" count="0" type="stmt"/>
-        <line num="18" count="162" type="stmt"/>
+        <metrics statements="14" coveredstatements="14" conditionals="8" coveredconditionals="8" methods="3" coveredmethods="3"/>
+        <line num="1" count="14" type="stmt"/>
+        <line num="2" count="14" type="stmt"/>
+        <line num="9" count="28" type="stmt"/>
+        <line num="12" count="28" type="stmt"/>
+        <line num="14" count="165" type="stmt"/>
+        <line num="15" count="165" type="cond" truecount="2" falsecount="0"/>
+        <line num="16" count="3" type="stmt"/>
+        <line num="18" count="165" type="stmt"/>
         <line num="21" count="83" type="stmt"/>
         <line num="22" count="83" type="cond" truecount="2" falsecount="0"/>
         <line num="23" count="25" type="stmt"/>
         <line num="25" count="58" type="stmt"/>
-        <line num="32" count="13" type="stmt"/>
-        <line num="35" count="13" type="stmt"/>
+        <line num="32" count="14" type="stmt"/>
+        <line num="35" count="14" type="stmt"/>
       </file>
     </package>
     <package name="src.decorators.watch">
-      <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="2"/>
+      <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
       <file name="index.ts" path="/Users/mihaillysikov/deight/watch-state/src/decorators/watch/index.ts">
-        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="1" count="13" type="stmt"/>
-        <line num="2" count="13" type="stmt"/>
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="1" count="15" type="stmt"/>
+        <line num="2" count="14" type="stmt"/>
       </file>
       <file name="watch.ts" path="/Users/mihaillysikov/deight/watch-state/src/decorators/watch/watch.ts">
         <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
-        <line num="1" count="13" type="stmt"/>
+        <line num="1" count="14" type="stmt"/>
         <line num="4" count="2" type="stmt"/>
         <line num="6" count="2" type="stmt"/>
-        <line num="12" count="13" type="stmt"/>
-        <line num="15" count="13" type="stmt"/>
+        <line num="12" count="14" type="stmt"/>
+        <line num="15" count="14" type="stmt"/>
       </file>
     </package>
     <package name="src.utils">
       <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="index.ts" path="/Users/mihaillysikov/deight/watch-state/src/utils/index.ts">
         <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="1" count="13" type="stmt"/>
-        <line num="2" count="13" type="stmt"/>
-        <line num="3" count="13" type="stmt"/>
-        <line num="4" count="13" type="stmt"/>
-        <line num="5" count="13" type="stmt"/>
-        <line num="6" count="13" type="stmt"/>
-        <line num="7" count="13" type="stmt"/>
-        <line num="8" count="13" type="stmt"/>
-        <line num="9" count="13" type="stmt"/>
+        <line num="1" count="14" type="stmt"/>
+        <line num="2" count="14" type="stmt"/>
+        <line num="3" count="14" type="stmt"/>
+        <line num="4" count="14" type="stmt"/>
+        <line num="5" count="14" type="stmt"/>
+        <line num="6" count="14" type="stmt"/>
+        <line num="7" count="14" type="stmt"/>
+        <line num="8" count="14" type="stmt"/>
+        <line num="9" count="14" type="stmt"/>
       </file>
     </package>
     <package name="src.utils.createEvent">
       <metrics statements="16" coveredstatements="16" conditionals="2" coveredconditionals="2" methods="4" coveredmethods="4"/>
       <file name="createEvent.ts" path="/Users/mihaillysikov/deight/watch-state/src/utils/createEvent/createEvent.ts">
         <metrics statements="14" coveredstatements="14" conditionals="2" coveredconditionals="2" methods="3" coveredmethods="3"/>
-        <line num="1" count="13" type="stmt"/>
+        <line num="1" count="14" type="stmt"/>
         <line num="4" count="19" type="stmt"/>
         <line num="5" count="19" type="cond" truecount="2" falsecount="0"/>
         <line num="6" count="1" type="stmt"/>
@@ -302,144 +302,144 @@
         <line num="13" count="18" type="stmt"/>
         <line num="14" count="18" type="stmt"/>
         <line num="15" count="18" type="stmt"/>
-        <line num="20" count="13" type="stmt"/>
-        <line num="23" count="13" type="stmt"/>
+        <line num="20" count="14" type="stmt"/>
+        <line num="23" count="14" type="stmt"/>
       </file>
       <file name="index.ts" path="/Users/mihaillysikov/deight/watch-state/src/utils/createEvent/index.ts">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="1" count="31" type="stmt"/>
-        <line num="2" count="13" type="stmt"/>
+        <line num="1" count="32" type="stmt"/>
+        <line num="2" count="14" type="stmt"/>
       </file>
     </package>
     <package name="src.utils.getCache">
       <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
       <file name="getCache.ts" path="/Users/mihaillysikov/deight/watch-state/src/utils/getCache/getCache.ts">
         <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="2" count="13" type="stmt"/>
+        <line num="2" count="14" type="stmt"/>
         <line num="5" count="2" type="stmt"/>
-        <line num="8" count="13" type="stmt"/>
-        <line num="11" count="13" type="stmt"/>
+        <line num="8" count="14" type="stmt"/>
+        <line num="11" count="14" type="stmt"/>
       </file>
       <file name="index.ts" path="/Users/mihaillysikov/deight/watch-state/src/utils/getCache/index.ts">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="1" count="15" type="stmt"/>
-        <line num="2" count="13" type="stmt"/>
+        <line num="1" count="16" type="stmt"/>
+        <line num="2" count="14" type="stmt"/>
       </file>
     </package>
     <package name="src.utils.getDecors">
       <metrics statements="8" coveredstatements="8" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
       <file name="getDecors.ts" path="/Users/mihaillysikov/deight/watch-state/src/utils/getDecors/getDecors.ts">
         <metrics statements="6" coveredstatements="6" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
-        <line num="4" count="13" type="stmt"/>
-        <line num="21" count="290" type="cond" truecount="2" falsecount="0"/>
-        <line num="23" count="18" type="stmt"/>
-        <line num="25" count="290" type="stmt"/>
-        <line num="28" count="13" type="stmt"/>
-        <line num="31" count="13" type="stmt"/>
+        <line num="4" count="14" type="stmt"/>
+        <line num="21" count="293" type="cond" truecount="2" falsecount="0"/>
+        <line num="23" count="20" type="stmt"/>
+        <line num="25" count="293" type="stmt"/>
+        <line num="28" count="14" type="stmt"/>
+        <line num="31" count="14" type="stmt"/>
       </file>
       <file name="index.ts" path="/Users/mihaillysikov/deight/watch-state/src/utils/getDecors/index.ts">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="1" count="303" type="stmt"/>
-        <line num="2" count="13" type="stmt"/>
+        <line num="1" count="307" type="stmt"/>
+        <line num="2" count="14" type="stmt"/>
       </file>
     </package>
     <package name="src.utils.getState">
       <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
       <file name="getState.ts" path="/Users/mihaillysikov/deight/watch-state/src/utils/getState/getState.ts">
         <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="2" count="13" type="stmt"/>
+        <line num="2" count="14" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
-        <line num="8" count="13" type="stmt"/>
-        <line num="11" count="13" type="stmt"/>
+        <line num="8" count="14" type="stmt"/>
+        <line num="11" count="14" type="stmt"/>
       </file>
       <file name="index.ts" path="/Users/mihaillysikov/deight/watch-state/src/utils/getState/index.ts">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="1" count="14" type="stmt"/>
-        <line num="2" count="13" type="stmt"/>
+        <line num="1" count="15" type="stmt"/>
+        <line num="2" count="14" type="stmt"/>
       </file>
     </package>
     <package name="src.utils.onClear">
       <metrics statements="9" coveredstatements="9" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
       <file name="index.ts" path="/Users/mihaillysikov/deight/watch-state/src/utils/onClear/index.ts">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="1" count="2448" type="stmt"/>
-        <line num="2" count="13" type="stmt"/>
+        <line num="1" count="2450" type="stmt"/>
+        <line num="2" count="14" type="stmt"/>
       </file>
       <file name="onClear.ts" path="/Users/mihaillysikov/deight/watch-state/src/utils/onClear/onClear.ts">
         <metrics statements="7" coveredstatements="7" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
-        <line num="1" count="13" type="stmt"/>
-        <line num="5" count="2443" type="cond" truecount="2" falsecount="0"/>
+        <line num="1" count="14" type="stmt"/>
+        <line num="5" count="2444" type="cond" truecount="2" falsecount="0"/>
         <line num="6" count="29" type="stmt"/>
         <line num="7" count="29" type="stmt"/>
-        <line num="9" count="2414" type="stmt"/>
-        <line num="12" count="13" type="stmt"/>
-        <line num="15" count="13" type="stmt"/>
+        <line num="9" count="2415" type="stmt"/>
+        <line num="12" count="14" type="stmt"/>
+        <line num="15" count="14" type="stmt"/>
       </file>
     </package>
     <package name="src.utils.onDestructor">
-      <metrics statements="9" coveredstatements="8" conditionals="2" coveredconditionals="1" methods="2" coveredmethods="1"/>
+      <metrics statements="9" coveredstatements="9" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
       <file name="index.ts" path="/Users/mihaillysikov/deight/watch-state/src/utils/onDestructor/index.ts">
-        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="1" count="13" type="stmt"/>
-        <line num="2" count="13" type="stmt"/>
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="1" count="15" type="stmt"/>
+        <line num="2" count="14" type="stmt"/>
       </file>
       <file name="onDestructor.ts" path="/Users/mihaillysikov/deight/watch-state/src/utils/onDestructor/onDestructor.ts">
-        <metrics statements="7" coveredstatements="6" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>
-        <line num="1" count="13" type="stmt"/>
-        <line num="5" count="14" type="cond" truecount="1" falsecount="1"/>
-        <line num="6" count="14" type="stmt"/>
-        <line num="7" count="14" type="stmt"/>
-        <line num="9" count="0" type="stmt"/>
-        <line num="12" count="13" type="stmt"/>
-        <line num="15" count="13" type="stmt"/>
+        <metrics statements="7" coveredstatements="7" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <line num="1" count="14" type="stmt"/>
+        <line num="5" count="16" type="cond" truecount="2" falsecount="0"/>
+        <line num="6" count="15" type="stmt"/>
+        <line num="7" count="15" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="12" count="14" type="stmt"/>
+        <line num="15" count="14" type="stmt"/>
       </file>
     </package>
     <package name="src.utils.reset">
-      <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="1"/>
+      <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
       <file name="index.ts" path="/Users/mihaillysikov/deight/watch-state/src/utils/reset/index.ts">
-        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="1" count="13" type="stmt"/>
-        <line num="2" count="13" type="stmt"/>
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="1" count="15" type="stmt"/>
+        <line num="2" count="14" type="stmt"/>
       </file>
       <file name="reset.ts" path="/Users/mihaillysikov/deight/watch-state/src/utils/reset/reset.ts">
         <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="1" count="13" type="stmt"/>
+        <line num="1" count="14" type="stmt"/>
         <line num="4" count="2" type="stmt"/>
-        <line num="7" count="13" type="stmt"/>
-        <line num="10" count="13" type="stmt"/>
+        <line num="7" count="14" type="stmt"/>
+        <line num="10" count="14" type="stmt"/>
       </file>
     </package>
     <package name="src.utils.scope">
       <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
       <file name="index.ts" path="/Users/mihaillysikov/deight/watch-state/src/utils/scope/index.ts">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="1" count="20226" type="stmt"/>
-        <line num="2" count="13" type="stmt"/>
+        <line num="1" count="20240" type="stmt"/>
+        <line num="2" count="14" type="stmt"/>
       </file>
       <file name="scope.ts" path="/Users/mihaillysikov/deight/watch-state/src/utils/scope/scope.ts">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="10" count="13" type="stmt"/>
-        <line num="13" count="13" type="stmt"/>
-        <line num="16" count="13" type="stmt"/>
+        <line num="10" count="14" type="stmt"/>
+        <line num="13" count="14" type="stmt"/>
+        <line num="16" count="14" type="stmt"/>
       </file>
     </package>
     <package name="src.utils.unwatch">
       <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
       <file name="index.ts" path="/Users/mihaillysikov/deight/watch-state/src/utils/unwatch/index.ts">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="1" count="57" type="stmt"/>
-        <line num="2" count="13" type="stmt"/>
+        <line num="1" count="58" type="stmt"/>
+        <line num="2" count="14" type="stmt"/>
       </file>
       <file name="unwatch.ts" path="/Users/mihaillysikov/deight/watch-state/src/utils/unwatch/unwatch.ts">
         <metrics statements="8" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="1" count="13" type="stmt"/>
+        <line num="1" count="14" type="stmt"/>
         <line num="4" count="47" type="stmt"/>
         <line num="5" count="47" type="stmt"/>
         <line num="6" count="47" type="stmt"/>
         <line num="7" count="47" type="stmt"/>
         <line num="8" count="47" type="stmt"/>
-        <line num="11" count="13" type="stmt"/>
-        <line num="14" count="13" type="stmt"/>
+        <line num="11" count="14" type="stmt"/>
+        <line num="14" count="14" type="stmt"/>
       </file>
     </package>
   </project>

@@ -1,6 +1,34 @@
 import {onDestructor, Watch, state} from '../..'
+import state1 from '.'
 
-describe('decorators', () => {
+describe('state', () => {
+  test('export default', () => {
+    expect(state1).toBe(state)
+  })
+  test('empty value', () => {
+    class Test {
+      @state test
+    }
+    const test1 = new Test()
+    expect(test1.test).toBe(undefined)
+  })
+  test('initializer', () => {
+    class Test {
+      test1?: number
+      test2?: number
+    }
+    Object.defineProperties(Test.prototype, {
+      test1: state(Test.prototype, 'test1', {initializer: () => {
+        return 1
+      }}),
+      test2: state(Test.prototype, 'test2', {value: 2})
+    })
+
+    const tests = new Test()
+
+    expect(tests.test1).toBe(1)
+    expect(tests.test2).toBe(2)
+  })
   test('timeout', async () => {
     class Timer {
       @state counting = true

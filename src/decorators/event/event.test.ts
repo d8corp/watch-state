@@ -1,6 +1,10 @@
 import {state, event, Watch} from '../..'
+import event1 from '.'
 
 describe('event', () => {
+  test('export default', () => {
+    expect(event1).toBe(event)
+  })
   test('brackets', () => {
     class Test {
       @event changeBrackets (left, right) {

@@ -1,6 +1,10 @@
 import {Watch, State, reset} from '../..'
+import reset1 from '.'
 
 describe('reset', () => {
+  test('export default', () => {
+    expect(reset1).toBe(reset)
+  })
   describe('loop', () => {
     test('single loop', () => {
       const state = new State(0)

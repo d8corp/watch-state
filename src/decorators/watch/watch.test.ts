@@ -1,6 +1,10 @@
 import {watch, state, cache, event} from '../..'
+import watch1 from '.'
 
 describe('watch', () => {
+  test('export default', () => {
+    expect(watch1).toBe(watch)
+  })
   test('simple', () => {
     let logger = []
 

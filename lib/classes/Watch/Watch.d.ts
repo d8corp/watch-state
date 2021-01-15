@@ -1,5 +1,5 @@
-interface WatchTarget {
-    (update?: boolean): any;
+interface WatchTarget<R = any> {
+    (update?: boolean): R;
 }
 declare class Watch {
     private readonly target;

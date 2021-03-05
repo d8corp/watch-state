@@ -5,13 +5,13 @@ function createEvent <T extends Function> (target: T): T {
     if (scope.eventWatchers) {
       return target.apply(this, arguments)
     } else {
-      const prevWatcher = scope.activeWatcher
+      const {activeWatcher} = scope
       scope.activeWatcher = undefined
       const watchers = scope.eventWatchers = new Set()
       const result = target.apply(this, arguments)
       scope.eventWatchers = undefined
       watchers.forEach(watcher => watcher.update())
-      scope.activeWatcher = prevWatcher
+      scope.activeWatcher = activeWatcher
       return result
     }
   } as unknown as T

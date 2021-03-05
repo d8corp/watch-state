@@ -14,23 +14,15 @@ export class State <T = any> {
     const {activeWatcher, activeCache} = scope
 
     if (activeWatcher) {
-      const {watchers} = this
+      const type = activeCache ? 'caches' : 'watchers'
+      const set = this[type]
+      const item: any = activeCache || activeWatcher
 
-      if (activeCache) {
-        const {caches} = this
-        if (!caches.has(activeCache)) {
-          caches.add(activeCache)
-          activeWatcher.onClear(update => {
-            if (!update || caches === this.caches) {
-              caches.delete(activeCache)
-            }
-          })
-        }
-      } else if (!watchers.has(activeWatcher)) {
-        watchers.add(activeWatcher)
+      if (!set.has(item)) {
+        set.add(item)
         activeWatcher.onClear(update => {
-          if (!update || watchers === this.watchers) {
-            watchers.delete(activeWatcher)
+          if (!update || set === this[type]) {
+            set.delete(item)
           }
         })
       }

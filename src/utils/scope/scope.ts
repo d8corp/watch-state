@@ -3,7 +3,7 @@ import Cache from '../../classes/Cache'
 
 interface Scope {
   activeWatcher?: Watch
-  activeWatchers?: Set<Watch>
+  eventWatchers?: Set<Watch>
   activeCache?: Cache
 }
 

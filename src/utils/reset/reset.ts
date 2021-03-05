@@ -1,7 +1,7 @@
 import scope from '../scope'
 
 function reset () {
-  scope.activeWatchers = scope.activeWatcher = undefined
+  scope.eventWatchers = scope.activeWatcher = undefined
 }
 
 export default reset

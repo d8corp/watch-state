@@ -51,8 +51,8 @@ export class State <T = any> {
     const {watchers} = this
     if (watchers.size) {
       this.watchers = new Set()
-      if (scope.activeWatchers) {
-        watchers.forEach(watcher => scope.activeWatchers.add(watcher))
+      if (scope.eventWatchers) {
+        watchers.forEach(watcher => scope.eventWatchers.add(watcher))
       } else {
         watchers.forEach(watcher => watcher.update())
       }

@@ -15,7 +15,8 @@
     "patch": "bin/release -patch -rollup",
     "minor": "bin/release -minor -rollup",
     "major": "bin/release -major -rollup",
-    "migration": "bin/release -migration -rollup"
+    "migration": "bin/release -migration -rollup",
+    "size": "gzip-size --raw lib/watch-state.min.js"
   },
   "repository": {
     "type": "git",
@@ -43,6 +44,7 @@
     "@types/jest": "^26.0.19",
     "@types/node": "^14.14.13",
     "core-js": "^3.8.1",
+    "gzip-size-cli": "^4.0.0",
     "jest": "^26.6.3",
     "minimist": ">=0.2.1",
     "mobx": "^5.15.7",

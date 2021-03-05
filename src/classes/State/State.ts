@@ -11,9 +11,10 @@ export class State <T = any> {
     this.target = value
   }
   public get value (): T {
-    const {activeWatcher, activeCache} = scope
+    const {activeWatcher} = scope
 
     if (activeWatcher) {
+      const {activeCache} = scope
       const type = activeCache ? 'caches' : 'watchers'
       const set = this[type]
       const item: any = activeCache || activeWatcher

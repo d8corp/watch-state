@@ -71,7 +71,7 @@ export class State <T = any> {
    * */
   update () {
     const {caches} = this
-    let currentCaches
+    let currentCaches: Cache[]
 
     if (caches.size) {
       this.caches = new Set()

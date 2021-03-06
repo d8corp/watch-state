@@ -56,7 +56,10 @@ describe('Cache', () => {
     expect(resultCount).toBe(2)
     expect(result).toBe('Mike M.')
   })
-  test('destructor', () => {
+  test('fast destructor', () => {
+    new Cache(() => {}).destructor()
+  })
+  test('auto-destructor', () => {
     const log = []
     const test = new State(1)
     const test1 = new Cache(() => test.value + 1)
@@ -70,5 +73,25 @@ describe('Cache', () => {
 
     test.value = 0
     expect(log).toEqual([2])
+  })
+  test('without watcher', () => {
+    const state = new State(true)
+    const test = new Cache(() => state.value)
+
+    expect(test.value).toBe(true)
+
+    state.value = false
+
+    expect(test.value).toBe(false)
+  })
+  test('without state', () => {
+    let state = 1
+    const test = new Cache(() => state)
+
+    expect(test.value).toBe(1)
+
+    state = 2
+
+    expect(test.value).toBe(1)
   })
 })

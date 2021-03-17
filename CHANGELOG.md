@@ -4,6 +4,8 @@ To migrate from the first version please:
  - update to `2.0.0-migration`
  - fix all errors in the browser console or fix all deprecated functionality
  - update to the second version
+### v2.0.2 [![17.03.2021](https://img.shields.io/date/1616008072)](https://github.com/d8corp/watch-state/tree/v2.0.2)
+- reduced code
 ### v2.0.1 [![15.01.2021](https://img.shields.io/date/1610742353)](https://github.com/d8corp/watch-state/tree/v2.0.1)
 - removed cache decorator using with methods
 ### v2.0.0 [![10.01.2021](https://img.shields.io/date/1610305726)](https://github.com/d8corp/watch-state/tree/v2.0.0)

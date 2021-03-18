@@ -44,6 +44,7 @@
     "@types/jest": "^26.0.19",
     "@types/node": "^14.14.13",
     "core-js": "^3.8.1",
+    "effector": "^21.8.8",
     "gzip-size-cli": "^4.0.0",
     "jest": "^26.6.3",
     "minimist": ">=0.2.1",

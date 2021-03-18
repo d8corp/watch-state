@@ -1,6 +1,7 @@
 import perfocode, {describe, test} from 'perfocode'
 import {State, Watch, state, Cache, cache, createEvent} from './src'
 import {autorun, observable, computed, reaction, action} from 'mobx'
+import {createEvent as ce, createStore as cs} from 'effector'
 
 import {createStore} from 'redux'
 
@@ -25,19 +26,24 @@ perfocode('speed.test', () => {
     const wsColor = new State('red')
     const mobxColor1 = observable.box('red')
     const mobxColor2 = observable.box('red')
+    const messageEvent = ce()
 
     test('watch-state', () => new Watch(() => wsColor.value).destructor())
     test('mobx: autorun', () => autorun(() => mobxColor1.get())())
     test('mobx: reaction', () => reaction(() => mobxColor2.get(), () => {})())
+    test('effector', () => messageEvent.watch(() => {}))
   })
   describe('update', () => {
     const state = new State(0)
     const stateMobx1 = observable.box(0)
     const stateMobx2 = observable.box(0)
+    const increment = ce()
+    const store = cs(0).on(increment, state => state + 1)
 
     const watcher = new Watch(() => state.value)
     const dispatcher1 = autorun(() => stateMobx1.get())
     const dispatcher2 = reaction(() => stateMobx2.get(), () => {})
+    store.watch(() => {})
 
     test('watch-state', () => state.value++)
     watcher.destructor()
@@ -45,6 +51,7 @@ perfocode('speed.test', () => {
     dispatcher1()
     test('mobx: reaction', () => stateMobx2.set(stateMobx2.get() + 1))
     dispatcher2()
+    test('effector', () => increment())
   })
   describe('decorators', () => {
     describe('state decorator', () => {
@@ -264,6 +271,14 @@ perfocode('speed.test', () => {
         store.dispatch({type: 'DECREMENT'})
       }
       destructor()
+    })
+    test('effector', () => {
+      const decrement = ce()
+      const counter = cs(1000).on(decrement, state => state - 1)
+      counter.watch(() => {})
+      while (counter.getState()) {
+        decrement()
+      }
     })
   })
 }, 300)

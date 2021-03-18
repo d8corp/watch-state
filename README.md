@@ -285,11 +285,13 @@ new Cache<string>(() => false)
 // error, target of cache should return string
 ```
 ## Performance
-You can check the performance test with MobX.
+You can check the performance test with **MobX**, **effector** and **Redux**.
 Clone the repo, install packages and run this command
 ```shell
 npm run speed
 ```
+This is a case from the tests:  
+![test](https://raw.githubusercontent.com/d8corp/watch-state/master/test.png)
 ## Issues
 If you find a bug or have a suggestion, please file an issue on [GitHub](https://github.com/d8corp/watch-state/issues)  
 [![issues](https://img.shields.io/github/issues-raw/d8corp/watch-state)](https://github.com/d8corp/watch-state/issues)  

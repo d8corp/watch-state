@@ -243,14 +243,15 @@ perfocode('speed.test', () => {
     })
   })
   describe('complex', () => {
+    const COUNT = 1000
     test('watch-state', () => {
-      const state = new State(1000)
+      const state = new State(COUNT)
       const watcher = new Watch(() => state.value)
       while (state.value--) {}
       watcher.destructor()
     })
     test('mobx', () => {
-      const state = observable.box(1000)
+      const state = observable.box(COUNT)
       const disposer = autorun(() => state.get())
       while (state.get()) {
         state.set(state.get() - 1)
@@ -264,7 +265,7 @@ perfocode('speed.test', () => {
         }
         return state
       }
-      const store = createStore(reducer, {count: 1000})
+      const store = createStore(reducer, {count: COUNT})
       const destructor = store.subscribe(() => store.getState().count)
 
       while (store.getState().count) {
@@ -274,7 +275,7 @@ perfocode('speed.test', () => {
     })
     test('effector', () => {
       const decrement = ce()
-      const counter = cs(1000).on(decrement, state => state - 1)
+      const counter = cs(COUNT).on(decrement, state => state - 1)
       counter.watch(() => {})
       while (counter.getState()) {
         decrement()

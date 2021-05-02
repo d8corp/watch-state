@@ -1,4 +1,5 @@
-import {state, Watch, unwatch} from '../..'
+import {state, Watch} from '../..'
+import unwatch from '.'
 
 describe('unwatch', () => {
   test('unwatch', () => {

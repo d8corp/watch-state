@@ -1,10 +1,7 @@
-import {watch, state, cache, event} from '../..'
-import watch1 from '.'
+import {state, event} from '../..'
+import watch from '.'
 
 describe('watch', () => {
-  test('export default', () => {
-    expect(watch1).toBe(watch)
-  })
   test('simple', () => {
     let logger = []
 
@@ -36,7 +33,7 @@ describe('watch', () => {
       @event tick () {
         this.value++
       }
-      @cache get square () {
+      @watch get square () {
         return this.value ** 2
       }
       @watch run () {
@@ -54,5 +51,44 @@ describe('watch', () => {
     counter.tick()
     expect(log.length).toBe(2)
     expect(log[1]).toEqual([2, 4])
+  })
+  test('combine non-event', () => {
+    const log = []
+    class Counter {
+      @state value = 1
+      tick () {
+        this.value++
+      }
+      @watch get square () {
+        return this.value ** 2
+      }
+      @watch run () {
+        log.push([this.value, this.square])
+      }
+    }
+
+    const counter = new Counter()
+    expect(log.length).toBe(0)
+
+    counter.run()
+    expect(log).toEqual([[1, 1]])
+
+    counter.tick()
+    expect(log).toEqual([[1, 1], [2, 4]])
+  })
+  test('two get watchers', () => {
+    class Test {
+      @watch get test1 () {
+        return 1
+      }
+      @watch get test2 () {
+        return 2
+      }
+    }
+
+    const test = new Test()
+
+    expect(test.test1).toBe(1)
+    expect(test.test2).toBe(2)
   })
 })

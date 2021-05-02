@@ -6,15 +6,11 @@ const def = {
   input: {
     index: 'src/index.ts',
     'classes/index': 'src/classes/index.ts',
-    'classes/Cache/index': 'src/classes/Cache/index.ts',
-    'classes/Cache/Cache': 'src/classes/Cache/Cache.ts',
     'classes/State/index': 'src/classes/State/index.ts',
     'classes/State/State': 'src/classes/State/State.ts',
     'classes/Watch/index': 'src/classes/Watch/index.ts',
     'classes/Watch/Watch': 'src/classes/Watch/Watch.ts',
     'decorators/index': 'src/decorators/index.ts',
-    'decorators/cache/index': 'src/decorators/cache/index.ts',
-    'decorators/cache/cache': 'src/decorators/cache/cache.ts',
     'decorators/watch/index': 'src/decorators/watch/index.ts',
     'decorators/watch/watch': 'src/decorators/watch/watch.ts',
     'decorators/state/index': 'src/decorators/state/index.ts',
@@ -24,10 +20,8 @@ const def = {
     'utils/index': 'src/utils/index.ts',
     'utils/createEvent/index': 'src/utils/createEvent/index.ts',
     'utils/createEvent/createEvent': 'src/utils/createEvent/createEvent.ts',
-    'utils/onClear/index': 'src/utils/onClear/index.ts',
-    'utils/onClear/onClear': 'src/utils/onClear/onClear.ts',
-    'utils/onDestructor/index': 'src/utils/onDestructor/index.ts',
-    'utils/onDestructor/onDestructor': 'src/utils/onDestructor/onDestructor.ts',
+    'utils/onDestroy/index': 'src/utils/onDestroy/index.ts',
+    'utils/onDestroy/onDestroy': 'src/utils/onDestroy/onDestroy.ts',
     'utils/reset/index': 'src/utils/reset/index.ts',
     'utils/reset/reset': 'src/utils/reset/reset.ts',
     'utils/scope/index': 'src/utils/scope/index.ts',
@@ -38,8 +32,8 @@ const def = {
     'utils/getDecors/getDecors': 'src/utils/getDecors/getDecors.ts',
     'utils/getState/index': 'src/utils/getState/index.ts',
     'utils/getState/getState': 'src/utils/getState/getState.ts',
-    'utils/getCache/index': 'src/utils/getCache/index.ts',
-    'utils/getCache/getCache': 'src/utils/getCache/getCache.ts',
+    'utils/getWatch/index': 'src/utils/getWatch/index.ts',
+    'utils/getWatch/getWatch': 'src/utils/getWatch/getWatch.ts',
   }
 }
 
@@ -47,7 +41,7 @@ export default [{
   ...def,
   output: {
     dir: 'lib',
-    entryFileNames: '[name]' + pkg.main.replace('index', ''),
+    entryFileNames: '[name].js',
     format: 'cjs'
   },
   plugins: [
@@ -56,6 +50,7 @@ export default [{
       clean: true,
       tsconfigOverride: {
         compilerOptions: {
+          target: 'es6',
           module: 'esnext'
         },
         exclude: [
@@ -101,6 +96,7 @@ export default [{
       clean: true,
       tsconfigOverride: {
         compilerOptions: {
+          target: 'es6',
           module: 'esnext'
         },
         exclude: [

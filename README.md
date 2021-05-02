@@ -6,7 +6,9 @@
 [![downloads](https://img.shields.io/npm/dm/watch-state.svg)](https://www.npmjs.com/package/watch-state)
 [![license](https://img.shields.io/npm/l/watch-state)](https://github.com/d8corp/watch-state/blob/master/LICENSE)
 [![tests](https://github.com/d8corp/watch-state/workflows/tests/badge.svg)](https://d8corp.github.io/watch-state/coverage/lcov-report/)  
-The simplest watcher of your state.
+The state management system.  
+[Supported browsers](https://caniuse.com/es6-class): edge 13+, FF 45+, Chrome 49+, Safari 9+, Opera 36+
+
 ### Installation
 npm
 ```shell
@@ -75,8 +77,8 @@ const watcher = new Watch(() => {
 watcher.update()
 // console.log(0)
 ```
-##### Destructor
-You can stop watching by `destructor` method of `Watch`.
+##### Destroy
+You can stop watching by `destroy` method of `Watch`.
 ```javascript
 const count = new State(0)
 
@@ -86,41 +88,41 @@ const watcher = new Watch(() => console.log(count.value))
 count.value++
 // console.log(1)
 
-watcher.destructor()
+watcher.destroy()
 
 count.value++
 // nothing happens
 ```
-##### Watch.onDestructor()
-You can react on destruction of `Watch` by `onDestructor` method.
+##### Watch.onDestroy()
+You can react on destruction of `Watch` by `onDestroy` method.
 ```javascript
 const watcher = new Watch(() => {})
 
-watcher.onDestructor(() => console.log('destructor'))
+watcher.onDestroy(() => console.log('destructor'))
 
-watcher.destructor()
+watcher.destroy()
 // console.log('destructor')
 ```
 `onDestructor` returns `this` so you can use **fluent interface**.
 ```javascript
 const watcher = new Watch(() => {})
-  .onDestructor(() => console.log('destructor'))
+  .onDestroy(() => console.log('destructor'))
 
-watcher.destructor()
+watcher.destroy()
 // console.log('destructor')
 ```
 Or you can use `onDestructor` function inside a watcher.
 ```javascript
-import {Watch, onDestructor} from 'watch-state'
+import {Watch, onDestroy} from 'watch-state'
 
 const watcher = new Watch(update => {
   // do something
   if (!update) {
-    onDestructor(() => console.log('destructor'))
+    onDestroy(() => console.log('destructor'))
   }
 })
 
-watcher.destructor()
+watcher.destroy()
 // console.log('destructor')
 ```
 ##### Deep watch:
@@ -148,14 +150,13 @@ watching.value = false
 state.value++
 // nothing happens
 ```
-##### Cache:
-You may cache computed values.
-The watcher will not be triggered while new result is the same.
+##### Watch value:
+You can get result of watcher with value field.
 ```javascript
 const name = new State('Mike')
 const surname = new State('Deight')
 
-const fullName = new Cache(() => (
+const fullName = new Watch(() => (
   `${name.value} ${surname.value[0]}`
 ))
 
@@ -167,33 +168,6 @@ surname.value = 'D8'
 
 surname.value = 'Mighty'
 // console.log('Mike M')
-```
-The computing will be triggered only when a state inside the cache will be changed.
-So you can modify data only when it's needed.
-```javascript
-const list = new State(['foo', 'bar', 'baz'])
-
-const sortedList = new Cache(() => {
-  console.log('computing')
-  return [...list.value].sort()
-})
-// nothing happens
-
-const value = sortedList.value
-// console.log('computing')
-
-console.log(sortedList.value)
-// console.log(['bar', 'baz', 'foo'])
-
-console.log(value === sortedList.value)
-// console.log(true)
-
-list.value = ['b', 'c', 'a']
-// nothing happens
-
-console.log(sortedList.value)
-// console.log('computing')
-// console.log(['a', 'b', 'c'])
 ```
 ##### Event:
 Use `createEvent` when you change several states to run their watchers after the event finished.
@@ -220,16 +194,16 @@ setFullName('Michael Mighty')
 ```
 ##### Decorators:
 You can use decorators with `watch-sate`.  
-*Available:* `watch` `state` `cache` `event`
+*Available:* `watch` `state` `event`
 ```javascript
-import {watch, state, cache, event} from 'watch-state'
+import {watch, state, event} from 'watch-state'
 
 class Counter {
   // fields
   @state value = 1
 
   // accessors
-  @cache get square () {
+  @watch get square () {
     return this.value ** 2
   }
 
@@ -251,8 +225,8 @@ counter.run()
 counter.tick()
 // console.log(2, 4)
 ```
-##### getState and getCache
-You can get `State` or `Cache` of a decorated field with `getState` and `getCache`.
+##### getState and getWatch
+You can get `State` or `Watch` of a decorated field with `getState` and `getWatch`.
 ```typescript
 import {state, getState, Watch} from 'watch-state'
 
@@ -279,9 +253,9 @@ const key = new State<string | number>()
 key.value = false
 // error, you can use only streng or number
 ```
-Generic of `Cache`
+Generic of `Watch`
 ```typescript
-new Cache<string>(() => false)
+new Watch<string>(() => false)
 // error, target of cache should return string
 ```
 ## Performance

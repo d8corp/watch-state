@@ -1,45 +1,49 @@
 import scope from '../../utils/scope'
-import onClear from '../../utils/onClear'
+import onDestroy from '../../utils/onDestroy'
+import State from '../State'
 
-interface WatchTarget <R = any> {
+export interface Watcher <R = any> {
   (update?: boolean): R
 }
+export interface Destructor <R = any> {
+  (): R
+}
 
-class Watch {
-  private destructors: WatchTarget[]
-  private cleaners: WatchTarget[]
-  private rendered: boolean = false
-  public updating: boolean = false
-  constructor (private readonly target: WatchTarget) {
-    this.update()
+export class Watch <V = any> extends State <V> {
+  private destructors: Destructor[]
+
+  constructor (private readonly watcher: Watcher, freeParent?: boolean) {
+    super()
+    if (!freeParent) {
+      onDestroy(() => {
+        this.destroy()
+      })
+    }
+    this.update(false)
   }
-  update (): this {
-    this.updating = true
-    this.clear(this.cleaners, this.rendered)
-    onClear(() => this.destructor())
+
+  update (destroy = true): this {
+    if (destroy) {
+      this.destroy()
+    }
     const prevWatcher = scope.activeWatcher
     scope.activeWatcher = this
-    this.target(this.rendered)
+    this.value = this.watcher(destroy)
     scope.activeWatcher = prevWatcher
-    this.rendered = true
-    this.updating = false
     return this
   }
-  destructor (): this {
-    this.clear(this.destructors, false)
-    return this
-  }
-  private clear (callbacks: WatchTarget[], update: boolean): this {
-    this.cleaners = undefined
-    this.destructors = undefined
-    if (callbacks) {
-      for (let i = 0; i < callbacks.length; i++) {
-        callbacks[i](update)
-      }
+
+  destroy (): this {
+    const {destructors} = this
+
+    if (destructors) {
+      this.destructors = undefined
+      destructors.forEach(e => e())
     }
     return this
   }
-  onDestructor (callback: WatchTarget): this {
+
+  onDestroy (callback: Destructor): this {
     if (this.destructors) {
       this.destructors.push(callback)
     } else {
@@ -47,24 +51,6 @@ class Watch {
     }
     return this
   }
-  onUpdate (callback: WatchTarget): this {
-    if (this.cleaners) {
-      this.cleaners.push(callback)
-    } else {
-      this.cleaners = [callback]
-    }
-    return this
-  }
-  onClear (callback: WatchTarget): this {
-    this.onUpdate(callback)
-    this.onDestructor(callback)
-    return this
-  }
 }
 
 export default Watch
-
-export {
-  Watch,
-  WatchTarget,
-}

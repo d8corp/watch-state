@@ -1,15 +1,10 @@
 import scope from '../../utils/scope'
-import createEvent from '../../utils/createEvent'
-import Cache from '../Cache'
 import Watch from '../Watch'
 
 export class State <T = any> {
-  public watchers: Set<Watch> = new Set()
-  public caches: Set<Cache> = new Set()
-  public target: T
-  constructor (value?: T) {
-    this.target = value
-  }
+  public watchers: Set<Watch>
+
+  constructor (public state?: T) {}
 
   /**
    * the field returns current state.
@@ -18,25 +13,23 @@ export class State <T = any> {
    * console.log(state.value) // 1
    * ```
    * */
-  public get value (): T {
+  get value (): T {
     const {activeWatcher} = scope
 
     if (activeWatcher) {
-      const {activeCache} = scope
-      const type = activeCache ? 'caches' : 'watchers'
-      const set = this[type]
-      const item: any = activeCache || activeWatcher
-
-      if (!set.has(item)) {
-        set.add(item)
-        activeWatcher.onClear(update => {
-          if (!update || set === this[type]) {
-            set.delete(item)
-          }
+      if (!this.watchers) {
+        this.watchers = new Set([activeWatcher])
+        activeWatcher.onDestroy(() => {
+          this.watchers.delete(activeWatcher)
+        })
+      } else if (!this.watchers.has(activeWatcher)) {
+        this.watchers.add(activeWatcher)
+        activeWatcher.onDestroy(() => {
+          this.watchers.delete(activeWatcher)
         })
       }
     }
-    return this.target
+    return this.state
   }
 
   /**
@@ -49,16 +42,49 @@ export class State <T = any> {
    * console.log(state.value) // 2
    * ```
    * */
-  public set value (value: T) {
-    if (value !== this.target) {
-      this.target = value
-      const {activeWatcher} = scope
-      scope.activeWatcher = undefined
-      this.update()
-      scope.activeWatcher = activeWatcher
+  set value (value: T) {
+    if (value !== this.state) {
+      this.state = value
+      this.$update()
     }
   }
 
+  private $update () {
+    if (this.watchers?.size) {
+      const {activeWatcher} = scope
+      let {eventWatchers} = scope
+
+      scope.activeWatcher = undefined
+
+      this.watchers.add(undefined)
+
+      for (const watcher of this.watchers) {
+        if (!watcher) {
+          break
+        }
+        if (watcher.watchers?.size) {
+          watcher.update()
+        } else if (eventWatchers) {
+          eventWatchers.add(watcher)
+        }
+      }
+
+      if (eventWatchers) {
+        this.watchers.delete(undefined)
+      } else {
+        for (const watcher of this.watchers) {
+          if (!watcher) {
+            this.watchers.delete(undefined)
+            break
+          }
+
+          watcher.update()
+        }
+      }
+
+      scope.activeWatcher = activeWatcher
+    }
+  }
   /**
    * Update all watchers of the state.
    * ```typescript
@@ -70,43 +96,8 @@ export class State <T = any> {
    * ```
    * */
   update () {
-    const {caches} = this
-    let currentCaches: Cache[]
-
-    if (caches.size) {
-      this.caches = new Set()
-      currentCaches = checkCaches(caches)
-    }
-    const {watchers} = this
-    if (watchers.size) {
-      this.watchers = new Set()
-      if (scope.eventWatchers) {
-        watchers.forEach(watcher => scope.eventWatchers.add(watcher))
-      } else {
-        watchers.forEach(watcher => watcher.update())
-      }
-    }
-    if (currentCaches) {
-      createEvent(() => currentCaches.forEach(cache => cache.checkWatcher()))()
-    }
+    this.$update()
   }
 }
 
 export default State
-
-
-function checkCaches (caches: Set<Cache>, watchers: Cache[] = []): Cache[] {
-  caches.forEach(cache => {
-    const {watcher, state} = cache
-    if (watcher) {
-      if (state.watchers.size) {
-        watchers.push(cache)
-      }
-      if (state.caches.size) {
-        checkCaches(state.caches, watchers)
-      }
-      cache.destructor()
-    }
-  })
-  return watchers
-}

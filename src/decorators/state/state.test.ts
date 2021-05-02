@@ -1,4 +1,4 @@
-import {onDestructor, Watch, state} from '../..'
+import {onDestroy, Watch, state} from '../..'
 import state1 from '.'
 
 describe('state', () => {
@@ -82,7 +82,7 @@ describe('state', () => {
       if (timer.counting) {
         new Watch(() => {
           const interval = setInterval(() => timer.count++, 50)
-          onDestructor(() => clearInterval(interval))
+          onDestroy(() => clearInterval(interval))
         })
         new Watch(() => count = timer.count)
       }
@@ -119,7 +119,7 @@ describe('state', () => {
       @state count = 0
       start () {
         const interval = setInterval(() => this.count++, 50)
-        onDestructor(() => clearInterval(interval))
+        onDestroy(() => clearInterval(interval))
       }
     }
     const timer = new Timer()

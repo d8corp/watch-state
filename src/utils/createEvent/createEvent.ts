@@ -1,4 +1,4 @@
-import scope from '../scope'
+import scope from 'src/utils/scope'
 
 function createEvent <T extends Function> (target: T): T {
   return function () {
@@ -10,7 +10,10 @@ function createEvent <T extends Function> (target: T): T {
       const watchers = scope.eventWatchers = new Set()
       const result = target.apply(this, arguments)
       scope.eventWatchers = undefined
-      watchers.forEach(watcher => watcher.update())
+      watchers.forEach(watcher => {
+
+        watcher.update()
+      })
       scope.activeWatcher = activeWatcher
       return result
     }

@@ -1,3 +1,3 @@
+export * from './classes'
 export * from './utils'
 export * from './decorators'
-export * from './classes'

@@ -1,4 +1,4 @@
-import {Watch} from '../..'
+import Watch from '.'
 
 describe('Watch', () => {
   describe('constructor', () => {
@@ -55,7 +55,7 @@ describe('Watch', () => {
       expect(watcherTest).not.toBe(watcher2)
     })
   })
-  describe('destructor method', () => {
+  describe('destroy method', () => {
     test('has the method', () => {
       const watcher = new Watch(() => {})
       expect('destroy' in watcher).toBe(true)

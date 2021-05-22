@@ -1,14 +1,29 @@
-import {state, event, cache} from '../..'
-import watch from '.'
+import {watch, state, event, cache} from '../..'
 
-describe('watch', () => {
-  test('simple', () => {
+describe('cache', () => {
+  test('two get cache', () => {
+    class Test {
+      @cache get test1 () {
+        return 1
+      }
+      @cache get test2 () {
+        return 2
+      }
+    }
+
+    const test = new Test()
+
+    expect(test.test1).toBe(1)
+    expect(test.test2).toBe(2)
+  })
+  test('useless autorun', () => {
     let logger = []
 
     class Test {
       @state value = 0
-      @watch log () {
+      @cache get log () {
         logger.push(this.value)
+        return this.value
       }
     }
 
@@ -17,14 +32,13 @@ describe('watch', () => {
     expect(test.value).toBe(0)
     expect(logger.length).toBe(0)
 
-    test.log()
+    expect(test.log).toBe(0)
 
     expect(logger.length).toBe(1)
     expect(logger[0]).toBe(0)
 
     test.value = 1
-    expect(logger.length).toBe(2)
-    expect(logger[1]).toBe(1)
+    expect(logger.length).toBe(1)
   })
   test('combine', () => {
     const log = []

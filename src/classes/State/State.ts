@@ -1,5 +1,6 @@
-import scope from '../../utils/scope'
-import Watch from '../Watch'
+import scope from 'src/utils/scope'
+import Watch from 'src/classes/Watch'
+import Cache from 'src/classes/Cache'
 
 export class State <T = any> {
   public watchers: Set<Watch>
@@ -56,29 +57,32 @@ export class State <T = any> {
 
       scope.activeWatcher = undefined
 
-      this.watchers.add(undefined)
-
-      for (const watcher of this.watchers) {
-        if (!watcher) {
-          break
-        }
-        if (watcher.watchers?.size) {
-          watcher.update()
-        } else if (eventWatchers) {
+      if (eventWatchers) {
+        for (const watcher of this.watchers) {
           eventWatchers.add(watcher)
         }
-      }
+      } else if (!this.watchers.has(undefined)) {
 
-      if (eventWatchers) {
-        this.watchers.delete(undefined)
-      } else {
+        this.watchers.add(undefined)
+
+        for (const watcher of this.watchers) {
+          if (!watcher) {
+            break
+          }
+          if (watcher instanceof Cache) {
+            watcher.clear()
+          }
+        }
+
         for (const watcher of this.watchers) {
           if (!watcher) {
             this.watchers.delete(undefined)
             break
           }
 
-          watcher.update()
+          if (!(watcher instanceof Cache)) {
+            watcher.update()
+          }
         }
       }
 

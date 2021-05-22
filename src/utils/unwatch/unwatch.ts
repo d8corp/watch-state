@@ -1,4 +1,4 @@
-import scope from '../scope'
+import scope from 'src/utils/scope'
 
 function unwatch (target: Function) {
   const prevWatcher = scope.activeWatcher

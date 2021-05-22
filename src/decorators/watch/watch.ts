@@ -1,17 +1,13 @@
-import getDecors from '../../utils/getDecors'
-import Watch from '../../classes/Watch'
+import Watch, {Watcher} from 'src/classes/Watch'
 
-function watch (target: Object, propertyKey: string, descriptor: TypedPropertyDescriptor<any>): TypedPropertyDescriptor<any> {
-  return descriptor.get ? {
-    get () {
-      const decorators = getDecors(this)
-      return propertyKey in decorators ?
-        decorators[propertyKey].value :
-        (decorators[propertyKey] = new Watch(descriptor.get.bind(this), true)).value
-    },
-  } : {
+type Target <P extends string = string> = object & Record<P, Watcher>
+
+function watch <P extends string = string> (target: Target<P>, propertyKey: P): any {
+  const origin = target[propertyKey as string]
+
+  return {
     value () {
-      return new Watch(descriptor.value.bind(this))
+      return new Watch(origin.bind(this))
     },
     enumerable: true
   }

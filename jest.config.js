@@ -4,4 +4,7 @@ module.exports = {
   setupFiles: ['core-js'],
   testPathIgnorePatterns: ['.*\.speed\.test\.ts$'],
   coverageDirectory: 'docs/coverage',
+  moduleNameMapper: {
+    "^src(/?.*)": "<rootDir>/src$1"
+  }
 }

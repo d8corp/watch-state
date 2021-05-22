@@ -1,7 +1,8 @@
 import perfocode, {describe, test} from 'perfocode'
-import {State, Watch, state, createEvent, watch} from './src'
+import {State, Watch, state, createEvent, watch, cache, Cache} from './src'
 import {autorun, observable, computed, reaction, action, makeObservable, configure} from 'mobx'
 import {createEvent as ce, createStore as cs} from 'effector'
+import mazzard from 'mazzard'
 
 import {createStore} from 'redux'
 
@@ -23,7 +24,7 @@ perfocode('speed.test', () => {
         test('mobx: reaction', () => reaction(() => {}, () => {})())
       })
       describe('computed', () => {
-        test('watch-state', () => new Watch(() => {}).destroy())
+        test('watch-state', () => new Cache(() => {}).destroy())
         test('mobx', () => computed(() => {}))
       })
     })
@@ -161,7 +162,7 @@ perfocode('speed.test', () => {
       })
       describe('cache decorator', () => {
         class User1 {
-          @watch get fullName () {
+          @cache get fullName () {
             return ''
           }
         }
@@ -182,7 +183,7 @@ perfocode('speed.test', () => {
         class User1 {
           @state name = 'Mike'
           @state surname = 'Mighty'
-          @watch get fullName () {
+          @cache get fullName () {
             return `${this.name} ${this.surname[0]}`
           }
         }
@@ -324,6 +325,13 @@ perfocode('speed.test', () => {
         store.dispatch({type: 'DECREMENT'})
       }
       destroy()
+    })
+    test('mazzard', () => {
+      const store = mazzard({value: COUNT})
+      const stop = mazzard(() => store.value)
+
+      while (store.value--) {}
+      stop()
     })
     test('effector', () => {
       const decrement = ce()

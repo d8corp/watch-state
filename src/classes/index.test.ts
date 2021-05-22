@@ -1,4 +1,4 @@
-import {Watch, State} from '.'
+import {Watch, State, Cache} from '.'
 
 describe('Watch & State', () => {
   test('simple', () => {
@@ -181,11 +181,11 @@ describe('Watch & State', () => {
       expect(render2[1]).toEqual([true, true])
     })
   })
-  describe('computed Watch', () => {
+  describe('Cache', () => {
     test('simple', () => {
       const name = new State('Mike')
       const surname = new State('Deight')
-      const fullName = new Watch(() => `${name.value} ${surname.value[0]}.`)
+      const fullName = new Cache(() => `${name.value} ${surname.value[0]}.`)
 
       expect(fullName.value).toBe('Mike D.')
 

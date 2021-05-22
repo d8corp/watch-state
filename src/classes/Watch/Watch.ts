@@ -1,6 +1,5 @@
-import scope from '../../utils/scope'
-import onDestroy from '../../utils/onDestroy'
-import State from '../State'
+import scope from 'src/utils/scope'
+import onDestroy from 'src/utils/onDestroy'
 
 export interface Watcher <R = any> {
   (update?: boolean): R
@@ -9,27 +8,37 @@ export interface Destructor <R = any> {
   (): R
 }
 
-export class Watch <V = any> extends State <V> {
+export class Watch {
   private destructors: Destructor[]
+  private ran: boolean
+  updating: boolean // TODO: check if we need to use it
 
-  constructor (private readonly watcher: Watcher, freeParent?: boolean) {
-    super()
+  constructor (private readonly watcher: Watcher, freeParent?: boolean, freeUpdate?: boolean) {
     if (!freeParent) {
-      onDestroy(() => {
-        this.destroy()
-      })
+      onDestroy(() => this.destroy())
     }
-    this.update(false)
+    if (!freeUpdate) {
+      this.update()
+    }
   }
 
-  update (destroy = true): this {
-    if (destroy) {
-      this.destroy()
+  protected run () {
+    const {ran} = this
+    this.ran = true
+    return this.watcher(!!ran)
+  }
+
+  update (): this {
+    if (this.updating) {
+      return this
     }
+    this.updating = true
+    this.destroy()
     const prevWatcher = scope.activeWatcher
     scope.activeWatcher = this
-    this.value = this.watcher(destroy)
+    this.run()
     scope.activeWatcher = prevWatcher
+    this.updating = false
     return this
   }
 
@@ -40,6 +49,7 @@ export class Watch <V = any> extends State <V> {
       this.destructors = undefined
       destructors.forEach(e => e())
     }
+
     return this
   }
 

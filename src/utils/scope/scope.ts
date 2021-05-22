@@ -1,4 +1,4 @@
-import Watch from '../../classes/Watch'
+import Watch from 'src/classes/Watch'
 
 interface Scope {
   activeWatcher?: Watch

@@ -1,9 +1,10 @@
-import {Watch, State} from '../../classes'
+import State from 'src/classes/State'
+import Cache from 'src/classes/Cache'
 
 const VALUES = Symbol('state values')
 
 interface Types <V = any> {
-  state: State<V> | Watch<V>
+  state: State<V> | Cache<V>
 }
 
 type Key = string | number | symbol

@@ -1,5 +1,5 @@
-import State from 'src/classes/State'
-import Cache from 'src/classes/Cache'
+import State from '/classes/State'
+import Cache from '/classes/Cache'
 
 const VALUES = Symbol('state values')
 

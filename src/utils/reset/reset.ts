@@ -1,4 +1,4 @@
-import scope from 'src/utils/scope'
+import scope from '/utils/scope'
 
 function reset () {
   scope.eventWatchers = scope.activeWatcher = undefined

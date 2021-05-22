@@ -1,4 +1,4 @@
-import createEvent from 'src/utils/createEvent'
+import createEvent from '/utils/createEvent'
 
 export default function event <T extends Function> (target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>): TypedPropertyDescriptor<T> {
   return {

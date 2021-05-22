@@ -15,9 +15,6 @@ export default [{
       rollupCommonJSResolveHack: false,
       clean: true,
       tsconfigOverride: {
-        compilerOptions: {
-          module: 'esnext'
-        },
         exclude: [
           'src/**/*.test.ts'
         ]
@@ -37,9 +34,6 @@ export default [{
       rollupCommonJSResolveHack: false,
       clean: true,
       tsconfigOverride: {
-        compilerOptions: {
-          module: 'esnext'
-        },
         exclude: [
           'src/**/*.test.ts'
         ]
@@ -60,9 +54,6 @@ export default [{
       rollupCommonJSResolveHack: false,
       clean: true,
       tsconfigOverride: {
-        compilerOptions: {
-          module: 'esnext'
-        },
         exclude: [
           'src/**/*.test.ts'
         ]

@@ -1,5 +1,5 @@
-import State from 'src/classes/State'
-import Watch, {Watcher} from 'src/classes/Watch'
+import State from '/classes/State'
+import Watch, {Watcher} from '/classes/Watch'
 
 export class Cache <V = any> extends Watch {
   private updated: boolean

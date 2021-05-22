@@ -1,5 +1,5 @@
-import {Destructor} from 'src/classes/Watch'
-import scope from 'src/utils/scope'
+import {Destructor} from '/classes/Watch'
+import scope from '/utils/scope'
 
 function onDestroy (callback: Destructor): boolean {
   if (scope.activeWatcher) {

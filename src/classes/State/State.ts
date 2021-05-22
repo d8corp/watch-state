@@ -1,6 +1,6 @@
-import scope from 'src/utils/scope'
-import Watch from 'src/classes/Watch'
-import Cache from 'src/classes/Cache'
+import scope from '/utils/scope'
+import Watch from '/classes/Watch'
+import Cache from '/classes/Cache'
 
 export class State <T = any> {
   public watchers: Set<Watch>

@@ -1,5 +1,5 @@
-import scope from 'src/utils/scope'
-import onDestroy from 'src/utils/onDestroy'
+import scope from '/utils/scope'
+import onDestroy from '/utils/onDestroy'
 
 export interface Watcher <R = any> {
   (update?: boolean): R

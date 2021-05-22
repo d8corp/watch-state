@@ -1,4 +1,4 @@
-import Watch, {Watcher} from 'src/classes/Watch'
+import Watch, {Watcher} from '/classes/Watch'
 
 type Target <P extends string = string> = object & Record<P, Watcher>
 

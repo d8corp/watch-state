@@ -1,5 +1,5 @@
-import getDecors from 'src/utils/getDecors'
-import Cache from 'src/classes/Cache'
+import getDecors from '/utils/getDecors'
+import Cache from '/classes/Cache'
 
 interface CachePropertyDescriptor {
   get?: () => any

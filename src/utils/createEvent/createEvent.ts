@@ -1,4 +1,4 @@
-import scope from 'src/utils/scope'
+import scope from '/utils/scope'
 
 function createEvent <T extends Function> (target: T): T {
   return function () {

@@ -1,5 +1,5 @@
 import perfocode, {describe, test} from 'perfocode'
-import {State, Watch, state, createEvent, watch, cache, Cache} from './src'
+import {State, Watch, state, createEvent, cache, Cache} from 'src'
 import {autorun, observable, computed, reaction, action, makeObservable, configure} from 'mobx'
 import {createEvent as ce, createStore as cs} from 'effector'
 import mazzard from 'mazzard'

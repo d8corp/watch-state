@@ -1,5 +1,5 @@
-import getDecors from 'src/utils/getDecors'
-import State from 'src/classes/State'
+import getDecors from '/utils/getDecors'
+import State from '/classes/State'
 
 interface StateValues {
   [key: string]: State

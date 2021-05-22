@@ -1,4 +1,4 @@
-import {Watch, State, Cache} from '.'
+import {Watch, State, Cache} from '/'
 
 describe('Watch & State', () => {
   test('simple', () => {

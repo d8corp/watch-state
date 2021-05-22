@@ -1,5 +1,4 @@
-import getWatch from '.'
-import {cache, Watch} from '../..'
+import {cache, Watch, getCache} from '/'
 
 describe('getWatch', () => {
   test('method', () => {
@@ -11,12 +10,12 @@ describe('getWatch', () => {
 
     const test = new Test()
 
-    expect(getWatch(test, 'field')).toBe(undefined)
+    expect(getCache(test, 'field')).toBe(undefined)
 
     expect(test.field).toBe(1)
 
-    expect(getWatch(test, 'field')).toBeInstanceOf(Watch)
+    expect(getCache(test, 'field')).toBeInstanceOf(Watch)
 
-    expect(getWatch(test, 'field').value).toBe(1)
+    expect(getCache(test, 'field').value).toBe(1)
   })
 })

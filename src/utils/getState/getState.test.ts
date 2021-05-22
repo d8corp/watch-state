@@ -1,5 +1,4 @@
-import getState from '.'
-import {state, State} from '../..'
+import {getState, state, State} from '/'
 
 describe('getState', () => {
   test('simple', () => {

@@ -1,10 +1,6 @@
-import {onDestroy, Watch} from '../..'
-import onDestructor1 from '.'
+import {onDestroy, Watch} from '/'
 
 describe('onDestructor', () => {
-  test('export default', () => {
-    expect(onDestructor1).toBe(onDestroy)
-  })
   test('returns boolean', () => {
     expect(onDestroy(() => {})).toBe(false)
 

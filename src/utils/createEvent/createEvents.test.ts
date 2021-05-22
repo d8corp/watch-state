@@ -1,4 +1,4 @@
-import {Watch, state, createEvent} from '../..'
+import {Watch, state, createEvent} from '/'
 
 describe('createEvent', () => {
   test('brackets', () => {

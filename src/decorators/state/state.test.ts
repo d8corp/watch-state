@@ -1,10 +1,6 @@
-import {onDestroy, Watch, state} from '../..'
-import state1 from '.'
+import {onDestroy, Watch, state} from '/'
 
 describe('state', () => {
-  test('export default', () => {
-    expect(state1).toBe(state)
-  })
   test('empty value', () => {
     class Test {
       @state test

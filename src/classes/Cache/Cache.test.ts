@@ -1,6 +1,4 @@
-import Cache from '.'
-import State from '../State'
-import Watch from '../Watch'
+import {Cache, State, Watch} from '/'
 
 describe('Cache', () => {
   describe('constructor', () => {

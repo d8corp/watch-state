@@ -4,7 +4,8 @@ import Cache from '/classes/Cache'
 const VALUES = Symbol('state values')
 
 interface Types <V = any> {
-  state: State<V> | Cache<V>
+  state: State<V>
+  cache: Cache<V>
 }
 
 type Key = string | number | symbol

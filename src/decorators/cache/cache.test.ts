@@ -1,4 +1,4 @@
-import {watch, state, event, cache} from '../..'
+import {watch, state, event, cache} from '/'
 
 describe('cache', () => {
   test('two get cache', () => {

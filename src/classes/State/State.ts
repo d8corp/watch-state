@@ -1,10 +1,10 @@
 import Event from 'src/classes/Event'
 import Watch from 'src/classes/Watch'
 
-export class State <T = any> {
-  public event = new Event()
-
-  constructor (public state?: T) {}
+export class State <T = any> extends Event {
+  constructor (public state?: T) {
+    super()
+  }
 
   /**
    * the field returns current state.
@@ -17,7 +17,7 @@ export class State <T = any> {
     const {activeWatcher} = Watch
 
     if (activeWatcher) {
-      this.event.add(activeWatcher)
+      this.add(activeWatcher)
     }
     return this.state
   }
@@ -35,7 +35,7 @@ export class State <T = any> {
   set value (value: T) {
     if (value !== this.state) {
       this.state = value
-      this.event.run()
+      this.run()
     }
   }
 
@@ -43,14 +43,14 @@ export class State <T = any> {
    * Update all watchers of the state.
    * ```typescript
    * const state = new State(1)
-   * new Watch(() => console.log(state.value))
+   * new Watch(() => console.log('test'))
    * // 1
    * state.update()
    * // 1
    * ```
    * */
   update () {
-    this.event.run()
+    this.run()
   }
 }
 

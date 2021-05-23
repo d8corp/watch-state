@@ -15,7 +15,7 @@ export class Cache <V = any> extends Watch {
   }
 
   clear () {
-    if (this._state?.event.watchers?.size) {
+    if (this._state?.watchers?.size) {
       this.update()
     } else {
       this.destroy()

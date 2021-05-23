@@ -1,20 +1,15 @@
-import scope from '/utils/scope'
+import Event from '/classes/Event'
 
 function createEvent <T extends Function> (target: T): T {
   return function () {
-    if (scope.eventWatchers) {
+    if (Event.activeEvent) {
       return target.apply(this, arguments)
     } else {
-      const {activeWatcher} = scope
-      scope.activeWatcher = undefined
-      const watchers = scope.eventWatchers = new Set()
+      const event = new Event()
+      event.active()
       const result = target.apply(this, arguments)
-      scope.eventWatchers = undefined
-      watchers.forEach(watcher => {
-
-        watcher.update()
-      })
-      scope.activeWatcher = activeWatcher
+      event.deactivate()
+      event.run()
       return result
     }
   } as unknown as T

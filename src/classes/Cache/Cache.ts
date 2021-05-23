@@ -1,5 +1,5 @@
-import State from '/classes/State'
-import Watch, {Watcher} from '/classes/Watch'
+import State from 'src/classes/State'
+import Watch, {Watcher} from 'src/classes/Watch'
 
 export class Cache <V = any> extends Watch {
   private updated: boolean
@@ -15,8 +15,11 @@ export class Cache <V = any> extends Watch {
   }
 
   clear () {
-    this.destroy()
-    this._state?.update()
+    if (this._state?.event.watchers?.size) {
+      this.update()
+    } else {
+      this.destroy()
+    }
   }
 
   run () {

@@ -1,7 +1,4 @@
 export * from './createEvent'
-export * from './scope'
-export * from './unwatch'
-export * from './reset'
 export * from './onDestroy'
 export * from './getDecors'
 export * from './getState'

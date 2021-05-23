@@ -1,5 +1,6 @@
-import scope from '/utils/scope'
-import onDestroy from '/utils/onDestroy'
+import onDestroy from 'src/utils/onDestroy'
+
+let activeWatcher: Watch
 
 export interface Watcher <R = any> {
   (update?: boolean): R
@@ -9,8 +10,14 @@ export interface Destructor <R = any> {
 }
 
 export class Watch {
+  static get activeWatcher () {
+    return activeWatcher
+  }
+  static set activeWatcher (watcher: Watch) {
+    activeWatcher = watcher
+  }
   private destructors: Destructor[]
-  private ran: boolean
+  private ran: boolean = false
   updating: boolean // TODO: check if we need to use it
 
   constructor (private readonly watcher: Watcher, freeParent?: boolean, freeUpdate?: boolean) {
@@ -25,7 +32,7 @@ export class Watch {
   protected run () {
     const {ran} = this
     this.ran = true
-    return this.watcher(!!ran)
+    return this.watcher(ran)
   }
 
   update (): this {
@@ -34,10 +41,10 @@ export class Watch {
     }
     this.updating = true
     this.destroy()
-    const prevWatcher = scope.activeWatcher
-    scope.activeWatcher = this
+    const prevWatcher = activeWatcher
+    activeWatcher = this
     this.run()
-    scope.activeWatcher = prevWatcher
+    activeWatcher = prevWatcher
     this.updating = false
     return this
   }

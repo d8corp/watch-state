@@ -1,9 +1,8 @@
-import scope from '/utils/scope'
-import Watch from '/classes/Watch'
-import Cache from '/classes/Cache'
+import Event from 'src/classes/Event'
+import Watch from 'src/classes/Watch'
 
 export class State <T = any> {
-  public watchers: Set<Watch>
+  public event = new Event()
 
   constructor (public state?: T) {}
 
@@ -15,20 +14,10 @@ export class State <T = any> {
    * ```
    * */
   get value (): T {
-    const {activeWatcher} = scope
+    const {activeWatcher} = Watch
 
     if (activeWatcher) {
-      if (!this.watchers) {
-        this.watchers = new Set([activeWatcher])
-        activeWatcher.onDestroy(() => {
-          this.watchers.delete(activeWatcher)
-        })
-      } else if (!this.watchers.has(activeWatcher)) {
-        this.watchers.add(activeWatcher)
-        activeWatcher.onDestroy(() => {
-          this.watchers.delete(activeWatcher)
-        })
-      }
+      this.event.add(activeWatcher)
     }
     return this.state
   }
@@ -46,49 +35,10 @@ export class State <T = any> {
   set value (value: T) {
     if (value !== this.state) {
       this.state = value
-      this.$update()
+      this.event.run()
     }
   }
 
-  private $update () {
-    if (this.watchers?.size) {
-      const {activeWatcher} = scope
-      let {eventWatchers} = scope
-
-      scope.activeWatcher = undefined
-
-      if (eventWatchers) {
-        for (const watcher of this.watchers) {
-          eventWatchers.add(watcher)
-        }
-      } else if (!this.watchers.has(undefined)) {
-
-        this.watchers.add(undefined)
-
-        for (const watcher of this.watchers) {
-          if (!watcher) {
-            break
-          }
-          if (watcher instanceof Cache) {
-            watcher.clear()
-          }
-        }
-
-        for (const watcher of this.watchers) {
-          if (!watcher) {
-            this.watchers.delete(undefined)
-            break
-          }
-
-          if (!(watcher instanceof Cache)) {
-            watcher.update()
-          }
-        }
-      }
-
-      scope.activeWatcher = activeWatcher
-    }
-  }
   /**
    * Update all watchers of the state.
    * ```typescript
@@ -100,7 +50,7 @@ export class State <T = any> {
    * ```
    * */
   update () {
-    this.$update()
+    this.event.run()
   }
 }
 

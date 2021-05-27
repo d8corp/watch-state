@@ -1,4 +1,4 @@
-import {Cache, State, Watch} from '/'
+import {State, Cache, Watch} from 'src'
 
 describe('Cache', () => {
   describe('constructor', () => {

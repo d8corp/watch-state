@@ -12,31 +12,58 @@ class Event {
   }
 
   watchers: Set<Watch | Cache>
+  activeWatchers: Set<Watch | Cache>
 
   add (target: Watch | Cache) {
-    if (this.watchers) {
-      if (this.watchers.has(target)) {
+    let {watchers} = this
+    if (watchers) {
+      if (watchers.has(target)) {
         return
       }
-      this.watchers.add(target)
+      watchers.add(target)
     } else {
-      this.watchers = new Set([target])
+      watchers = this.watchers = new Set([target])
     }
 
-    target.onDestroy(() => this.watchers.delete(target))
+    const watcherList = watchers
+
+    target.onDestroy(() => watcherList.delete(target))
   }
 
-  active () {
-    activeEvent = this
+  start () {
+    if (!activeEvent) {
+      activeEvent = this
+      const {activeWatchers} = this
+      this.activeWatchers = this.watchers
+      this.watchers = activeWatchers
+    }
   }
 
-  deactivate () {
+  end () {
     if (activeEvent === this) {
+      for (const watcher of this.activeWatchers) {
+        if (watcher instanceof Cache) {
+          watcher.clear()
+        }
+      }
+
+      for (const watcher of this.activeWatchers) {
+        watcher.update()
+      }
+
       activeEvent = undefined
     }
   }
 
-  run () {
+  pipe (watcher: Watch | Cache) {
+    if (this.activeWatchers) {
+      this.activeWatchers.add(watcher)
+    } else {
+      this.activeWatchers = new Set([watcher])
+    }
+  }
+
+  update () {
     if (!this.watchers?.size) {
       return
     }
@@ -44,32 +71,12 @@ class Event {
     if (activeEvent) {
       if (activeEvent !== this) {
         for (const target of this.watchers) {
-          activeEvent.add(target)
+          activeEvent.pipe(target)
         }
       }
     } else {
-      this.watchers.add(undefined)
-
-      for (const watcher of this.watchers) {
-        if (!watcher) {
-          break
-        }
-
-        if (watcher instanceof Cache) {
-          watcher.clear()
-        }
-      }
-
-      for (const watcher of this.watchers) {
-        if (!watcher) {
-          this.watchers.delete(undefined)
-          break
-        }
-
-        watcher.update()
-      }
-
-      activeEvent = undefined
+      this.start()
+      this.end()
     }
   }
 }

@@ -35,22 +35,8 @@ export class State <T = any> extends Event {
   set value (value: T) {
     if (value !== this.state) {
       this.state = value
-      this.run()
+      this.update()
     }
-  }
-
-  /**
-   * Update all watchers of the state.
-   * ```typescript
-   * const state = new State(1)
-   * new Watch(() => console.log('test'))
-   * // 1
-   * state.update()
-   * // 1
-   * ```
-   * */
-  update () {
-    this.run()
   }
 }
 

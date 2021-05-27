@@ -6,10 +6,9 @@ function createEvent <T extends Function> (target: T): T {
       return target.apply(this, arguments)
     } else {
       const event = new Event()
-      event.active()
+      event.start()
       const result = target.apply(this, arguments)
-      event.deactivate()
-      event.run()
+      event.end()
       return result
     }
   } as unknown as T

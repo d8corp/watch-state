@@ -3,7 +3,7 @@ import Cache from 'src/classes/Cache'
 
 let activeEvent: Event
 
-class Event {
+export class Event {
   static get activeEvent () {
     return activeEvent
   }
@@ -56,6 +56,7 @@ class Event {
   pipe (watcher: Watch | Cache) {
     if (this.activeWatchers) {
       this.activeWatchers.add(watcher)
+      watcher.onDestroy(() => this.activeWatchers.delete(watcher))
     } else {
       this.activeWatchers = new Set([watcher])
     }
@@ -67,10 +68,8 @@ class Event {
     }
 
     if (activeEvent) {
-      if (activeEvent !== this) {
-        for (const target of this.watchers) {
-          // activeEvent.pipe(target)
-        }
+      for (const target of this.watchers) {
+        activeEvent.pipe(target)
       }
     } else {
       this.start()

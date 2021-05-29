@@ -130,20 +130,6 @@ const watcher = new Watch(() => {})
 watcher.destroy()
 // console.log('destructor')
 ```
-Or you can use `onDestructor` function inside a watcher.
-```javascript
-import {Watch, onDestroy} from 'watch-state'
-
-const watcher = new Watch(update => {
-  // do something
-  if (!update) {
-    onDestroy(() => console.log('destructor'))
-  }
-})
-
-watcher.destroy()
-// console.log('destructor')
-```
 ##### Deep watch:
 You can use `Watch` inside a watcher.
 Each watcher reacts on that states which used only inside it.
@@ -169,13 +155,14 @@ watching.value = false
 state.value++
 // nothing happens
 ```
-##### Watch value:
-You can get result of watcher with value field.
+##### Cache:
+You can cache computed values.  
+The watcher will not be triggered while new result is the same.
 ```javascript
 const name = new State('Mike')
 const surname = new State('Deight')
 
-const fullName = new Watch(() => (
+const fullName = new Cache(() => (
   `${name.value} ${surname.value[0]}`
 ))
 
@@ -189,80 +176,22 @@ surname.value = 'Mighty'
 // console.log('Mike M')
 ```
 ##### Event:
-Use `createEvent` when you change several states to run their watchers after the event finished.
+Use `Event` when you change several states to run their watchers after the event finished.
 ```javascript
 const name = new State('Mike')
 const surname = new State('Deight')
-
-const setFullName = createEvent(fullName => {
-
-  const [newName, newSurname] = fullName.split(' ')
-
-  name.value = newName
-  surname.value = newSurname
-
-})
+const event = new Event()
 
 new Watch(() => {
   console.log(name.value, surname.value)
 })
 // console.log('Mike', 'Deight')
 
-setFullName('Michael Mighty')
+event.start()
+name.value = newName
+surname.value = newSurname
+event.end()
 // console.log('Michael', 'Mighty')
-```
-##### Decorators:
-You can use decorators with `watch-sate`.  
-*Available:* `watch` `state` `event`
-```javascript
-import {watch, state, event} from 'watch-state'
-
-class Counter {
-  // fields
-  @state value = 1
-
-  // accessors
-  @watch get square () {
-    return this.value ** 2
-  }
-
-  // methods
-  @event tick () {
-    this.value++
-  }
-  @watch run () {
-    console.log(this.value, this.square)
-  }
-}
-
-
-const counter = new Counter()
-
-counter.run()
-// console.log(1, 1)
-
-counter.tick()
-// console.log(2, 4)
-```
-##### getState and getWatch
-You can get `State` or `Watch` of a decorated field with `getState` and `getWatch`.
-```typescript
-import {state, getState, Watch} from 'watch-state'
-
-class TodoList {
-  @state todos = []
-}
-
-const todoList = new TodoList()
-
-new Watch(() => console.log(todoList.todos))
-// console.log([])
-
-todoList.todos.push('Do something')
-// nothing happens
-
-getState(todoList, 'todos').update()
-// console.log(['Do something'])
 ```
 ##### Typescript:
 Generic of `State`

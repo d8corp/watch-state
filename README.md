@@ -18,7 +18,7 @@ The best state management system.
 
 | Firefox | Chrome | Safari | Opera | Edge |
 |:-------:|:------:|:------:|:-----:|:----:|
-| 45+     | 49+    | 9+     | 36+   | 13+  |
+| `45+`   | `49+`  | `9+`   | `36+` | `13+`|
 
 **Mobile**
 

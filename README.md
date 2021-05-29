@@ -14,13 +14,13 @@ The best state management system.
 
 ### Browser supports
 
-**Desktop**
+`Desktop`
 
 | Firefox | Chrome | Safari | Opera | Edge |
 |:-------:|:------:|:------:|:-----:|:----:|
-| `45+`   | `49+`  | `9+`   | `36+` | `13+`|
+| 45+     | 49+    | 9+     | 36+   | 13+  |
 
-**Mobile**
+`Mobile`
 
 | Firefox | Chrome | Safari | Opera |
 |:-------:|:------:|:------:|:-----:|

@@ -16,7 +16,7 @@ export class Watch {
   static set activeWatcher (watcher: Watch) {
     activeWatcher = watcher
   }
-  private destructors: Destructor[]
+  destructors: Destructor[]
   private ran: boolean = false
   updating: boolean // TODO: check if we need to use it
 

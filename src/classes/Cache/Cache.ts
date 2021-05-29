@@ -1,9 +1,9 @@
-import State from 'src/classes/State'
+import {CacheState} from 'src/classes/State'
 import Watch, {Watcher} from 'src/classes/Watch'
 
 export class Cache <V = any> extends Watch {
   private updated: boolean
-  private _state: State<V>
+  private _state: CacheState<V>
 
   constructor (watcher: Watcher, freeParent?: boolean, fireImmediately?: boolean) {
     super(watcher, freeParent, !fireImmediately)
@@ -27,9 +27,9 @@ export class Cache <V = any> extends Watch {
     this.updated = true
   }
 
-  private get state (): State<V> {
+  private get state (): CacheState<V> {
     if (!this._state) {
-      this._state = new State()
+      this._state = new CacheState()
     }
     return this._state
   }

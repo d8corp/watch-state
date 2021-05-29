@@ -2,9 +2,7 @@ import Event from 'src/classes/Event'
 import Watch from 'src/classes/Watch'
 
 export class State <T = any> extends Event {
-  constructor (public state?: T) {
-    super()
-  }
+  constructor (public state?: T) {super()}
 
   /**
    * the field returns current state.
@@ -39,5 +37,7 @@ export class State <T = any> extends Event {
     }
   }
 }
+
+export class CacheState <V> extends State <V> {}
 
 export default State

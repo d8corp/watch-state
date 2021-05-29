@@ -25,9 +25,7 @@ class Event {
       watchers = this.watchers = new Set([target])
     }
 
-    const watcherList = watchers
-
-    target.onDestroy(() => watcherList.delete(target))
+    target.onDestroy(() => watchers.delete(target))
   }
 
   start () {
@@ -71,7 +69,7 @@ class Event {
     if (activeEvent) {
       if (activeEvent !== this) {
         for (const target of this.watchers) {
-          activeEvent.pipe(target)
+          // activeEvent.pipe(target)
         }
       }
     } else {

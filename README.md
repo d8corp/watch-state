@@ -1,4 +1,4 @@
-&nbsp; &nbsp; &nbsp;[![watch-state](https://raw.githubusercontent.com/d8corp/watch-state/master/logo.png)](https://github.com/d8corp/watch-state)
+&nbsp; &nbsp; &nbsp; [![watch-state](https://raw.githubusercontent.com/d8corp/watch-state/master/logo.png)](https://github.com/d8corp/watch-state)
 
 # watch-state
 [![NPM](https://img.shields.io/npm/v/watch-state.svg)](https://github.com/d8corp/watch-state/blob/master/CHANGELOG.md)

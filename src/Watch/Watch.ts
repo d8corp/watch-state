@@ -1,5 +1,3 @@
-import onDestroy from 'src/utils/onDestroy'
-
 let activeWatcher: Watch
 
 export interface Watcher <R = any> {
@@ -21,8 +19,8 @@ export class Watch {
   updating: boolean // TODO: check if we need to use it
 
   constructor (private readonly watcher: Watcher, freeParent?: boolean, freeUpdate?: boolean) {
-    if (!freeParent) {
-      onDestroy(() => this.destroy())
+    if (!freeParent && Watch.activeWatcher) {
+      Watch.activeWatcher.onDestroy(() => this.destroy())
     }
     if (!freeUpdate) {
       this.update()

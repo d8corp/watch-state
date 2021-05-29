@@ -1,5 +1,4 @@
-import Watch from 'src/classes/Watch'
-import Cache from 'src/classes/Cache'
+import {Watch, Cache} from 'src'
 
 let activeEvent: Event
 

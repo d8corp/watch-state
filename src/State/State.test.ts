@@ -1,4 +1,4 @@
-import {State} from '/'
+import {State} from 'src'
 
 describe('State', () => {
   describe('constructor', () => {

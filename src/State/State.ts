@@ -1,5 +1,4 @@
-import Event from 'src/classes/Event'
-import Watch from 'src/classes/Watch'
+import {Watch, Event} from 'src'
 
 export class State <T = any> extends Event {
   constructor (public state?: T) {super()}

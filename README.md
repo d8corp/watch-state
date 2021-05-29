@@ -6,8 +6,27 @@
 [![downloads](https://img.shields.io/npm/dm/watch-state.svg)](https://www.npmjs.com/package/watch-state)
 [![license](https://img.shields.io/npm/l/watch-state)](https://github.com/d8corp/watch-state/blob/master/LICENSE)
 [![tests](https://github.com/d8corp/watch-state/workflows/tests/badge.svg)](https://d8corp.github.io/watch-state/coverage/lcov-report/)  
-The state management system.  
-[Supported browsers](https://caniuse.com/es6-class): edge 13+, FF 45+, Chrome 49+, Safari 9+, Opera 36+
+The best state management system.  
+
+- Fast (The fastest solution among analogs)
+- Light (Less than 1kb minzip)
+- Smart (Don't care about performance)
+
+### Browser supports
+
+**Desktop**
+
+| Firefox | Chrome | Safari | Opera | Edge |
+|:-------:|:------:|:------:|:-----:|:----:|
+| 45+     | 49+    | 9+     | 36+   | 13+  |
+
+**Mobile**
+
+| Firefox | Chrome | Safari | Opera |
+|:-------:|:------:|:------:|:-----:|
+| 87+     | 90+    | 9+     | 62+   |
+
+*You can transpile it to support old browsers, but the performance be decreased.*
 
 ### Installation
 npm

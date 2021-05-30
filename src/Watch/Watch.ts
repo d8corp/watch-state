@@ -16,7 +16,6 @@ export class Watch {
   }
   destructors: Destructor[]
   private ran: boolean = false
-  updating: boolean // TODO: check if we need to use it
 
   constructor (private readonly watcher: Watcher, freeParent?: boolean, freeUpdate?: boolean) {
     if (!freeParent && Watch.activeWatcher) {
@@ -33,21 +32,16 @@ export class Watch {
     return this.watcher(ran)
   }
 
-  update (): this {
-    if (this.updating) {
-      return this
-    }
-    this.updating = true
+  update () {
     this.destroy()
     const prevWatcher = activeWatcher
     activeWatcher = this
     this.run()
     activeWatcher = prevWatcher
-    this.updating = false
-    return this
+    return
   }
 
-  destroy (): this {
+  destroy () {
     const {destructors} = this
 
     if (destructors) {
@@ -55,7 +49,7 @@ export class Watch {
       destructors.forEach(e => e())
     }
 
-    return this
+    return
   }
 
   onDestroy (callback: Destructor): this {

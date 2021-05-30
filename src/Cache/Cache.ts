@@ -9,7 +9,7 @@ export class Cache <V = any> extends Watch {
     super(watcher, freeParent, !fireImmediately)
   }
 
-  destroy (): this {
+  destroy () {
     this.updated = false
     return super.destroy()
   }

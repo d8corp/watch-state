@@ -6,11 +6,14 @@
 [![downloads](https://img.shields.io/npm/dm/watch-state.svg)](https://www.npmjs.com/package/watch-state)
 [![license](https://img.shields.io/npm/l/watch-state)](https://github.com/d8corp/watch-state/blob/master/LICENSE)
 [![tests](https://github.com/d8corp/watch-state/workflows/tests/badge.svg)](https://d8corp.github.io/watch-state/coverage/lcov-report/)  
-The best state management system.  
+The best state management system.
 
 - Fast (The fastest solution among analogs)
 - Light (Less than 1kb minzip)
 - Smart (Don't care about performance)
+
+[![stars](https://img.shields.io/github/stars/d8corp/watch-state?style=social)](https://github.com/d8corp/watch-state/stargazers)
+[![watchers](https://img.shields.io/github/watchers/d8corp/watch-state?style=social)](https://github.com/d8corp/watch-state/watchers)
 
 ### Browser supports
 
@@ -244,10 +247,9 @@ npm run speed
 ```
 I got this results:  
 ![test](https://raw.githubusercontent.com/d8corp/watch-state/v3/speed.test.png)
+## Links
+You can find more tools [here](https://www.npmjs.com/search?q=%40watch-state)
 ## Issues
 If you find a bug or have a suggestion, please file an issue on [GitHub](https://github.com/d8corp/watch-state/issues)  
-[![issues](https://img.shields.io/github/issues-raw/d8corp/watch-state)](https://github.com/d8corp/watch-state/issues)  
-> ---
-[![stars](https://img.shields.io/github/stars/d8corp/watch-state?style=social)](https://github.com/d8corp/watch-state/stargazers)
-[![watchers](https://img.shields.io/github/watchers/d8corp/watch-state?style=social)](https://github.com/d8corp/watch-state/watchers)
+[![issues](https://img.shields.io/github/issues-raw/d8corp/watch-state)](https://github.com/d8corp/watch-state/issues)
 

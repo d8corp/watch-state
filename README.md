@@ -37,6 +37,19 @@ yarn
 ```shell
 yarn add watch-state
 ```
+Or you can include this script to the head. 
+```html
+<script defer src="https://unpkg.com/watch-state/watch-state.min.js"></script>
+```
+Use `watchState` to get any class from the library.
+```js
+const {
+  Watch,
+  State,
+  Cache,
+  Event
+} = watchState
+```
 ### Using
 ##### Simple example:
 You can create an instance of `State` and **watch** it's **value**.
@@ -101,7 +114,9 @@ You can stop watching by `destroy` method of `Watch`.
 ```javascript
 const count = new State(0)
 
-const watcher = new Watch(() => console.log(count.value))
+const watcher = new Watch(() => {
+  console.log(count.value)
+})
 // console.log(0)
 
 count.value++
@@ -117,7 +132,9 @@ You can react on destruction of `Watch` by `onDestroy` method.
 ```javascript
 const watcher = new Watch(() => {})
 
-watcher.onDestroy(() => console.log('destructor'))
+watcher.onDestroy(() => {
+  console.log('destructor')
+})
 
 watcher.destroy()
 // console.log('destructor')
@@ -141,7 +158,9 @@ let test = 0
 new Watch(() => {
   test++
   if (watching.value) {
-    new Watch(() => console.log(state.value))
+    new Watch(() => {
+      console.log(state.value)
+    })
   }
 })
 // console.log(0), test = 1
@@ -166,7 +185,9 @@ const fullName = new Cache(() => (
   `${name.value} ${surname.value[0]}`
 ))
 
-new Watch(() => console.log(fullName.value))
+new Watch(() => {
+  console.log(fullName.value)
+})
 // console.log('Mike D')
 
 surname.value = 'D8'
@@ -174,6 +195,15 @@ surname.value = 'D8'
 
 surname.value = 'Mighty'
 // console.log('Mike M')
+```
+You can force update the cache by `update` method.
+```typescript
+surname.update()
+// console.log('Mike M')
+```
+You can use `destroy` and `onDestroy` like you do it on a watcher.
+```typescript
+surname.destroy()
 ```
 ##### Event:
 Use `Event` when you change several states to run their watchers after the event finished.
@@ -201,9 +231,9 @@ const key = new State<string | number>()
 key.value = false
 // error, you can use only streng or number
 ```
-Generic of `Watch`
+Generic of `Cache`
 ```typescript
-new Watch<string>(() => false)
+new Cache<string>(() => false)
 // error, target of cache should return string
 ```
 ## Performance
@@ -212,8 +242,8 @@ Clone the repo, install packages and run this command
 ```shell
 npm run speed
 ```
-This is a case from the tests:  
-![test](https://raw.githubusercontent.com/d8corp/watch-state/master/test.png)
+I got this results:  
+![test](https://raw.githubusercontent.com/d8corp/watch-state/v3/speed.test.png)
 ## Issues
 If you find a bug or have a suggestion, please file an issue on [GitHub](https://github.com/d8corp/watch-state/issues)  
 [![issues](https://img.shields.io/github/issues-raw/d8corp/watch-state)](https://github.com/d8corp/watch-state/issues)  

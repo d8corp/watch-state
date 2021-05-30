@@ -1,4 +1,5 @@
-import {Watch, Event} from 'src'
+import Watch from 'src/Watch'
+import Event from 'src/Event'
 
 export class State <T = any> extends Event {
   constructor (public state?: T) {super()}
@@ -36,7 +37,5 @@ export class State <T = any> extends Event {
     }
   }
 }
-
-export class CacheState <V> extends State <V> {}
 
 export default State

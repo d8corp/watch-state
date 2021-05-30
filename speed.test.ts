@@ -1,6 +1,6 @@
 import perfocode, {describe, test} from 'perfocode'
-import {State, Watch, state, createEvent, cache, Cache} from 'src'
-import {autorun, observable, computed, reaction, action, makeObservable, configure} from 'mobx'
+import {Watch, State, Cache, Event} from 'src'
+import {autorun, observable, computed, reaction, action, configure} from 'mobx'
 import {createEvent as ce, createStore as cs} from 'effector'
 import mazzard from 'mazzard'
 
@@ -59,153 +59,6 @@ perfocode('speed.test', () => {
       dispatcher2()
       test('effector', () => increment())
     })
-    describe('decorators', () => {
-      describe('state decorator', () => {
-        describe('one empty', () => {
-          class Color1 {
-            @state value
-          }
-
-          class Color2 {
-            value = undefined
-            constructor () {
-              makeObservable(this, {
-                value: observable
-              })
-            }
-          }
-
-          test('watch-state', () => new Color1())
-          test('mobx: observable', () => new Color2())
-        })
-        describe('one set in constructor', () => {
-          class Color1 {
-            @state value
-            constructor (value = 'red') {
-              this.value = value
-            }
-          }
-          class Color2 {
-            value = undefined
-            constructor (value = 'red') {
-              makeObservable(this, {
-                value: observable
-              })
-              this.value = value
-            }
-          }
-
-          test('watch-state', () => new Color1())
-          test('mobx: observable', () => new Color2())
-        })
-        describe('one with default', () => {
-          class Color1 {
-            @state value = 'black'
-          }
-          class Color2 {
-            value = 'black'
-            constructor () {
-              makeObservable(this, {
-                value: observable
-              })
-            }
-          }
-
-          test('watch-state', () => new Color1())
-          test('mobx: observable', () => new Color2())
-        })
-        describe('one with default and set in constructor', () => {
-          class Color1 {
-            @state value = 'black'
-            constructor (value = 'red') {
-              this.value = value
-            }
-          }
-          class Color2 {
-            value = 'black'
-            constructor (value = 'red') {
-              makeObservable(this, {
-                value: observable
-              })
-              this.value = value
-            }
-          }
-
-          test('watch-state', () => new Color1())
-          test('mobx: observable', () => new Color2())
-        })
-        describe('two', () => {
-          class Color1 {
-            @state key
-            @state value
-            constructor (key = 'test', value = 'red') {
-              this.key = key
-              this.value = value
-            }
-          }
-          class Color2 {
-            key = undefined
-            value = undefined
-            constructor (key = 'test', value = 'red') {
-              makeObservable(this, {
-                key: observable,
-                value: observable,
-              })
-              this.key = key
-              this.value = value
-            }
-          }
-
-          test('watch-state', () => new Color1())
-          test('mobx: observable', () => new Color2())
-        })
-      })
-      describe('cache decorator', () => {
-        class User1 {
-          @cache get fullName () {
-            return ''
-          }
-        }
-        class User2 {
-          get fullName () {
-            return ''
-          }
-          constructor () {
-            makeObservable(this, {
-              fullName: computed
-            })
-          }
-        }
-        test('watch-state', () => new User1())
-        test('mobx', () => new User2())
-      })
-      describe('cache and state decorators', () => {
-        class User1 {
-          @state name = 'Mike'
-          @state surname = 'Mighty'
-          @cache get fullName () {
-            return `${this.name} ${this.surname[0]}`
-          }
-        }
-        class User2 {
-          name = 'Mike'
-          surname = 'Mighty'
-          get fullName () {
-            return `${this.name} ${this.surname[0]}`
-          }
-          constructor () {
-            makeObservable(this, {
-              name: observable,
-              surname: observable,
-              fullName: computed,
-            })
-          }
-        }
-
-        test('watch-state', () => new User1())
-        test('mobx', () => new User2())
-      })
-    })
     describe('event', () => {
       describe('without event x10', () => {
         const state1 = new State(0)
@@ -232,11 +85,14 @@ perfocode('speed.test', () => {
         const state2 = observable.box(0)
         const watcher1 = new Watch(() => state1.value)
         const watcher2 = autorun(() => state2.get())
-        const event1 = createEvent(() => {
+        const wsEvent = new Event()
+        const event1 = () => {
+          wsEvent.start()
           for (let i = 0; i < 10; i++) {
             state1.value++
           }
-        })
+          wsEvent.end()
+        }
         const event2 = action(() => {
           for (let i = 0; i < 10; i++) {
             state2.set(state2.get() + 1)

@@ -1,4 +1,4 @@
-&nbsp; &nbsp; &nbsp; [![watch-state](https://raw.githubusercontent.com/d8corp/watch-state/v3/logo.svg)](https://github.com/d8corp/watch-state)
+&nbsp; &nbsp; &nbsp; [![watch-state](https://raw.githubusercontent.com/d8corp/watch-state/v3/img/logo.svg)](https://github.com/d8corp/watch-state)
 
 # watch-state
 [![NPM](https://img.shields.io/npm/v/watch-state.svg)](https://github.com/d8corp/watch-state/blob/master/CHANGELOG.md)
@@ -8,7 +8,7 @@
 [![tests](https://github.com/d8corp/watch-state/workflows/tests/badge.svg)](https://d8corp.github.io/watch-state/coverage/lcov-report/)  
 The best state management system.
 
-| Fast | Light | Smart |
+| ![](https://raw.githubusercontent.com/d8corp/watch-state/v3/img/fast.svg) Fast | ![](https://raw.githubusercontent.com/d8corp/watch-state/v3/img/light.svg) Light | ![](https://raw.githubusercontent.com/d8corp/watch-state/v3/img/smart.svg) Smart |
 |:----:|:-----:|:-----:|
 | *The fastest solution among analogs* | *Less than 1kb minzip* | *Don't care about performance* |
 
@@ -246,7 +246,7 @@ Clone the repo, install packages and run this command
 npm run speed
 ```
 I got this results:  
-![test](https://raw.githubusercontent.com/d8corp/watch-state/v3/speed.test.png)
+![test](https://raw.githubusercontent.com/d8corp/watch-state/v3/img/speed.test.png)
 ## Links
 You can find more tools [here](https://www.npmjs.com/search?q=%40watch-state)
 ## Issues

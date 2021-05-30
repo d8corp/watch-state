@@ -8,7 +8,7 @@
 [![tests](https://github.com/d8corp/watch-state/workflows/tests/badge.svg)](https://d8corp.github.io/watch-state/coverage/lcov-report/)  
 The best state management system.
 
-| ![](https://raw.githubusercontent.com/d8corp/watch-state/v3/img/fast.svg) Fast | <div><img src="https://raw.githubusercontent.com/d8corp/watch-state/v3/img/light.svg" width="60"></div> Light | <div><img src="https://raw.githubusercontent.com/d8corp/watch-state/v3/img/smart.svg" width="60"></div> Smart |
+| ![Fast](https://raw.githubusercontent.com/d8corp/watch-state/v3/img/fast.svg) <br> Fast | ![Light](https://raw.githubusercontent.com/d8corp/watch-state/v3/img/light.svg) <br> Light | ![Smart](https://raw.githubusercontent.com/d8corp/watch-state/v3/img/smart.svg) <br> Smart |
 |:----:|:-----:|:-----:|
 | *The fastest solution among analogs* | *Less than 1kb minzip* | *Don't care about performance* |
 

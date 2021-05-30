@@ -6,11 +6,11 @@
 [![downloads](https://img.shields.io/npm/dm/watch-state.svg)](https://www.npmjs.com/package/watch-state)
 [![license](https://img.shields.io/npm/l/watch-state)](https://github.com/d8corp/watch-state/blob/master/LICENSE)
 [![tests](https://github.com/d8corp/watch-state/workflows/tests/badge.svg)](https://d8corp.github.io/watch-state/coverage/lcov-report/)  
-The best state management system.
+CANT inc. state management system.
 
 | ![Fast](https://raw.githubusercontent.com/d8corp/watch-state/v3/img/fast.svg) <br> Fast | ![Light](https://raw.githubusercontent.com/d8corp/watch-state/v3/img/light.svg) <br> Light | ![Smart](https://raw.githubusercontent.com/d8corp/watch-state/v3/img/smart.svg) <br> Smart |
 |:----:|:-----:|:-----:|
-| *The fastest solution among analogs* | *Less than 1kb minzip* | *Don't care about performance* |
+| &nbsp; &nbsp; One of the fastest &nbsp; &nbsp; | &nbsp; Less than 1kb minzip &nbsp; | Stressless architecture |
 
 [![stars](https://img.shields.io/github/stars/d8corp/watch-state?style=social)](https://github.com/d8corp/watch-state/stargazers)
 [![watchers](https://img.shields.io/github/watchers/d8corp/watch-state?style=social)](https://github.com/d8corp/watch-state/watchers)
@@ -29,7 +29,7 @@ The best state management system.
 |:-------:|:------:|:------:|:-----:|
 | 87+     | 90+    | 9+     | 62+   |
 
-*You can transpile it to support old browsers, but the performance be decreased.*
+*You can transpile it supporting old browsers, but the performance decreases.*
 
 ### Installation
 npm

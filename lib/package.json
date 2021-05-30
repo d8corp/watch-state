@@ -1,11 +1,17 @@
 {
   "name": "watch-state",
-  "version": "2.0.2",
-  "description": "The simplest watcher for your state",
+  "version": "3.0.0",
+  "description": "CANT inc. state management system.",
+  "author": "Mikhail Lysikov <d8corp@mail.ru>",
+  "license": "MIT",
   "main": "index.js",
   "module": "index.es6.js",
   "jsnext:main": "index.es6.js",
   "types": "index.d.ts",
+  "homepage": "https://github.com/d8corp/watch-state",
+  "bugs": {
+    "url": "https://github.com/d8corp/watch-state/issues"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/d8corp/watch-state.git"
@@ -21,11 +27,5 @@
     "observe",
     "observable",
     "front-end"
-  ],
-  "author": "Mikhail Lysikov <d8corp@mail.ru>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/d8corp/watch-state/issues"
-  },
-  "homepage": "https://github.com/d8corp/watch-state"
+  ]
 }

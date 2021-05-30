@@ -1,4 +1,11 @@
 # Changelog
+## v3.0
+### v3.0.0 [![30.05.2021](https://img.shields.io/date/1622401326)](https://github.com/d8corp/watch-state/tree/v3.0.0)
+- reduced utils, use [@watch-state/utils](https://github.com/d8corp/watch-state-utils)
+- reduced decorators, use [@watch-state/decorators](https://github.com/d8corp/watch-state-decorators)
+- changed `destructor` to `destroy`
+- added `Event` class
+- deep refactoring
 ## v2.0
 To migrate from the first version please:
  - update to `2.0.0-migration`

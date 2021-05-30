@@ -16,13 +16,13 @@ The best state management system.
 
 `Desktop`
 
-| Firefox | Chrome | Safari | Opera | Edge |
+| <img src="https://cdn.worldvectorlogo.com/logos/firefox-3.svg" width="18" valign="top"> Firefox | <img src="https://cdn.worldvectorlogo.com/logos/chrome-7.svg" width="18" valign="top"> Chrome | <img src="https://cdn.worldvectorlogo.com/logos/safari-3.svg" width="18" valign="top"> Safari | <img src="https://cdn.worldvectorlogo.com/logos/opera-2.svg" width="18" valign="top"> Opera | <img src="https://cdn.worldvectorlogo.com/logos/microsoft-edge-1.svg" width="18" valign="top"> Edge |
 |:-------:|:------:|:------:|:-----:|:----:|
 | 45+     | 49+    | 9+     | 36+   | 13+  |
 
 `Mobile`
 
-| Firefox | Chrome | Safari | Opera |
+| <img src="https://cdn.worldvectorlogo.com/logos/firefox-3.svg" width="18" valign="top"> Firefox | <img src="https://cdn.worldvectorlogo.com/logos/chrome-7.svg" width="18" valign="top"> Chrome | <img src="https://cdn.worldvectorlogo.com/logos/safari-3.svg" width="18" valign="top"> Safari | <img src="https://cdn.worldvectorlogo.com/logos/opera-2.svg" width="18" valign="top"> Opera |
 |:-------:|:------:|:------:|:-----:|
 | 87+     | 90+    | 9+     | 62+   |
 

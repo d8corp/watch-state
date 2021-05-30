@@ -208,6 +208,32 @@ You can use `destroy` and `onDestroy` like you do it on a watcher.
 ```typescript
 surname.destroy()
 ```
+The computing will be triggered only when a state inside the cache will be changed. So you can modify data only when it's needed.
+```typescript
+const list = new State(['foo', 'bar', 'baz'])
+
+const sortedList = new Cache(() => {
+  console.log('computing')
+  return [...list.value].sort()
+})
+// nothing happens
+
+const value = sortedList.value
+// console.log('computing')
+
+console.log(sortedList.value)
+// console.log(['bar', 'baz', 'foo'])
+
+console.log(value === sortedList.value)
+// console.log(true)
+
+list.value = ['b', 'c', 'a']
+// nothing happens
+
+console.log(sortedList.value)
+// console.log('computing')
+// console.log(['a', 'b', 'c'])
+```
 ##### Event:
 Use `Event` when you change several states to run their watchers after the event finished.
 ```javascript

@@ -1,6 +1,6 @@
 # Changelog
 ## v3.0
-### v3.0.0 [![xx.xx.xxxx](https://img.shields.io/date/xxx)](https://github.com/d8corp/watch-state/tree/v3.0.0)
+### v3.0.0 [![30.05.2021](https://img.shields.io/date/1622401326)](https://github.com/d8corp/watch-state/tree/v3.0.0)
 - reduced utils, use [@watch-state/utils](https://github.com/d8corp/watch-state-utils)
 - reduced decorators, use [@watch-state/decorators](https://github.com/d8corp/watch-state-decorators)
 - changed `destructor` to `destroy`

@@ -11,15 +11,12 @@ export class Watch {
   static get activeWatcher () {
     return activeWatcher
   }
-  static set activeWatcher (watcher: Watch) {
-    activeWatcher = watcher
-  }
   destructors: Destructor[]
   private ran: boolean = false
 
   constructor (private readonly watcher: Watcher, freeParent?: boolean, freeUpdate?: boolean) {
-    if (!freeParent && Watch.activeWatcher) {
-      Watch.activeWatcher.onDestroy(() => this.destroy())
+    if (!freeParent && activeWatcher) {
+      activeWatcher.onDestroy(() => this.destroy())
     }
     if (!freeUpdate) {
       this.update()

@@ -193,4 +193,9 @@ describe('Cache', () => {
 
     expect(test.value).toBe(1)
   })
+  test('empty clear', () => {
+    const test = new Cache(() => {})
+
+    expect(() => test.clear()).not.toThrow()
+  })
 })

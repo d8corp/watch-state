@@ -4,13 +4,6 @@ import Cache from 'src/Cache'
 let activeEvent: Event
 
 export class Event {
-  static get activeEvent () {
-    return activeEvent
-  }
-  static set activeEvent (event: Event) {
-    activeEvent = event
-  }
-
   watchers: Set<Watch | Cache>
   activeWatchers: Set<Watch | Cache>
 

@@ -1,5 +1,7 @@
 # Changelog
 ## v3.0
+### v3.0.1 [![01.06.2021](https://img.shields.io/date/1622501057)](https://github.com/d8corp/watch-state/tree/v3.0.1)
+- updated readme
 ### v3.0.0 [![30.05.2021](https://img.shields.io/date/1622401326)](https://github.com/d8corp/watch-state/tree/v3.0.0)
 - reduced utils, use [@watch-state/utils](https://github.com/d8corp/watch-state-utils)
 - reduced decorators, use [@watch-state/decorators](https://github.com/d8corp/watch-state-decorators)

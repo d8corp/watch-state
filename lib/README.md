@@ -10,7 +10,7 @@ CANT inc. state management system.
 
 | ![Fast](https://raw.githubusercontent.com/d8corp/watch-state/v3/img/fast.svg) <br> Fast | ![Light](https://raw.githubusercontent.com/d8corp/watch-state/v3/img/light.svg) <br> Light | ![Smart](https://raw.githubusercontent.com/d8corp/watch-state/v3/img/smart.svg) <br> Smart |
 |:----:|:-----:|:-----:|
-| &nbsp; &nbsp; One of the fastest &nbsp; &nbsp; | &nbsp; Less than 1kb minzip &nbsp; | Stressless architecture |
+| &nbsp; One of the fastest &nbsp; | Less than 1kb minzip | Steady architecture |
 
 [![stars](https://img.shields.io/github/stars/d8corp/watch-state?style=social)](https://github.com/d8corp/watch-state/stargazers)
 [![watchers](https://img.shields.io/github/watchers/d8corp/watch-state?style=social)](https://github.com/d8corp/watch-state/watchers)
@@ -181,8 +181,8 @@ state.value++
 You can cache computed values.  
 The watcher will not be triggered while new result is the same.
 ```javascript
-const name = new State('Mike')
-const surname = new State('Deight')
+const name = new State('Foo')
+const surname = new State('Bar')
 
 const fullName = new Cache(() => (
   `${name.value} ${surname.value[0]}`
@@ -191,13 +191,13 @@ const fullName = new Cache(() => (
 new Watch(() => {
   console.log(fullName.value)
 })
-// console.log('Mike D')
+// console.log('Foo B')
 
-surname.value = 'D8'
+surname.value = 'Baz'
 // nothing happens
 
-surname.value = 'Mighty'
-// console.log('Mike M')
+surname.value = 'Quux'
+// console.log('Foo Q')
 ```
 You can force update the cache by `update` method.
 ```typescript
@@ -237,20 +237,20 @@ console.log(sortedList.value)
 ##### Event:
 Use `Event` when you change several states to run their watchers after the event finished.
 ```javascript
-const name = new State('Mike')
-const surname = new State('Deight')
+const name = new State('Foo')
+const surname = new State('Bar')
 const event = new Event()
 
 new Watch(() => {
   console.log(name.value, surname.value)
 })
-// console.log('Mike', 'Deight')
+// console.log('Foo', 'Bar')
 
 event.start()
-name.value = newName
-surname.value = newSurname
+name.value = 'Baz'
+surname.value = 'Boo'
 event.end()
-// console.log('Michael', 'Mighty')
+// console.log('Baz', 'Boo')
 ```
 ##### Typescript:
 Generic of `State`

@@ -3,6 +3,7 @@ import {Watch, State, Cache, Event} from 'src'
 import {autorun, observable, computed, reaction, action, configure} from 'mobx'
 import {createEvent as ce, createStore as cs} from 'effector'
 import mazzard from 'mazzard'
+import {createStoreon} from 'storeon'
 
 import {createStore} from 'redux'
 
@@ -196,6 +197,21 @@ perfocode('speed.test', () => {
       while (counter.getState()) {
         decrement()
       }
+    })
+    test('storeon', () => {
+      const count = store => {
+        store.on('@init', () => ({ count: COUNT }))
+        store.on('dec', ({ count }) => ({ count: count - 1 }))
+      }
+      const store = createStoreon<any>([count])
+
+      const dispatch = store.on('dec', () => {})
+
+      while (store.get().count) {
+        store.dispatch('dec')
+      }
+
+      dispatch()
     })
   })
 }, 300)

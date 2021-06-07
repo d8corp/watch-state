@@ -1,4 +1,4 @@
-import Event from 'src/Event';
+import Event from '../Event';
 export declare class State<T = any> extends Event {
     state?: T;
     constructor(state?: T);

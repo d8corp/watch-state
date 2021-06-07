@@ -1,4 +1,4 @@
-import Watch, { Watcher } from 'src/Watch';
+import Watch, { Watcher } from '../Watch';
 export declare class Cache<V = any> extends Watch {
     private updated;
     private _state;

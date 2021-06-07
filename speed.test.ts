@@ -1,5 +1,5 @@
 import perfocode, {describe, test} from 'perfocode'
-import {Watch, State, Cache, Event} from 'src'
+import {Watch, State, Cache, Event} from './src'
 import {autorun, observable, computed, reaction, action, configure} from 'mobx'
 import {createEvent as ce, createStore as cs} from 'effector'
 import mazzard from 'mazzard'
@@ -115,9 +115,11 @@ perfocode('speed.test', () => {
     // watch-state
     const WSState = new State(0)
     const watcher = new Watch(() => WSState.value)
+
     // mobx
     const MXState = observable.box(0)
     const disposer = autorun(() => MXState.get())
+
     // redux
     function reducer (state, action) {
       if (action.type === 'INCREMENT') {
@@ -127,10 +129,24 @@ perfocode('speed.test', () => {
     }
     const store = createStore(reducer, {count: 0})
     const destroy = store.subscribe(() => store.getState().count)
+
     // effector
     const increment = ce()
     const counter = cs(0).on(increment, state => state + 1)
     counter.watch(() => {})
+
+    // mazzard
+    const MAState = mazzard({value: 0})
+    const MAWatch = mazzard(() => MAState.value)
+
+    // storeon
+    const count = store => {
+      store.on('@init', () => ({ count: 0 }))
+      store.on('inc', ({ count }) => ({ count: count + 1 }))
+    }
+    const SStore = createStoreon<any>([count])
+
+    const SDispatch = SStore.on('inc', () => {})
 
     test('watch-state', () => {
       WSState.value++
@@ -148,9 +164,19 @@ perfocode('speed.test', () => {
       increment()
     })
 
+    test('mazzard', () => {
+      MAState.value++
+    })
+
+    test('storeon', () => {
+      SStore.dispatch('inc')
+    })
+
     watcher.destroy()
     disposer()
     destroy()
+    MAWatch()
+    SDispatch()
   })
   describe('complex', () => {
     const COUNT = 1000

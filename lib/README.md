@@ -266,7 +266,7 @@ new Cache<string>(() => false)
 // error, target of cache should return string
 ```
 ## Performance
-You can check the performance test with **MobX**, **effector** and **Redux**.
+You can check the performance test with **[MobX](https://mobx.js.org/)**, **[Effector](https://effector.dev/)**, **[Storeon](https://www.npmjs.com/package/storeon)**, **[Mazzard](https://www.npmjs.com/package/mazzard)** and **[Redux](https://redux.js.org/)**.
 Clone the repo, install packages and run this command
 ```shell
 npm run speed

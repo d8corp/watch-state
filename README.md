@@ -8,6 +8,8 @@
 [![tests](https://github.com/d8corp/watch-state/workflows/tests/badge.svg)](https://d8corp.github.io/watch-state/coverage/lcov-report/)  
 CANT inc. state management system.
 
+&nbsp;  
+
 | ![Fast](https://raw.githubusercontent.com/d8corp/watch-state/v3/img/fast.svg) <br> Fast | ![Light](https://raw.githubusercontent.com/d8corp/watch-state/v3/img/light.svg) <br> Light | ![Smart](https://raw.githubusercontent.com/d8corp/watch-state/v3/img/smart.svg) <br> Smart |
 |:----:|:-----:|:-----:|
 | &nbsp; One of the fastest &nbsp; | Less than 1kb minzip | Steady architecture |

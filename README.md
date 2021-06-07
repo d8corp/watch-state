@@ -12,6 +12,8 @@ CANT inc. state management system.
 |:----:|:-----:|:-----:|
 | &nbsp; One of the fastest &nbsp; | Less than 1kb minzip | Steady architecture |
 
+&nbsp;  
+
 [![stars](https://img.shields.io/github/stars/d8corp/watch-state?style=social)](https://github.com/d8corp/watch-state/stargazers)
 [![watchers](https://img.shields.io/github/watchers/d8corp/watch-state?style=social)](https://github.com/d8corp/watch-state/watchers)
 

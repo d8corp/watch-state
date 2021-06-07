@@ -1,4 +1,4 @@
-import {Watch, State, Event} from 'src'
+import {Watch, State, Event} from '..'
 
 describe('Event', () => {
   test('works', () => {

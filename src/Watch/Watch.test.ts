@@ -1,4 +1,4 @@
-import {Watch} from 'src'
+import {Watch} from '..'
 
 describe('Watch', () => {
   describe('constructor', () => {

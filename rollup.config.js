@@ -1,9 +1,10 @@
 import typescript from 'rollup-plugin-typescript2'
 import pkg from './package.json'
 import {terser} from 'rollup-plugin-terser'
+import glob from 'glob'
 
 export default [{
-  input: 'src/index.ts',
+  input: glob.sync('{src/index.ts,src/**/index.ts}'),
   output: {
     dir: 'lib',
     entryFileNames: '[name].js',
@@ -22,7 +23,7 @@ export default [{
     })
   ]
 }, {
-  input: 'src/index.ts',
+  input: glob.sync('{src/index.ts,src/**/index.ts}'),
   output: {
     dir: 'lib',
     entryFileNames: '[name]' + pkg.module.replace('index', ''),

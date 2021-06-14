@@ -33,9 +33,8 @@ export class Event {
   end () {
     if (activeEvent === this) {
       for (const watcher of this.activeWatchers) {
-        if (watcher instanceof Cache) {
-          watcher.clear()
-        }
+        // @ts-ignore
+        watcher.clear?.()
       }
 
       for (const watcher of this.activeWatchers) {

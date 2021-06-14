@@ -8,9 +8,13 @@
 [![tests](https://github.com/d8corp/watch-state/workflows/tests/badge.svg)](https://d8corp.github.io/watch-state/coverage/lcov-report/)  
 CANT inc. state management system.
 
+&nbsp;  
+
 | ![Fast](https://raw.githubusercontent.com/d8corp/watch-state/v3/img/fast.svg) <br> Fast | ![Light](https://raw.githubusercontent.com/d8corp/watch-state/v3/img/light.svg) <br> Light | ![Smart](https://raw.githubusercontent.com/d8corp/watch-state/v3/img/smart.svg) <br> Smart |
 |:----:|:-----:|:-----:|
 | &nbsp; One of the fastest &nbsp; | Less than 1kb minzip | Steady architecture |
+
+&nbsp;  
 
 [![stars](https://img.shields.io/github/stars/d8corp/watch-state?style=social)](https://github.com/d8corp/watch-state/stargazers)
 [![watchers](https://img.shields.io/github/watchers/d8corp/watch-state?style=social)](https://github.com/d8corp/watch-state/watchers)
@@ -266,7 +270,7 @@ new Cache<string>(() => false)
 // error, target of cache should return string
 ```
 ## Performance
-You can check the performance test with **[MobX](https://mobx.js.org/)**, **[Effector](https://effector.dev/)**, **[Storeon](https://www.npmjs.com/package/storeon)**, **[Mazzard](https://www.npmjs.com/package/mazzard)** and **[Redux](https://redux.js.org/)**.
+You can check the performance test with **[MobX](https://www.npmjs.com/package/mobx)**, **[Effector](https://www.npmjs.com/package/effector)**, **[Storeon](https://www.npmjs.com/package/storeon)**, **[Mazzard](https://www.npmjs.com/package/mazzard)** and **[Redux](https://www.npmjs.com/package/redux)**.
 Clone the repo, install packages and run this command
 ```shell
 npm run speed

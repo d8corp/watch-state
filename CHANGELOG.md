@@ -1,5 +1,7 @@
 # Changelog
 ## v3.0
+### v3.0.4 [![14.06.2021](https://img.shields.io/date/1623676637)](https://github.com/d8corp/watch-state/tree/v3.0.4)
+- fixed circular dependency bug
 ### v3.0.3 [![07.06.2021](https://img.shields.io/date/1623095628)](https://github.com/d8corp/watch-state/tree/v3.0.3)
 - fixed a bug of importing
 ### v3.0.2 [![07.06.2021](https://img.shields.io/date/1623091679)](https://github.com/d8corp/watch-state/tree/v3.0.2)

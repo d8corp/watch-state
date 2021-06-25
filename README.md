@@ -11,7 +11,7 @@
 <br>
 
 <center>
-  <table>
+  <table style="max-width: 436px">
     <col width="140" align="center">
     <tr><td align="center">
       <img src="https://raw.githubusercontent.com/d8corp/watch-state/v3/img/fast.svg" alt="watch-state fast">

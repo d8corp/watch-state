@@ -32,13 +32,15 @@ export class Event {
 
   end () {
     if (activeEvent === this) {
-      for (const watcher of this.activeWatchers) {
-        // @ts-ignore
-        watcher.clear?.()
-      }
+      if (this.activeWatchers) {
+        for (const watcher of this.activeWatchers) {
+          // @ts-ignore
+          watcher.clear?.()
+        }
 
-      for (const watcher of this.activeWatchers) {
-        watcher.update()
+        for (const watcher of this.activeWatchers) {
+          watcher.update()
+        }
       }
 
       activeEvent = undefined

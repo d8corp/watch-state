@@ -46,4 +46,9 @@ describe('Event', () => {
     expect(log.length).toBe(2)
     expect(log[1]).toBe(2)
   })
+  test('empty event', () => {
+    const event = new Event()
+    event.start()
+    event.end()
+  })
 })

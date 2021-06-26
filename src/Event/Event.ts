@@ -36,6 +36,8 @@ export class Event {
   end () {
     if (activeEvent === this) {
       if (this.activeWatchers) {
+        Watch.activeWatcher = this.activeWatcher
+        activeEvent = undefined
         for (const watcher of this.activeWatchers) {
           // @ts-ignore
           watcher.clear?.()
@@ -45,9 +47,6 @@ export class Event {
           watcher.update()
         }
       }
-
-      Watch.activeWatcher = this.activeWatcher
-      activeEvent = undefined
     }
   }
 

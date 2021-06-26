@@ -1,3 +1,4 @@
+<br>
 <p align="center">
   <a href="https://github.com/d8corp/watch-state">
     <img width="200" height="200" src="https://raw.githubusercontent.com/d8corp/watch-state/v3/img/logo.svg" alt="watch-state logo by Mikhail Lysikov">
@@ -55,15 +56,18 @@
   <a href="https://www.npmtrends.com/watch-state" target="_blank">
     <img src="https://img.shields.io/npm/dm/watch-state.svg" alt="watch-state minzipped size">
   </a>
+  <a href="https://github.com/d8corp/watch-state/blob/master/LICENSE" target="_blank">
+    <img src="https://img.shields.io/npm/l/watch-state" alt="watch-state license">
+  </a>
   <a href="https://changelogs.xyz/watch-state" target="_blank">
-    <img src="https://img.shields.io/badge/Changelog-➤-brightgreen" alt="watch-state minzipped size">
+    <img src="https://img.shields.io/badge/Changelog-⋮-brightgreen" alt="watch-state minzipped size">
   </a>
   <a href="https://d8corp.github.io/watch-state/coverage/lcov-report" target="_blank">
     <img src="https://github.com/d8corp/watch-state/workflows/tests/badge.svg" alt="watch-state minzipped size">
   </a>
 </div>
+<br>
 
-## Overview
 `watch-state` is a fast, tiny and smart state management system.
 Based on simplest principles: you have a **state**, the state can be **changed**, and you can **have** a **reaction** on it.
 
@@ -352,11 +356,10 @@ You can use an event inside a watcher when you do not want to react on states
 ```typescript jsx
 const count = new State(0)
 const event = new Event()
-const log = []
 
 new Watch(() => {
   event.start()
-  log.push(count.value++)
+  console.log(count.value++)
   event.end()
 })
 ```

@@ -10,44 +10,76 @@
 
 <br>
 
-<center>
-  <table style="max-width: 436px">
+<div align="center">
+  <table>
     <col width="140" align="center">
     <tr><td align="center">
-      <img src="https://raw.githubusercontent.com/d8corp/watch-state/v3/img/fast.svg" alt="watch-state fast">
+      <a href="https://raw.githubusercontent.com/d8corp/watch-state/v3/img/speed.test.png" target="_blank">
+        <img src="https://raw.githubusercontent.com/d8corp/watch-state/v3/img/fast.svg" alt="watch-state fast">
+      </a>
       <br>
       <b>Fast</b>
       <br>
       One of the fastest
     </td>
     <td align="center"><span>
-      <img src="https://raw.githubusercontent.com/d8corp/watch-state/v3/img/light.svg" alt="watch-state fast">
+      <a href="https://bundlephobia.com/result?p=watch-state" target="_blank">
+        <img src="https://raw.githubusercontent.com/d8corp/watch-state/v3/img/light.svg" alt="watch-state Light">
+      </a>
       <br>
-      <b>Fast</b>
+      <b>Light</b>
       <br>
       Less than 1kb minzip
     </span></td>
     <td align="center"><span>
-      <img src="https://raw.githubusercontent.com/d8corp/watch-state/v3/img/smart.svg" alt="watch-state fast">
+      <a href="https://d8corp.github.io/watch-state/coverage/lcov-report/" target="_blank">
+        <img src="https://raw.githubusercontent.com/d8corp/watch-state/v3/img/smart.svg" alt="watch-state fast">
+      </a>
       <br>
-      <b>Fast</b>
+      <b>Smart</b>
       <br>
       Steady architecture
     </span></td></tr>
   </table>
-</center>
+</div>
 
 <br>
 
-[![NPM](https://img.shields.io/npm/v/watch-state.svg)](https://www.npmjs.com/package/watch-state)
-[![minzipped size](https://img.shields.io/bundlephobia/minzip/watch-state)](https://bundlephobia.com/result?p=watch-state)
-[![downloads](https://img.shields.io/npm/dm/watch-state.svg)](https://www.npmtrends.com/watch-state)
-[![license](https://img.shields.io/npm/l/watch-state)](https://github.com/d8corp/watch-state/blob/master/LICENSE)
-[![tests](https://img.shields.io/badge/Changelog-➤-brightgreen)](https://changelogs.xyz/watch-state)
-[![tests](https://github.com/d8corp/watch-state/workflows/tests/badge.svg)](https://d8corp.github.io/watch-state/coverage/lcov-report/)
+<div align="center">
+  <a href="https://www.npmjs.com/package/watch-state" target="_blank">
+    <img src="https://img.shields.io/npm/v/watch-state.svg" alt="watch-state npm">
+  </a>
+  <a href="https://bundlephobia.com/result?p=watch-state" target="_blank">
+    <img src="https://img.shields.io/bundlephobia/minzip/watch-state" alt="watch-state minzipped size">
+  </a>
+  <a href="https://www.npmtrends.com/watch-state" target="_blank">
+    <img src="https://img.shields.io/npm/dm/watch-state.svg" alt="watch-state minzipped size">
+  </a>
+  <a href="https://changelogs.xyz/watch-state" target="_blank">
+    <img src="https://img.shields.io/badge/Changelog-➤-brightgreen" alt="watch-state minzipped size">
+  </a>
+  <a href="https://d8corp.github.io/watch-state/coverage/lcov-report" target="_blank">
+    <img src="https://github.com/d8corp/watch-state/workflows/tests/badge.svg" alt="watch-state minzipped size">
+  </a>
+</div>
 
 ## Overview
-`watch-state` is a state management system.
+`watch-state` is a fast, tiny and smart state management system.
+Based on simplest principles: you have a **state**, the state can be **changed**, and you can **have** a **reaction** on it.
+
+**watch-state** inspired by **async-await** pattern, you can image it like this:
+```typescript jsx
+state count = 0
+
+watch {
+  console.log(count)
+}
+```
+
+You can create a **tree of watchers** and then remove all of them by one method run.
+
+**No limits**, you can do every you want with it.
+You can get a loop or an exception, but it's only up to you (*maybe you want to get a loop*).
 
 [![stars](https://img.shields.io/github/stars/d8corp/watch-state?style=social)](https://github.com/d8corp/watch-state/stargazers)
 [![watchers](https://img.shields.io/github/watchers/d8corp/watch-state?style=social)](https://github.com/d8corp/watch-state/watchers)

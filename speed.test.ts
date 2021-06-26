@@ -133,7 +133,7 @@ perfocode('speed.test', () => {
     // effector
     const increment = ce()
     const counter = cs(0).on(increment, state => state + 1)
-    counter.watch(() => {})
+    counter.watch(count => count)
 
     // mazzard
     const MAState = mazzard({value: 0})
@@ -146,7 +146,7 @@ perfocode('speed.test', () => {
     }
     const SStore = createStoreon<any>([count])
 
-    const SDispatch = SStore.on('inc', () => {})
+    const SDispatch = SStore.on('inc', ({count}) => count)
 
     test('watch-state', () => {
       WSState.value++

@@ -1,41 +1,106 @@
-&nbsp; &nbsp; &nbsp; [![watch-state](https://raw.githubusercontent.com/d8corp/watch-state/v3/img/logo.svg)](https://github.com/d8corp/watch-state)
+<p align="center">
+  <a href="https://github.com/d8corp/watch-state">
+    <img src="https://raw.githubusercontent.com/d8corp/watch-state/v3/img/logo.svg" alt="watch-state logo by Mikhail Lysikov">
+  </a>
+</p>
 
-# watch-state
-[![NPM](https://img.shields.io/npm/v/watch-state.svg)](https://github.com/d8corp/watch-state/blob/master/CHANGELOG.md)
-[![minzipped size](https://img.shields.io/bundlephobia/minzip/watch-state)](https://bundlephobia.com/result?p=watch-state)
-[![downloads](https://img.shields.io/npm/dm/watch-state.svg)](https://www.npmjs.com/package/watch-state)
-[![license](https://img.shields.io/npm/l/watch-state)](https://github.com/d8corp/watch-state/blob/master/LICENSE)
-[![tests](https://github.com/d8corp/watch-state/workflows/tests/badge.svg)](https://d8corp.github.io/watch-state/coverage/lcov-report/)  
-CANT inc. state management system.
+<h1 align="center">watch-state</h1>
 
-&nbsp;  
+<p align="center">CANT inc. state management system.</p>
 
-| ![Fast](https://raw.githubusercontent.com/d8corp/watch-state/v3/img/fast.svg) <br> Fast | ![Light](https://raw.githubusercontent.com/d8corp/watch-state/v3/img/light.svg) <br> Light | ![Smart](https://raw.githubusercontent.com/d8corp/watch-state/v3/img/smart.svg) <br> Smart |
-|:----:|:-----:|:-----:|
-| &nbsp; One of the fastest &nbsp; | Less than 1kb minzip | Steady architecture |
+<br>
 
-&nbsp;  
+<div align="center">
+  <table>
+    <col width="140" align="center">
+    <tr><td align="center">
+      <a href="https://raw.githubusercontent.com/d8corp/watch-state/v3/img/speed.test.png" target="_blank">
+        <img src="https://raw.githubusercontent.com/d8corp/watch-state/v3/img/fast.svg" alt="watch-state fast">
+      </a>
+      <br>
+      <b>Fast</b>
+      <br>
+      One of the fastest
+    </td>
+    <td align="center"><span>
+      <a href="https://bundlephobia.com/result?p=watch-state" target="_blank">
+        <img src="https://raw.githubusercontent.com/d8corp/watch-state/v3/img/light.svg" alt="watch-state Light">
+      </a>
+      <br>
+      <b>Light</b>
+      <br>
+      Less than 1kb minzip
+    </span></td>
+    <td align="center"><span>
+      <a href="https://d8corp.github.io/watch-state/coverage/lcov-report/" target="_blank">
+        <img src="https://raw.githubusercontent.com/d8corp/watch-state/v3/img/smart.svg" alt="watch-state fast">
+      </a>
+      <br>
+      <b>Smart</b>
+      <br>
+      Steady architecture
+    </span></td></tr>
+  </table>
+</div>
+
+<br>
+
+<div align="center">
+  <a href="https://www.npmjs.com/package/watch-state" target="_blank">
+    <img src="https://img.shields.io/npm/v/watch-state.svg" alt="watch-state npm">
+  </a>
+  <a href="https://bundlephobia.com/result?p=watch-state" target="_blank">
+    <img src="https://img.shields.io/bundlephobia/minzip/watch-state" alt="watch-state minzipped size">
+  </a>
+  <a href="https://www.npmtrends.com/watch-state" target="_blank">
+    <img src="https://img.shields.io/npm/dm/watch-state.svg" alt="watch-state minzipped size">
+  </a>
+  <a href="https://changelogs.xyz/watch-state" target="_blank">
+    <img src="https://img.shields.io/badge/Changelog-➤-brightgreen" alt="watch-state minzipped size">
+  </a>
+  <a href="https://d8corp.github.io/watch-state/coverage/lcov-report" target="_blank">
+    <img src="https://github.com/d8corp/watch-state/workflows/tests/badge.svg" alt="watch-state minzipped size">
+  </a>
+</div>
+
+## Overview
+`watch-state` is a fast, tiny and smart state management system.
+Based on simplest principles: you have a **state**, the state can be **changed**, and you can **have** a **reaction** on it.
+
+**watch-state** inspired by **async-await** pattern, you can image it like this:
+```typescript jsx
+state count = 0
+
+watch {
+  console.log(count)
+}
+```
+
+You can create a **tree of watchers** and then remove all of them by one method run.
+
+**No limits**, you can do every you want with it.
+You can get a loop or an exception, but it's only up to you (*maybe you want to get a loop*).
 
 [![stars](https://img.shields.io/github/stars/d8corp/watch-state?style=social)](https://github.com/d8corp/watch-state/stargazers)
 [![watchers](https://img.shields.io/github/watchers/d8corp/watch-state?style=social)](https://github.com/d8corp/watch-state/watchers)
 
-### Browser supports
+## Browser supports
 
-`Desktop`
+### Desktop
 
-| <img src="https://cdn.worldvectorlogo.com/logos/firefox-3.svg" width="18" valign="middle"> Firefox | <img src="https://cdn.worldvectorlogo.com/logos/chrome-7.svg" width="18" valign="middle"> Chrome | <img src="https://cdn.worldvectorlogo.com/logos/safari-3.svg" width="18" valign="middle"> Safari | <img src="https://cdn.worldvectorlogo.com/logos/opera-2.svg" width="18" valign="middle"> Opera | <img src="https://cdn.worldvectorlogo.com/logos/microsoft-edge-1.svg" width="18" valign="middle"> Edge |
+| <img src="https://cdn.worldvectorlogo.com/logos/firefox.svg" width="18" valign="middle"> Firefox | <img src="https://cdn.worldvectorlogo.com/logos/chrome.svg" width="18" valign="middle"> Chrome | <img src="https://cdn.worldvectorlogo.com/logos/safari-3.svg" width="18" valign="middle"> Safari | <img src="https://cdn.worldvectorlogo.com/logos/opera-2.svg" width="18" valign="middle"> Opera | <img src="https://cdn.worldvectorlogo.com/logos/microsoft-edge-1.svg" width="18" valign="middle"> Edge |
 |:-------:|:------:|:------:|:-----:|:----:|
 | 45+     | 49+    | 9+     | 36+   | 13+  |
 
-`Mobile`
+### Mobile
 
-| <img src="https://cdn.worldvectorlogo.com/logos/firefox-3.svg" width="18" valign="middle"> Firefox | <img src="https://cdn.worldvectorlogo.com/logos/chrome-7.svg" width="18" valign="middle"> Chrome | <img src="https://cdn.worldvectorlogo.com/logos/safari-3.svg" width="18" valign="middle"> Safari | <img src="https://cdn.worldvectorlogo.com/logos/opera-2.svg" width="18" valign="middle"> Opera |
+| <img src="https://cdn.worldvectorlogo.com/logos/firefox.svg" width="18" valign="middle"> Firefox | <img src="https://cdn.worldvectorlogo.com/logos/chrome.svg" width="18" valign="middle"> Chrome | <img src="https://cdn.worldvectorlogo.com/logos/safari-3.svg" width="18" valign="middle"> Safari | <img src="https://cdn.worldvectorlogo.com/logos/opera-2.svg" width="18" valign="middle"> Opera |
 |:-------:|:------:|:------:|:-----:|
 | 87+     | 90+    | 9+     | 62+   |
 
 *You can transpile it supporting old browsers, but the performance decreases.*
 
-### Installation
+## Install
 npm
 ```shell
 npm i watch-state
@@ -57,8 +122,8 @@ const {
   Event
 } = watchState
 ```
-### Using
-##### Simple example:
+## Usage
+### Simple example:
 You can create an instance of `State` and **watch** it's **value**.
 ```javascript
 import {Watch, State} from 'watch-state'
@@ -74,7 +139,7 @@ count.value++
 count.value++
 // console.log(2)
 ```
-##### Update argument:
+### Update argument:
 You can check if the watching ran first by `update` argument.
 ```javascript
 const count = new State(0)
@@ -90,7 +155,34 @@ count.value++
 count.value++
 // console.log(true, 2)
 ```
-##### Force update of State
+You can watch a state once with `update`
+```typescript jsx
+const count = new State(0)
+
+new Watch(update => {
+  
+  if (!update) {
+
+    // Watch this value
+    count.value
+
+  } else {
+
+    // React on changes
+    console.log('The value was changed')
+
+  }
+
+})
+
+count.value++
+// console.log('The value was changed')
+
+count.value++
+// nothing happenes
+```
+*That's not all you can do with it, more examples come soon*
+### Force update of State
 You can run watchers of a state with `update` method.
 ```typescript
 const count = new State(0)
@@ -103,7 +195,7 @@ new Watch(() => {
 count.update()
 // console.log(0)
 ```
-##### Force update of Watch
+### Force update of Watch
 You can run a watcher even when it's states are not updated.
 ```typescript
 const count = new State(0)
@@ -116,7 +208,7 @@ const watcher = new Watch(() => {
 watcher.update()
 // console.log(0)
 ```
-##### Destroy
+### Destroy
 You can stop watching by `destroy` method of `Watch`.
 ```javascript
 const count = new State(0)
@@ -134,7 +226,7 @@ watcher.destroy()
 count.value++
 // nothing happens
 ```
-##### Watch.onDestroy()
+### Watch.onDestroy()
 You can react on destruction of `Watch` by `onDestroy` method.
 ```javascript
 const watcher = new Watch(() => {})
@@ -154,7 +246,7 @@ const watcher = new Watch(() => {})
 watcher.destroy()
 // console.log('destructor')
 ```
-##### Deep watch:
+### Deep watch:
 You can use `Watch` inside a watcher.
 Each watcher reacts on that states which used only inside it.
 ```javascript
@@ -181,7 +273,7 @@ watching.value = false
 state.value++
 // nothing happens
 ```
-##### Cache:
+### Cache:
 You can cache computed values.  
 The watcher will not be triggered while new result is the same.
 ```javascript
@@ -238,7 +330,7 @@ console.log(sortedList.value)
 // console.log('computing')
 // console.log(['a', 'b', 'c'])
 ```
-##### Event:
+### Event:
 Use `Event` when you change several states to run their watchers after the event finished.
 ```javascript
 const name = new State('Foo')
@@ -256,7 +348,7 @@ surname.value = 'Boo'
 event.end()
 // console.log('Baz', 'Boo')
 ```
-##### Typescript:
+### Typescript:
 Generic of `State`
 ```typescript
 const key = new State<string | number>()

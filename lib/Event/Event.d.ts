@@ -5,7 +5,9 @@ export declare class Event {
     activeWatchers: Set<Watch | Cache>;
     activeWatcher: Watch;
     add(target: Watch | Cache): void;
+    private _start;
     start(): void;
+    private _end;
     end(): void;
     pipe(watcher: Watch | Cache): void;
     update(): void;

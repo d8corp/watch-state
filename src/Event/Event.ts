@@ -22,32 +22,39 @@ export class Event {
     target.onDestroy(() => watchers.delete(target))
   }
 
-  start () {
+  private _start () {
     if (!activeEvent) {
       activeEvent = this
       const {activeWatchers} = this
       this.activeWatchers = this.watchers
       this.watchers = activeWatchers
-      this.activeWatcher = Watch.activeWatcher
-      Watch.activeWatcher = undefined
     }
   }
 
-  end () {
+  start () {
+    this._start()
+    this.activeWatcher = Watch.activeWatcher
+    Watch.activeWatcher = undefined
+  }
+
+  private _end () {
     if (activeEvent === this) {
-      Watch.activeWatcher = this.activeWatcher
       if (this.activeWatchers) {
         for (const watcher of this.activeWatchers) {
           // @ts-ignore
           watcher.clear?.()
         }
-
+        activeEvent = undefined
         for (const watcher of this.activeWatchers) {
           watcher.update()
         }
       }
       activeEvent = undefined
     }
+  }
+  end () {
+    Watch.activeWatcher = this.activeWatcher
+    this._end()
   }
 
   pipe (watcher: Watch | Cache) {
@@ -69,8 +76,8 @@ export class Event {
         activeEvent.pipe(target)
       }
     } else {
-      this.start()
-      this.end()
+      this._start()
+      this._end()
     }
   }
 }

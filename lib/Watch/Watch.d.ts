@@ -7,6 +7,7 @@ export interface Destructor<R = any> {
 export declare class Watch {
     private readonly watcher;
     static get activeWatcher(): Watch;
+    static set activeWatcher(watcher: Watch);
     destructors: Destructor[];
     private ran;
     constructor(watcher: Watcher, freeParent?: boolean, freeUpdate?: boolean);

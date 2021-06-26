@@ -1,4 +1,7 @@
 # Changelog
+## v3.1
+### v3.1.0 [![26.06.2021](https://img.shields.io/date/1624697477)](https://github.com/d8corp/watch-state/tree/v3.1.0)
+- Now `events` ignore watching, so you can use them inside watchers.
 ## v3.0
 ### v3.0.5 [![26.06.2021](https://img.shields.io/date/1624665964)](https://github.com/d8corp/watch-state/tree/v3.0.5)
 - fixed empty event running bug

@@ -51,4 +51,32 @@ describe('Event', () => {
     event.start()
     event.end()
   })
+  test('event loop', () => {
+    const count = new State(0)
+    const event = new Event()
+    const log = []
+
+    new Watch(() => {
+      if (count.value < 5) {
+        event.start()
+        log.push(count.value++)
+        event.end()
+      }
+    })
+
+    expect(log).toEqual([0, 1, 2, 3, 4])
+  })
+  test('set in event', () => {
+    const count = new State(0)
+    const event = new Event()
+    const log = []
+
+    new Watch(() => {
+      event.start()
+      log.push(count.value++)
+      event.end()
+    })
+
+    expect(log).toEqual([0])
+  })
 })

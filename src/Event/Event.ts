@@ -6,6 +6,7 @@ let activeEvent: Event
 export class Event {
   watchers: Set<Watch | Cache>
   activeWatchers: Set<Watch | Cache>
+  activeWatcher: Watch
 
   add (target: Watch | Cache) {
     let {watchers} = this
@@ -27,6 +28,8 @@ export class Event {
       const {activeWatchers} = this
       this.activeWatchers = this.watchers
       this.watchers = activeWatchers
+      this.activeWatcher = Watch.activeWatcher
+      Watch.activeWatcher = undefined
     }
   }
 
@@ -43,6 +46,7 @@ export class Event {
         }
       }
 
+      Watch.activeWatcher = this.activeWatcher
       activeEvent = undefined
     }
   }

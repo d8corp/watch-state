@@ -11,6 +11,9 @@ export class Watch {
   static get activeWatcher () {
     return activeWatcher
   }
+  static set activeWatcher (watcher: Watch) {
+    activeWatcher = watcher
+  }
   destructors: Destructor[]
   private ran: boolean = false
 

@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/d8corp/watch-state">
-    <img src="https://raw.githubusercontent.com/d8corp/watch-state/v3/img/logo.svg" alt="watch-state logo by Mikhail Lysikov">
+    <img width="200" height="200" src="https://raw.githubusercontent.com/d8corp/watch-state/v3/img/logo.svg" alt="watch-state logo by Mikhail Lysikov">
   </a>
 </p>
 
@@ -15,7 +15,7 @@
     <col width="140" align="center">
     <tr><td align="center">
       <a href="https://raw.githubusercontent.com/d8corp/watch-state/v3/img/speed.test.png" target="_blank">
-        <img src="https://raw.githubusercontent.com/d8corp/watch-state/v3/img/fast.svg" alt="watch-state fast">
+        <img width="64" height="64" src="https://raw.githubusercontent.com/d8corp/watch-state/v3/img/fast.svg" alt="watch-state fast">
       </a>
       <br>
       <b>Fast</b>
@@ -24,7 +24,7 @@
     </td>
     <td align="center"><span>
       <a href="https://bundlephobia.com/result?p=watch-state" target="_blank">
-        <img src="https://raw.githubusercontent.com/d8corp/watch-state/v3/img/light.svg" alt="watch-state Light">
+        <img width="64" height="64" src="https://raw.githubusercontent.com/d8corp/watch-state/v3/img/light.svg" alt="watch-state Light">
       </a>
       <br>
       <b>Light</b>
@@ -33,7 +33,7 @@
     </span></td>
     <td align="center"><span>
       <a href="https://d8corp.github.io/watch-state/coverage/lcov-report/" target="_blank">
-        <img src="https://raw.githubusercontent.com/d8corp/watch-state/v3/img/smart.svg" alt="watch-state fast">
+        <img width="64" height="64" src="https://raw.githubusercontent.com/d8corp/watch-state/v3/img/smart.svg" alt="watch-state fast">
       </a>
       <br>
       <b>Smart</b>
@@ -348,6 +348,19 @@ surname.value = 'Boo'
 event.end()
 // console.log('Baz', 'Boo')
 ```
+You can use an event inside a watcher when you do not want to react on states
+```typescript jsx
+const count = new State(0)
+const event = new Event()
+const log = []
+
+new Watch(() => {
+  event.start()
+  log.push(count.value++)
+  event.end()
+})
+```
+*You will get loop without event*
 ### Typescript:
 Generic of `State`
 ```typescript

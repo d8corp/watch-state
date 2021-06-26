@@ -68,8 +68,10 @@
 </div>
 <br>
 
-`watch-state` is a fast, tiny and smart state management system.
-Based on simplest principles: you have a **state**, the state can be **changed**, and you can **have** a **reaction** on it.
+This is a fast, tiny and smart state management system.
+Based on simplest principles: you have a **state**, the state can be **changed**, and you can **watch** for it.
+Was born during working on [innet](https://www.npmjs.com/package/innet).
+
 
 **watch-state** inspired by **async-await** pattern, you can image it like this:
 ```typescript jsx
@@ -80,7 +82,7 @@ watch {
 }
 ```
 
-You can create a **tree of watchers** and then remove all of them by one method run.
+You can create a **tree of watchers** and then remove all of them by one method calling.
 
 **No limits**, you can do every you want with it.
 You can get a loop or an exception, but it's only up to you (*maybe you want to get a loop*).
@@ -388,6 +390,7 @@ I got this results:
 ## Links
 You can find more tools [here](https://www.npmjs.com/search?q=%40watch-state)
 ## Issues
-If you find a bug or have a suggestion, please file an issue on [GitHub](https://github.com/d8corp/watch-state/issues)  
+If you find a bug or have a suggestion, please file an issue on [GitHub](https://github.com/d8corp/watch-state/issues)
+
 [![issues](https://img.shields.io/github/issues-raw/d8corp/watch-state)](https://github.com/d8corp/watch-state/issues)
 

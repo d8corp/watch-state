@@ -1,5 +1,7 @@
 # Changelog
 ## v3.1
+### v3.1.4 [![26.06.2021](https://img.shields.io/date/1624730252)](https://github.com/d8corp/watch-state/tree/v3.1.4)
+- fixed misprint bug of previous release
 ### v3.1.3 [![26.06.2021](https://img.shields.io/date/1624727511)](https://github.com/d8corp/watch-state/tree/v3.1.3)
 - improved using of `events` inside a `watcher`
 ### v3.1.2 [![26.06.2021](https://img.shields.io/date/1624721815)](https://github.com/d8corp/watch-state/tree/v3.1.2)

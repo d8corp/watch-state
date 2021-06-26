@@ -44,7 +44,6 @@ export class Event {
           // @ts-ignore
           watcher.clear?.()
         }
-        activeEvent = undefined
         for (const watcher of this.activeWatchers) {
           watcher.update()
         }

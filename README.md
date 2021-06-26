@@ -356,11 +356,10 @@ You can use an event inside a watcher when you do not want to react on states
 ```typescript jsx
 const count = new State(0)
 const event = new Event()
-const log = []
 
 new Watch(() => {
   event.start()
-  log.push(count.value++)
+  console.log(count.value++)
   event.end()
 })
 ```

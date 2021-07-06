@@ -69,7 +69,7 @@
 <br>
 
 This is a fast, tiny and smart state management system.
-Based on simplest principles: you have a **state**, the state can be **changed**, and you can **watch** for it.
+Based on simplest principles: you have a **state** and you can **watch** for the state changes.
 Was born during working on [innet](https://www.npmjs.com/package/innet).
 
 
@@ -81,11 +81,6 @@ watch {
   console.log(count)
 }
 ```
-
-You can create a **tree of watchers** and then remove all of them by one method calling.
-
-**No limits**, you can do every you want with it.
-You can get a loop or an exception, but it's only up to you (*maybe you want to get a loop*).
 
 [![stars](https://img.shields.io/github/stars/d8corp/watch-state?style=social)](https://github.com/d8corp/watch-state/stargazers)
 [![watchers](https://img.shields.io/github/watchers/d8corp/watch-state?style=social)](https://github.com/d8corp/watch-state/watchers)
@@ -161,7 +156,7 @@ count.value++
 count.value++
 // console.log(true, 2)
 ```
-You can watch a state once with `update`
+As example, you can watch a state once
 ```typescript jsx
 const count = new State(0)
 
@@ -187,7 +182,7 @@ count.value++
 count.value++
 // nothing happenes
 ```
-*That's not all you can do with it, more examples come soon*
+
 ### Force update of State
 You can run watchers of a state with `update` method.
 ```typescript
@@ -280,7 +275,7 @@ state.value++
 // nothing happens
 ```
 ### Cache:
-You can cache computed values.  
+You can cache computed state.  
 The watcher will not be triggered while new result is the same.
 ```javascript
 const name = new State('Foo')
@@ -303,12 +298,14 @@ surname.value = 'Quux'
 ```
 You can force update the cache by `update` method.
 ```typescript
-surname.update()
-// console.log('Mike M')
+fullName.update()
+// console.log('Foo Q')
 ```
+> Cache will be immediately updated only if a watcher looks after the cache.
+
 You can use `destroy` and `onDestroy` like you do it on a watcher.
 ```typescript
-surname.destroy()
+fullName.destroy()
 ```
 The computing will be triggered only when a state inside the cache will be changed. So you can modify data only when it's needed.
 ```typescript
@@ -385,8 +382,8 @@ Clone the repo, install packages and run this command
 ```shell
 npm run speed
 ```
-I got this results:  
-![test](https://raw.githubusercontent.com/d8corp/watch-state/v3/img/speed.test.png)
+I got this results with Node `v10.20.0`:  
+![test](https://raw.githubusercontent.com/d8corp/watch-state/v3.2.0/img/speed.test.png)
 ## Links
 You can find more tools [here](https://www.npmjs.com/search?q=%40watch-state)
 ## Issues

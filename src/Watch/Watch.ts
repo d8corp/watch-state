@@ -1,4 +1,4 @@
-let activeWatcher: Watch
+import scope from '../scope'
 
 export interface Watcher <R = any> {
   (update?: boolean): R
@@ -8,21 +8,15 @@ export interface Destructor <R = any> {
 }
 
 export class Watch {
-  static get activeWatcher () {
-    return activeWatcher
-  }
-  static set activeWatcher (watcher: Watch) {
-    activeWatcher = watcher
-  }
   destructors: Destructor[]
   private ran: boolean = false
 
   constructor (private readonly watcher: Watcher, freeParent?: boolean, freeUpdate?: boolean) {
-    if (!freeParent && activeWatcher) {
-      activeWatcher.onDestroy(() => this.destroy())
+    if (!freeParent && scope.activeWatcher) {
+      scope.activeWatcher.onDestroy(() => this.destroy())
     }
     if (!freeUpdate) {
-      this.update()
+      this.watchRun()
     }
   }
 
@@ -32,13 +26,23 @@ export class Watch {
     return this.watcher(ran)
   }
 
-  update () {
-    this.destroy()
-    const prevWatcher = activeWatcher
-    activeWatcher = this
+  protected watchRun () {
+    const prevWatcher = scope.activeWatcher
+    scope.activeWatcher = this
     this.run()
-    activeWatcher = prevWatcher
-    return
+    scope.activeWatcher = prevWatcher
+  }
+  protected forceUpdate () {
+    this.destroy()
+    this.watchRun()
+  }
+
+  update () {
+    if (scope.activeEvent) {
+      scope.activeEvent.add(this)
+    } else {
+      this.forceUpdate()
+    }
   }
 
   destroy () {
@@ -48,8 +52,6 @@ export class Watch {
       this.destructors = undefined
       destructors.forEach(e => e())
     }
-
-    return
   }
 
   onDestroy (callback: Destructor): this {

@@ -1,4 +1,5 @@
-import {State, Cache, Watch} from '..'
+import {State, Watch} from '..'
+import Cache from './Cache'
 
 describe('Cache', () => {
   describe('constructor', () => {
@@ -68,9 +69,13 @@ describe('Cache', () => {
         expect(test).toBe(0)
 
         cache.update()
+        expect(test).toBe(0)
+        expect(cache.value).toBe(0)
         expect(test).toBe(1)
 
         cache.update()
+        expect(test).toBe(1)
+        expect(cache.value).toBe(1)
         expect(test).toBe(2)
       })
     })
@@ -78,11 +83,12 @@ describe('Cache', () => {
   test('deep cache destroy', () => {
     let test1 = 0
     let test2 = 0
+
     let cache1: Cache
     const cache2 = new Cache(() => {
       test1++
       cache1 = new Cache(() => test2++, false, true)
-    }, false, true)
+    }, true, true)
 
     let watcherTest = cache1
     expect(test1).toBe(1)
@@ -90,11 +96,13 @@ describe('Cache', () => {
     expect(watcherTest).toBe(cache1)
 
     cache1.update()
+    cache1.value
     expect(test1).toBe(1)
     expect(test2).toBe(2)
     expect(watcherTest).toBe(cache1)
 
     cache2.update()
+    cache2.value
     expect(test1).toBe(2)
     expect(test2).toBe(3)
     expect(watcherTest).not.toBe(cache1)
@@ -196,6 +204,6 @@ describe('Cache', () => {
   test('empty clear', () => {
     const test = new Cache(() => {})
 
-    expect(() => test.clear()).not.toThrow()
+    expect(() => test.update()).not.toThrow()
   })
 })

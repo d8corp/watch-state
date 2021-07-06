@@ -1,4 +1,29 @@
 # Changelog
+## v3.2
+Now, `update` method of `Cache` do not update it immediately, only if you use cache value inside a watcher.
+
+### v3.2.0 [![07.07.2021](https://img.shields.io/date/1625611434)](https://github.com/d8corp/watch-state/tree/v3.2.0)
+- fixed bug when you change and ask cache value inside an event
+```typescript
+const event = new Event()
+const state = new State(1)
+const cache = new Cache(() => state.value)
+
+console.log(cache.value)
+// 1
+
+event.start()
+
+state.value = 2
+
+console.log(cache.value)
+// 2 (before: 1)
+
+event.end()
+```
+- decreased [weight](https://bundlephobia.com/package/watch-state)
+- increased [performance](https://github.com/d8corp/watch-state#performance)
+> Now **watch-state** faster than **redux** in [complex](https://github.com/d8corp/watch-state/blob/v3.2.0/speed.test.ts#L181) case
 ## v3.1
 ### v3.1.4 [![26.06.2021](https://img.shields.io/date/1624730252)](https://github.com/d8corp/watch-state/tree/v3.1.4)
 - fixed misprint bug of previous release

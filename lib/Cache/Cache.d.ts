@@ -4,8 +4,9 @@ export declare class Cache<V = any> extends Watch {
     private _state;
     constructor(watcher: Watcher, freeParent?: boolean, fireImmediately?: boolean);
     destroy(): void;
-    clear(): void;
     run(): void;
+    get hasWatcher(): boolean;
+    update(): void;
     private get state();
     get value(): V;
     set value(value: V);

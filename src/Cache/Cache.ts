@@ -10,33 +10,39 @@ export class Cache <V = any> extends Watch {
   }
 
   destroy () {
-    this.updated = false
     return super.destroy()
   }
 
-  clear () {
+  run () {
+    this.updated = true
+    this.value = super.run()
+  }
+
+  get hasWatcher (): boolean {
     if (this._state?.watchers?.size) {
-      this.update()
-    } else {
-      this.destroy()
+      for (const watcher of this._state.watchers) {
+        if (!(watcher instanceof Cache) || watcher.hasWatcher) {
+          return true
+        }
+      }
     }
   }
 
-  run () {
-    this.value = super.run()
-    this.updated = true
+  update () {
+    if (this.hasWatcher) {
+      this.forceUpdate()
+    } else {
+      this.updated = false
+    }
   }
 
   private get state (): State<V> {
-    if (!this._state) {
-      this._state = new State()
-    }
-    return this._state
+    return this._state || (this._state = new State())
   }
 
   get value () {
     if (!this.updated) {
-      this.update()
+      this.forceUpdate()
     }
     return this.state.value
   }

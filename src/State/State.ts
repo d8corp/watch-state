@@ -1,5 +1,5 @@
-import Watch from '../Watch'
 import Event from '../Event'
+import scope from '../scope'
 
 export class State <T = any> extends Event {
   constructor (public state?: T) {super()}
@@ -12,10 +12,8 @@ export class State <T = any> extends Event {
    * ```
    * */
   get value (): T {
-    const {activeWatcher} = Watch
-
-    if (activeWatcher) {
-      this.add(activeWatcher)
+    if (scope.activeWatcher) {
+      this.add(scope.activeWatcher)
     }
     return this.state
   }

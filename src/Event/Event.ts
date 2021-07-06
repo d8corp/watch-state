@@ -1,7 +1,6 @@
 import Watch from '../Watch'
 import Cache from '../Cache'
-
-let activeEvent: Event
+import scope from '../scope'
 
 export class Event {
   watchers: Set<Watch | Cache>
@@ -22,61 +21,30 @@ export class Event {
     target.onDestroy(() => watchers.delete(target))
   }
 
-  private _start () {
-    if (!activeEvent) {
-      activeEvent = this
-      const {activeWatchers} = this
-      this.activeWatchers = this.watchers
-      this.watchers = activeWatchers
-    }
-  }
-
   start () {
-    this._start()
-    this.activeWatcher = Watch.activeWatcher
-    Watch.activeWatcher = undefined
-  }
-
-  private _end () {
-    if (activeEvent === this) {
-      if (this.activeWatchers) {
-        for (const watcher of this.activeWatchers) {
-          // @ts-ignore
-          watcher.clear?.()
-        }
-        for (const watcher of this.activeWatchers) {
-          watcher.update()
-        }
-      }
-      activeEvent = undefined
+    if (!scope.activeEvent) {
+      this.activeWatcher = scope.activeWatcher
+      scope.activeWatcher = undefined
+      scope.activeEvent = this
     }
   }
-  end () {
-    Watch.activeWatcher = this.activeWatcher
-    this._end()
-  }
 
-  pipe (watcher: Watch | Cache) {
-    if (this.activeWatchers) {
-      this.activeWatchers.add(watcher)
-      watcher.onDestroy(() => this.activeWatchers.delete(watcher))
-    } else {
-      this.activeWatchers = new Set([watcher])
+  end () {
+    if (scope.activeEvent === this) {
+      scope.activeEvent = undefined
+      this.update()
+      scope.activeWatcher = this.activeWatcher
     }
   }
 
   update () {
-    if (!this.watchers?.size) {
-      return
-    }
-
-    if (activeEvent) {
-      for (const target of this.watchers) {
-        activeEvent.pipe(target)
+    if (this.watchers?.size) {
+      const {activeWatchers} = this
+      this.activeWatchers = this.watchers
+      this.watchers = activeWatchers
+      for (const watcher of this.activeWatchers) {
+        watcher.update()
       }
-    } else {
-      this._start()
-      this._end()
     }
   }
 }

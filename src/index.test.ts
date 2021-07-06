@@ -1,4 +1,4 @@
-import {Watch, State, Cache} from '.'
+import {Watch, State, Cache, Event} from '.'
 
 describe('Watch & State', () => {
   test('simple', () => {
@@ -191,6 +191,18 @@ describe('Watch & State', () => {
 
       surname.value = 'Mighty'
       expect(fullName.value).toBe('Mike M.')
+    })
+    test('in event', () => {
+      const state = new State(1)
+      const cache = new Cache(() => state.value)
+      const event = new Event()
+
+      expect(cache.value).toBe(1)
+
+      event.start()
+      state.value = 2
+      expect(cache.value).toBe(2)
+      event.end()
     })
   })
 })

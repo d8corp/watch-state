@@ -2,6 +2,8 @@
 ## v3.2
 Now, `update` method of `Cache` do not update it immediately, only if you use cache value inside a watcher.
 
+### v3.2.1 [![07.07.2021](https://img.shields.io/date/1625612254)](https://github.com/d8corp/watch-state/tree/v3.2.1)
+- fixed readme icons
 ### v3.2.0 [![07.07.2021](https://img.shields.io/date/1625611434)](https://github.com/d8corp/watch-state/tree/v3.2.0)
 - fixed bug when you change and ask cache value inside an event
 ```typescript

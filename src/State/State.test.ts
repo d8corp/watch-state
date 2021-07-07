@@ -1,4 +1,4 @@
-import {State} from '..'
+import {State, Watch, Event} from '..'
 
 describe('State', () => {
   describe('constructor', () => {
@@ -44,6 +44,35 @@ describe('State', () => {
 
       state.value = 'bar'
       expect(state.value).toBe('bar')
+    })
+  })
+  describe('loop', () => {
+    test('custom loop', () => {
+      const count = new State(0)
+      const event = new Event()
+      const log = []
+
+      new Watch(() => {
+        if (count.value < 3) {
+          event.start()
+          log.push(count.value++)
+          event.end()
+        }
+      })
+
+      expect(log).toEqual([0, 1, 2])
+    })
+    test('custom inverse loop', () => {
+      const count = new State(0)
+      const log = []
+
+      new Watch(() => {
+        if (count.value < 2) {
+          log.push(count.value++)
+        }
+      })
+
+      expect(log).toEqual([2, 1, 0])
     })
   })
 })

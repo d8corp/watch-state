@@ -2,6 +2,18 @@
 ## v3.2
 Now, `update` method of `Cache` do not update it immediately, only if you use cache value inside a watcher.
 
+### v3.2.2 [![07.07.2021](https://img.shields.io/date/1625649464)](https://github.com/d8corp/watch-state/tree/v3.2.2)
+- fixed infinite loop bug when you change that value you watch
+```typescript
+const count = new State(0)
+
+new Watch(() => {
+  if (count.value < 2) {
+    console.log(count.value++)
+  }
+})
+// now you have `1` and `0` in console, before it was infinite loop
+```
 ### v3.2.1 [![07.07.2021](https://img.shields.io/date/1625612254)](https://github.com/d8corp/watch-state/tree/v3.2.1)
 - fixed readme icons
 ### v3.2.0 [![07.07.2021](https://img.shields.io/date/1625611434)](https://github.com/d8corp/watch-state/tree/v3.2.0)

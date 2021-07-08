@@ -107,6 +107,17 @@ describe('Cache', () => {
     expect(test2).toBe(3)
     expect(watcherTest).not.toBe(cache1)
   })
+  test('deep update', () => {
+    const state = new State(0)
+    const cache1 = new Cache(() => state.value)
+    const cache2 = new Cache(() => cache1.value)
+
+    expect(cache2.value).toBe(0)
+
+    state.value = 1
+
+    expect(cache2.value).toBe(1)
+  })
 
   test('fullName', () => {
     const name = new State('Mike')

@@ -1,6 +1,18 @@
 # Changelog
 ## v3.2
-Now, `update` method of `Cache` do not update it immediately, only if you use cache value inside a watcher.
+### v3.2.3 [![07.07.2021](https://img.shields.io/date/1625771432)](https://github.com/d8corp/watch-state/tree/v3.2.3)
+- fixed deep unwatched cache updating bag
+```typescript
+const state = new State(0)
+const cache1 = new Cache(() => state.value)
+const cache2 = new Cache(() => cache1.value)
+
+console.log(cache2.value) //0
+
+state.value = 1
+
+console.log(cache2.value) //1 (before: 0)
+```
 
 ### v3.2.2 [![07.07.2021](https://img.shields.io/date/1625649464)](https://github.com/d8corp/watch-state/tree/v3.2.2)
 - fixed infinite loop bug when you change that value you watch
@@ -61,6 +73,8 @@ event.end()
 ### v3.0.1 [![01.06.2021](https://img.shields.io/date/1622501057)](https://github.com/d8corp/watch-state/tree/v3.0.1)
 - updated readme
 ### v3.0.0 [![30.05.2021](https://img.shields.io/date/1622401326)](https://github.com/d8corp/watch-state/tree/v3.0.0)
+Now, `update` method of `Cache` do not update it immediately, only if you use cache value inside a watcher.
+
 - reduced utils, use [@watch-state/utils](https://github.com/d8corp/watch-state-utils)
 - reduced decorators, use [@watch-state/decorators](https://github.com/d8corp/watch-state-decorators)
 - changed `destructor` to `destroy`

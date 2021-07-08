@@ -28,11 +28,20 @@ export class Cache <V = any> extends Watch {
     }
   }
 
+  deepUpdate () {
+    this.updated = false
+    if (this._state?.watchers?.size) {
+      for (const watcher of this._state.watchers) {
+        (watcher as Cache).deepUpdate()
+      }
+    }
+  }
+
   update () {
     if (this.hasWatcher) {
       this.forceUpdate()
     } else {
-      this.updated = false
+      this.deepUpdate()
     }
   }
 

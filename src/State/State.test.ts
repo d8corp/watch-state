@@ -72,7 +72,7 @@ describe('State', () => {
         }
       })
 
-      expect(log).toEqual([2, 1, 0])
+      expect(log).toEqual([1, 0])
     })
   })
 })

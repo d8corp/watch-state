@@ -6,6 +6,7 @@ export declare class Cache<V = any> extends Watch {
     destroy(): void;
     run(): void;
     get hasWatcher(): boolean;
+    deepUpdate(): void;
     update(): void;
     private get state();
     get value(): V;

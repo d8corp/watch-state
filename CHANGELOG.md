@@ -1,6 +1,8 @@
 # Changelog
 
 ## v3.3
+### v3.3.3 [![10.07.2021](https://img.shields.io/date/1625939894)](https://github.com/d8corp/watch-state/tree/v3.3.3)
+- fixed bug of `globalEvent`
 ### v3.3.2 [![10.07.2021](https://img.shields.io/date/1625937176)](https://github.com/d8corp/watch-state/tree/v3.3.2)
 - added `scope` export
 ### v3.3.1 [![10.07.2021](https://img.shields.io/date/1625934996)](https://github.com/d8corp/watch-state/tree/v3.3.1)

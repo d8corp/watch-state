@@ -27,10 +27,11 @@ export class Event {
       scope.activeWatcher = undefined
       scope.activeEvent = this
     }
+    scope.activeEventDeep++
   }
 
   end () {
-    if (scope.activeEvent === this) {
+    if (!--scope.activeEventDeep && scope.activeEvent === this) {
       scope.activeEvent = undefined
       this.update()
       scope.activeWatcher = this.activeWatcher

@@ -1,4 +1,4 @@
-import {Watch, State, Event} from '..'
+import {Watch, State, Event, globalEvent} from '..'
 
 describe('Event', () => {
   test('works', () => {
@@ -78,5 +78,27 @@ describe('Event', () => {
     })
 
     expect(log).toEqual([0])
+  })
+  test('globalEvent', () => {
+    const log = []
+    const state1 = new State(0)
+    const state2 = new State(0)
+    const event = new Event()
+
+    new Watch(() => log.push([state1.value, state2.value]))
+
+    expect(log.length).toBe(1)
+    expect(log[0]).toEqual([0, 0])
+
+    globalEvent.start()
+
+    state1.value++
+
+    state2.value++
+
+    globalEvent.end()
+
+    expect(log.length).toBe(2)
+    expect(log[1]).toEqual([1, 1])
   })
 })

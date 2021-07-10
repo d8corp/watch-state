@@ -1,5 +1,7 @@
 # Changelog
 ## v3.3
+### v3.3.1 [![10.07.2021](https://img.shields.io/date/1625934996)](https://github.com/d8corp/watch-state/tree/v3.3.1)
+- updated readme
 ### v3.3.0 [![10.07.2021](https://img.shields.io/date/1625932821)](https://github.com/d8corp/watch-state/tree/v3.3.0)
 Stable version
 - normalized watchers running flow

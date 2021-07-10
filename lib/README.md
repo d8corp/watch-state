@@ -1,7 +1,7 @@
 <br>
 <p align="center">
   <a href="https://github.com/d8corp/watch-state">
-    <img width="200" height="200" src="https://raw.githubusercontent.com/d8corp/watch-state/v3.2.0/img/logo.svg" alt="watch-state logo by Mikhail Lysikov">
+    <img width="200" height="200" src="https://raw.githubusercontent.com/d8corp/watch-state/v3.3.1/img/logo.svg" alt="watch-state logo by Mikhail Lysikov">
   </a>
 </p>
 
@@ -15,8 +15,8 @@
   <table>
     <col width="140" align="center">
     <tr><td align="center">
-      <a href="https://raw.githubusercontent.com/d8corp/watch-state/v3.2.0/img/speed.test.png" target="_blank">
-        <img width="64" height="64" src="https://raw.githubusercontent.com/d8corp/watch-state/v3.2.0/img/fast.svg" alt="watch-state fast">
+      <a href="https://raw.githubusercontent.com/d8corp/watch-state/v3.3.1/img/speed.test.png" target="_blank">
+        <img width="64" height="64" src="https://raw.githubusercontent.com/d8corp/watch-state/v3.3.1/img/fast.svg" alt="watch-state fast">
       </a>
       <br>
       <b>Fast</b>
@@ -25,7 +25,7 @@
     </td>
     <td align="center"><span>
       <a href="https://bundlephobia.com/result?p=watch-state" target="_blank">
-        <img width="64" height="64" src="https://raw.githubusercontent.com/d8corp/watch-state/v3.2.0/img/light.svg" alt="watch-state Light">
+        <img width="64" height="64" src="https://raw.githubusercontent.com/d8corp/watch-state/v3.3.1/img/light.svg" alt="watch-state Light">
       </a>
       <br>
       <b>Light</b>
@@ -34,7 +34,7 @@
     </span></td>
     <td align="center"><span>
       <a href="https://d8corp.github.io/watch-state/coverage/lcov-report/" target="_blank">
-        <img width="64" height="64" src="https://raw.githubusercontent.com/d8corp/watch-state/v3.2.0/img/smart.svg" alt="watch-state fast">
+        <img width="64" height="64" src="https://raw.githubusercontent.com/d8corp/watch-state/v3.3.1/img/smart.svg" alt="watch-state fast">
       </a>
       <br>
       <b>Smart</b>
@@ -363,6 +363,18 @@ new Watch(() => {
 })
 ```
 *You will get loop without event*
+
+You can use `globalEvent` every time if you do not want to extend the Event functionality.
+```typescript
+import {State, globalEvent} from 'watch-state'
+const count = new State(0)
+
+new Watch(() => {
+  globalEvent.start()
+  console.log(count.value++)
+  globalEvent.end()
+})
+```
 ### Typescript:
 Generic of `State`
 ```typescript
@@ -383,7 +395,7 @@ Clone the repo, install packages and run this command
 npm run speed
 ```
 I got this results with Node `v10.20.0`:  
-![test](https://raw.githubusercontent.com/d8corp/watch-state/v3.2.0/img/speed.test.png)
+![test](https://raw.githubusercontent.com/d8corp/watch-state/v3.3.1/img/speed.test.png)
 ## Links
 You can find more tools [here](https://www.npmjs.com/search?q=%40watch-state)
 ## Issues

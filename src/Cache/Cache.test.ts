@@ -179,17 +179,17 @@ describe('Cache', () => {
   })
   test('auto-destroy', () => {
     const log = []
-    const test = new State(1)
-    const test1 = new Cache(() => test.value + 1)
+    const state = new State(1)
+    const cache = new Cache(() => state.value + 1)
 
     new Watch(() => {
-      if (test.value) {
-        new Watch(() => log.push(test1.value))
+      if (state.value) {
+        new Watch(() => log.push(cache.value))
       }
     })
     expect(log).toEqual([2])
 
-    test.value = 0
+    state.value = 0
     expect(log).toEqual([2])
   })
   test('without watcher', () => {
@@ -216,5 +216,19 @@ describe('Cache', () => {
     const test = new Cache(() => {})
 
     expect(() => test.update()).not.toThrow()
+  })
+  test('watch dependency', () => {
+    const state = new State(0)
+    const cache = new Cache(() => state.value * 2)
+
+    const log = []
+
+    new Watch(() => log.push([state.value, cache.value]))
+
+    expect(log).toEqual([[0, 0]])
+
+    state.value = 2
+
+    expect(log).toEqual([[0, 0], [2, 4]])
   })
 })

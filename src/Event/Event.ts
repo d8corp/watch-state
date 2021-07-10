@@ -37,18 +37,28 @@ export class Event {
     }
   }
 
+  private forceUpdate () {
+    const {activeWatchers} = this
+    this.activeWatchers = this.watchers
+    this.watchers = activeWatchers
+    for (const watcher of this.activeWatchers) {
+      watcher.update()
+    }
+  }
+
   update () {
     if (this.watchers?.size) {
-      const {activeWatchers} = this
-      this.activeWatchers = this.watchers
-      this.watchers = activeWatchers
-      for (const watcher of this.activeWatchers) {
-        if (this.activeWatchers.size) {
-          watcher.update()
-        }
+      if (this === globalEvent) {
+        this.forceUpdate()
+      } else {
+        globalEvent.start()
+        this.forceUpdate()
+        globalEvent.end()
       }
     }
   }
 }
+
+export const globalEvent = new Event()
 
 export default Event

@@ -19,7 +19,7 @@ export class Cache <V = any> extends Watch {
   }
 
   get hasWatcher (): boolean {
-    if (this._state?.watchers?.size) {
+    if (this.updated && this._state?.watchers?.size) {
       for (const watcher of this._state.watchers) {
         if (!(watcher instanceof Cache) || watcher.hasWatcher) {
           return true
@@ -30,6 +30,7 @@ export class Cache <V = any> extends Watch {
 
   deepUpdate () {
     this.updated = false
+    this.destroy()
     if (this._state?.watchers?.size) {
       for (const watcher of this._state.watchers) {
         (watcher as Cache).deepUpdate()
@@ -38,10 +39,12 @@ export class Cache <V = any> extends Watch {
   }
 
   update () {
-    if (this.hasWatcher) {
-      this.forceUpdate()
-    } else {
-      this.deepUpdate()
+    if (this.updated) {
+      if (this.hasWatcher) {
+        this.forceUpdate()
+      } else {
+        this.deepUpdate()
+      }
     }
   }
 

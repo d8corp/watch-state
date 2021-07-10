@@ -7,6 +7,8 @@ export declare class Event {
     add(target: Watch | Cache): void;
     start(): void;
     end(): void;
+    private forceUpdate;
     update(): void;
 }
+export declare const globalEvent: Event;
 export default Event;

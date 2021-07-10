@@ -1,4 +1,11 @@
 # Changelog
+## v3.3
+### v3.3.0 [![10.07.2021](https://img.shields.io/date/1625932821)](https://github.com/d8corp/watch-state/tree/v3.3.0)
+Stable version
+- normalized watchers running flow
+- fixed deep bugs
+- added `globalEvent`
+- unfortunately, the performance has decreased, but the current version is strong stable and still, this is one of the fastest solutions. 
 ## v3.2
 ### v3.2.3 [![07.07.2021](https://img.shields.io/date/1625771432)](https://github.com/d8corp/watch-state/tree/v3.2.3)
 - fixed deep unwatched cache updating bag

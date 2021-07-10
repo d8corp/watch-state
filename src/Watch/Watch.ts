@@ -38,10 +38,11 @@ export class Watch {
   }
 
   update () {
+    this.destroy()
     if (scope.activeEvent) {
       scope.activeEvent.add(this)
     } else {
-      this.forceUpdate()
+      this.watchRun()
     }
   }
 

@@ -1,10 +1,9 @@
-import Watch from '../Watch'
-import Cache from '../Cache'
-import scope from '../scope'
+import {Watch} from '../Watch'
+import {Cache} from '../Cache'
+import {scope} from '../scope'
 
 export class Event {
   watchers: Set<Watch | Cache>
-  activeWatchers: Set<Watch | Cache>
   activeWatcher: Watch
 
   add (target: Watch | Cache) {
@@ -39,10 +38,9 @@ export class Event {
   }
 
   private forceUpdate () {
-    const {activeWatchers} = this
-    this.activeWatchers = this.watchers
-    this.watchers = activeWatchers
-    for (const watcher of this.activeWatchers) {
+    const {watchers} = this
+    this.watchers = undefined
+    for (const watcher of watchers) {
       watcher.update()
     }
   }
@@ -61,5 +59,3 @@ export class Event {
 }
 
 export const globalEvent = new Event()
-
-export default Event

@@ -123,6 +123,7 @@ const {
   Event
 } = watchState
 ```
+
 ## Usage
 ### Simple example:
 You can create an instance of `State` and **watch** it's **value**.
@@ -140,6 +141,7 @@ count.value++
 count.value++
 // console.log(2)
 ```
+
 ### Update argument:
 You can check if the watching ran first by `update` argument.
 ```javascript
@@ -196,6 +198,7 @@ new Watch(() => {
 count.update()
 // console.log(0)
 ```
+
 ### Force update of Watch
 You can run a watcher even when it's states are not updated.
 ```typescript
@@ -209,6 +212,7 @@ const watcher = new Watch(() => {
 watcher.update()
 // console.log(0)
 ```
+
 ### Destroy
 You can stop watching by `destroy` method of `Watch`.
 ```javascript
@@ -227,6 +231,7 @@ watcher.destroy()
 count.value++
 // nothing happens
 ```
+
 ### Watch.onDestroy()
 You can react on destruction of `Watch` by `onDestroy` method.
 ```javascript
@@ -247,6 +252,7 @@ const watcher = new Watch(() => {})
 watcher.destroy()
 // console.log('destructor')
 ```
+
 ### Deep watch:
 You can use `Watch` inside a watcher.
 Each watcher reacts on that states which used only inside it.
@@ -274,6 +280,7 @@ watching.value = false
 state.value++
 // nothing happens
 ```
+
 ### Cache:
 You can cache computed state.  
 The watcher will not be triggered while new result is the same.
@@ -333,6 +340,7 @@ console.log(sortedList.value)
 // console.log('computing')
 // console.log(['a', 'b', 'c'])
 ```
+
 ### Event:
 Use `Event` when you change several states to run their watchers after the event finished.
 ```javascript
@@ -375,6 +383,7 @@ new Watch(() => {
   globalEvent.end()
 })
 ```
+
 ### Typescript:
 Generic of `State`
 ```typescript
@@ -388,16 +397,17 @@ Generic of `Cache`
 new Cache<string>(() => false)
 // error, target of cache should return string
 ```
+
 ## Performance
 You can check the performance test with **[MobX](https://www.npmjs.com/package/mobx)**, **[Effector](https://www.npmjs.com/package/effector)**, **[Storeon](https://www.npmjs.com/package/storeon)**, **[Mazzard](https://www.npmjs.com/package/mazzard)** and **[Redux](https://www.npmjs.com/package/redux)**.
 Clone the repo, install packages and run this command
 ```shell
 npm run speed
 ```
-I got this results with Node `v10.20.0`:  
-![test](https://raw.githubusercontent.com/d8corp/watch-state/v3.3.1/img/speed.test.png)
+
 ## Links
 You can find more tools [here](https://www.npmjs.com/search?q=%40watch-state)
+
 ## Issues
 If you find a bug or have a suggestion, please file an issue on [GitHub](https://github.com/d8corp/watch-state/issues)
 

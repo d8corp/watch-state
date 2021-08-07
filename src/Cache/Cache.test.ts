@@ -1,5 +1,5 @@
 import {State, Watch} from '..'
-import Cache from './Cache'
+import {Cache} from './Cache'
 
 describe('Cache', () => {
   describe('constructor', () => {

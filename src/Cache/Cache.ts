@@ -1,8 +1,8 @@
-import Watch, {Watcher} from '../Watch'
-import State from '../State'
+import {Watch, Watcher} from '../Watch'
+import {State} from '../State'
 
 export class Cache <V = any> extends Watch {
-  private updated: boolean
+  protected updated: boolean
   private _state: State<V>
 
   constructor (watcher: Watcher, freeParent?: boolean, fireImmediately?: boolean) {
@@ -63,5 +63,3 @@ export class Cache <V = any> extends Watch {
     this.state.value = value
   }
 }
-
-export default Cache

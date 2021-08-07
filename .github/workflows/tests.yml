@@ -1,6 +1,6 @@
 name: Check tests
 
-on: workflow_dispatch
+on: release
 
 jobs:
   run:

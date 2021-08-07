@@ -1,6 +1,7 @@
-declare const _default: {
-    activeWatcher: any;
-    activeEvent: any;
+import { Watch, Event } from '..';
+export interface Scope {
+    activeWatcher?: Watch;
+    activeEvent?: Event;
     activeEventDeep: number;
-};
-export default _default;
+}
+export declare const scope: Scope;

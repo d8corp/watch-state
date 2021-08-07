@@ -1,4 +1,4 @@
-import scope from '../scope'
+import {scope} from '../scope'
 
 export interface Watcher <R = any> {
   (update?: boolean): R
@@ -64,5 +64,3 @@ export class Watch {
     return this
   }
 }
-
-export default Watch

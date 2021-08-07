@@ -1,6 +1,6 @@
-import Watch, { Watcher } from '../Watch';
+import { Watch, Watcher } from '../Watch';
 export declare class Cache<V = any> extends Watch {
-    private updated;
+    protected updated: boolean;
     private _state;
     constructor(watcher: Watcher, freeParent?: boolean, fireImmediately?: boolean);
     destroy(): void;
@@ -12,4 +12,3 @@ export declare class Cache<V = any> extends Watch {
     get value(): V;
     set value(value: V);
 }
-export default Cache;

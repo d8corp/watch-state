@@ -1,4 +1,4 @@
-import Event from '../Event';
+import { Event } from '../Event';
 export declare class State<T = any> extends Event {
     state?: T;
     constructor(state?: T);
@@ -22,4 +22,3 @@ export declare class State<T = any> extends Event {
      * */
     set value(value: T);
 }
-export default State;

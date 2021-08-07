@@ -16,4 +16,3 @@ export declare class Watch {
     destroy(): void;
     onDestroy(callback: Destructor): this;
 }
-export default Watch;

@@ -1,5 +1,5 @@
-import Event from '../Event'
-import scope from '../scope'
+import {Event} from '../Event'
+import {scope} from '../scope'
 
 export class State <T = any> extends Event {
   constructor (public state?: T) {super()}
@@ -35,5 +35,3 @@ export class State <T = any> extends Event {
     }
   }
 }
-
-export default State

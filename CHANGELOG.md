@@ -1,6 +1,9 @@
 # Changelog
 
 ## v3.4
+### v3.4.1 [![07.01.2022](https://img.shields.io/date/1641557981)](https://github.com/d8corp/watch-state/tree/v3.4.1)
+- added `size` field of `Cache` which returns count of subscribers
+
 ### v3.4.0 [![07.08.2021](https://img.shields.io/date/1628363458)](https://github.com/d8corp/watch-state/tree/v3.4.0)
 - fixed bug of deep event using, in watcher and during another event
 - fixed types of `scope`, added `Scope` type

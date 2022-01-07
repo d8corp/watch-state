@@ -54,7 +54,10 @@
     <img src="https://img.shields.io/bundlephobia/minzip/watch-state" alt="watch-state minzipped size">
   </a>
   <a href="https://www.npmtrends.com/watch-state" target="_blank">
-    <img src="https://img.shields.io/npm/dm/watch-state.svg" alt="watch-state minzipped size">
+    <img src="https://img.shields.io/npm/dm/watch-state.svg" alt="watch-state downloads">
+  </a>
+  <a href="https://packagequality.com/#?package=watch-state" target="_blank">
+    <img src="https://packagequality.com/shield/watch-state.svg" alt="watch-state quality">
   </a>
   <a href="https://github.com/d8corp/watch-state/blob/master/LICENSE" target="_blank">
     <img src="https://img.shields.io/npm/l/watch-state" alt="watch-state license">

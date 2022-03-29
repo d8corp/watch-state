@@ -63,10 +63,10 @@
     <img src="https://img.shields.io/npm/l/watch-state" alt="watch-state license">
   </a>
   <a href="https://changelogs.xyz/watch-state" target="_blank">
-    <img src="https://img.shields.io/badge/Changelog-⋮-brightgreen" alt="watch-state minzipped size">
+    <img src="https://img.shields.io/badge/Changelog-⋮-brightgreen" alt="watch-state changelog">
   </a>
   <a href="https://d8corp.github.io/watch-state/coverage/lcov-report" target="_blank">
-    <img src="https://github.com/d8corp/watch-state/workflows/tests/badge.svg" alt="watch-state minzipped size">
+    <img src="https://github.com/d8corp/watch-state/workflows/tests/badge.svg" alt="watch-state tests">
   </a>
 </div>
 <br>
@@ -131,7 +131,7 @@ const {
 ### Simple example:
 You can create an instance of `State` and **watch** it's **value**.
 ```javascript
-import {Watch, State} from 'watch-state'
+import { Watch, State } from 'watch-state'
 
 const count = new State(0)
 
@@ -216,7 +216,7 @@ watcher.update()
 // console.log(0)
 ```
 
-### Destroy
+### destroy
 You can stop watching by `destroy` method of `Watch`.
 ```javascript
 const count = new State(0)
@@ -235,25 +235,27 @@ count.value++
 // nothing happens
 ```
 
-### Watch.onDestroy()
-You can react on destruction of `Watch` by `onDestroy` method.
+### onDestroy()
+You can subscribe on destroy or update of watcher
 ```javascript
-const watcher = new Watch(() => {})
-
-watcher.onDestroy(() => {
-  console.log('destructor')
+const count = new State(0)
+const watcher = new Watch(() => {
+  console.log('count', count.value)
+  // the order does not matter
+  onDestroy(() => console.log('destructor'))
 })
+// console.log('count', 0)
+
+count.value++
+// console.log('destructor')
+// console.log('count', 1)
 
 watcher.destroy()
 // console.log('destructor')
-```
-`onDestructor` returns `this` so you can use **fluent interface**.
-```javascript
-const watcher = new Watch(() => {})
-  .onDestroy(() => console.log('destructor'))
 
 watcher.destroy()
-// console.log('destructor')
+count.value++
+// nothing happens
 ```
 
 ### Deep watch:
@@ -377,7 +379,7 @@ new Watch(() => {
 
 You can use `globalEvent` every time if you do not want to extend the Event functionality.
 ```typescript
-import {State, globalEvent} from 'watch-state'
+import { State, globalEvent } from 'watch-state'
 const count = new State(0)
 
 new Watch(() => {
@@ -385,6 +387,19 @@ new Watch(() => {
   console.log(count.value++)
   globalEvent.end()
 })
+```
+
+### createEvent
+You can create event function with createEvent
+```typescript
+import { State, createEvent } from 'watch-state'
+
+const count = new State(0)
+const increase = createEvent(() => {
+  console.log(count.value++)
+})
+
+new Watch(increase)
 ```
 
 ### Typescript:

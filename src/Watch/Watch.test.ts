@@ -1,4 +1,4 @@
-import {Watch} from '..'
+import { State, Watch } from '..'
 
 describe('Watch', () => {
   describe('constructor', () => {
@@ -78,12 +78,12 @@ describe('Watch', () => {
       expect(test).toBe(1)
     })
   })
-  describe('onDestructor', () => {
+  describe('onClear', () => {
     describe('method', () => {
       test('without update', () => {
         let test = 0
         const watcher = new Watch(() => {})
-        watcher.onDestroy(() => test++)
+        watcher.onClear(() => test++)
         expect(test).toBe(0)
         watcher.destroy()
         expect(test).toBe(1)
@@ -93,11 +93,41 @@ describe('Watch', () => {
       test('with update', () => {
         let test = 0
         const watcher = new Watch(() => {})
-        watcher.onDestroy(() => test++)
+        watcher.onClear(() => test++)
         watcher.update()
         expect(test).toBe(1)
         watcher.destroy()
         expect(test).toBe(1)
+      })
+      test('with state', () => {
+        const change = jest.fn()
+        const destroy = jest.fn()
+        const state = new State(0)
+        const watcher = new Watch(() => {
+          change(state.value)
+        }).onClear(destroy)
+
+        expect(destroy).toBeCalledTimes(0)
+        expect(change).toBeCalledTimes(1)
+        expect(change).toHaveBeenLastCalledWith(0)
+
+        state.value++
+
+        expect(destroy).toBeCalledTimes(1)
+        expect(change).toBeCalledTimes(2)
+        expect(change).toHaveBeenLastCalledWith(1)
+
+        state.value++
+
+        expect(destroy).toBeCalledTimes(1)
+        expect(change).toBeCalledTimes(3)
+        expect(change).toHaveBeenLastCalledWith(2)
+
+        watcher.destroy()
+
+        expect(destroy).toBeCalledTimes(1)
+        expect(change).toBeCalledTimes(3)
+        expect(change).toHaveBeenLastCalledWith(2)
       })
     })
   })

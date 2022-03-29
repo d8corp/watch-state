@@ -7,6 +7,19 @@ export declare class Event {
     start(): void;
     end(): void;
     private forceUpdate;
+    /**
+     * You can run watchers of a state with `update` method.
+     * ```typescript
+     * const count = new State(0)
+     *
+     * new Watch(() => {
+     *   console.log(count.value)
+     * })
+     * // console.log(0)
+     *
+     * count.update()
+     * // console.log(0)
+     * ```
+     * */
     update(): void;
 }
-export declare const globalEvent: Event;

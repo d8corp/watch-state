@@ -1,4 +1,4 @@
-import { globalEvent } from '../../constants'
+import { globalEvent } from '../../Event'
 
 /**
  * You can create event function with createEvent

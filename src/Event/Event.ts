@@ -1,4 +1,4 @@
-import { scope, globalEvent } from '../constants'
+import { scope } from '../constants'
 
 import { Watch } from '../Watch'
 import { Cache } from '../Cache'
@@ -72,3 +72,5 @@ export class Event {
     }
   }
 }
+
+export const globalEvent = new Event()

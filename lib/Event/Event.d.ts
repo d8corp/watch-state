@@ -23,3 +23,4 @@ export declare class Event {
      * */
     update(): void;
 }
+export declare const globalEvent: Event;

@@ -2,6 +2,10 @@
 
 ## v3.4
 
+### v3.4.4 [![25.08.2022](https://img.shields.io/date/1661421298)](https://github.com/d8corp/watch-state/tree/v3.4.4)
+
+- improve `Cache` types
+
 ### v3.4.3 [![31.03.2022](https://img.shields.io/date/1648673038)](https://github.com/d8corp/watch-state/tree/v3.4.3)
 
 - fixed Circular dependency

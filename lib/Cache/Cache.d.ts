@@ -26,7 +26,7 @@ import { Watcher } from '../types';
 export declare class Cache<V = any> extends Watch {
     protected updated: boolean;
     private _state;
-    constructor(watcher: Watcher, freeParent?: boolean, fireImmediately?: boolean);
+    constructor(watcher: Watcher<V>, freeParent?: boolean, fireImmediately?: boolean);
     destroy(): void;
     run(): void;
     get hasWatcher(): boolean;

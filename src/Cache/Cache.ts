@@ -29,7 +29,7 @@ export class Cache <V = any> extends Watch {
   protected updated: boolean
   private _state: State<V>
 
-  constructor (watcher: Watcher, freeParent?: boolean, fireImmediately?: boolean) {
+  constructor (watcher: Watcher<V>, freeParent?: boolean, fireImmediately?: boolean) {
     super(watcher, freeParent, !fireImmediately)
   }
 

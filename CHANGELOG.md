@@ -2,7 +2,7 @@
 
 ## v3.4
 
-### v3.4.5 [![25.08.2022](https://img.shields.io/date/1662654013)](https://github.com/d8corp/watch-state/tree/v3.4.5)
+### v3.4.5 [![08.09.2022](https://img.shields.io/date/1662654013)](https://github.com/d8corp/watch-state/tree/v3.4.5)
 
 - added `unwatch`
 

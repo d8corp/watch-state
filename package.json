@@ -37,7 +37,7 @@
     "effector": "^21.8.11",
     "glob": "^7.1.7",
     "gzip-size-cli": "^4.1.0",
-    "innetjs": "^1.2.3",
+    "innetjs": "^1.12.1",
     "jest": "^26.6.3",
     "mazzard": "^1.0.0-rc-2",
     "minimist": ">=0.2.1",

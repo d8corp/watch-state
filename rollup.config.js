@@ -1,7 +1,8 @@
-import typescript from 'rollup-plugin-typescript2'
-import pkg from './package.json'
-import {terser} from 'rollup-plugin-terser'
+import { terser } from '@rollup/plugin-terser'
 import glob from 'glob'
+import typescript from 'rollup-plugin-typescript2'
+
+import pkg from './package.json'
 
 export default [{
   input: glob.sync('{src/index.ts,src/**/index.ts}'),
@@ -9,7 +10,7 @@ export default [{
     dir: 'lib',
     entryFileNames: '[name].js',
     format: 'cjs',
-    preserveModules: true
+    preserveModules: true,
   },
   plugins: [
     typescript({
@@ -17,18 +18,18 @@ export default [{
       clean: true,
       tsconfigOverride: {
         exclude: [
-          'src/**/*.test.ts'
-        ]
-      }
-    })
-  ]
+          'src/**/*.test.ts',
+        ],
+      },
+    }),
+  ],
 }, {
   input: glob.sync('{src/index.ts,src/**/index.ts}'),
   output: {
     dir: 'lib',
     entryFileNames: '[name]' + pkg.module.replace('index', ''),
     format: 'es',
-    preserveModules: true
+    preserveModules: true,
   },
   plugins: [
     typescript({
@@ -36,11 +37,11 @@ export default [{
       clean: true,
       tsconfigOverride: {
         exclude: [
-          'src/**/*.test.ts'
-        ]
-      }
-    })
-  ]
+          'src/**/*.test.ts',
+        ],
+      },
+    }),
+  ],
 }, {
   input: 'src/index.ts',
   output: {
@@ -48,7 +49,7 @@ export default [{
     entryFileNames: 'watch-state.min.js',
     format: 'iife',
     name: 'watchState',
-    plugins: [terser()]
+    plugins: [terser()],
   },
   plugins: [
     typescript({
@@ -56,9 +57,9 @@ export default [{
       clean: true,
       tsconfigOverride: {
         exclude: [
-          'src/**/*.test.ts'
-        ]
-      }
-    })
-  ]
+          'src/**/*.test.ts',
+        ],
+      },
+    }),
+  ],
 }]

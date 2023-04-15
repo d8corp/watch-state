@@ -1,5 +1,4 @@
 import { scope } from '../../constants'
-import { Destructor } from '../../types'
 
 /**
  * You can subscribe on destroy or update of watcher
@@ -24,8 +23,8 @@ import { Destructor } from '../../types'
  * // nothing happens
  * ```
  * */
-export function onDestroy (destructor: Destructor) {
+export function onDestroy (destructor: Function) {
   if (scope.activeWatcher) {
-    scope.activeWatcher.onClear(destructor)
+    scope.activeWatcher.destructors.add(destructor)
   }
 }

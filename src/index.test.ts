@@ -1,4 +1,4 @@
-import {Watch, State, Cache, Event} from '.'
+import { Cache, createEvent, State, Watch } from '.'
 
 describe('Watch & State', () => {
   test('simple', () => {
@@ -20,7 +20,7 @@ describe('Watch & State', () => {
     const state = new State('foo')
     let result
 
-    const watcher = new Watch(() => result = state.value)
+    const watcher = new Watch(() => (result = state.value))
     expect(state.value).toBe('foo')
     expect(result).toBe('foo')
 
@@ -69,6 +69,8 @@ describe('Watch & State', () => {
 
     run.value = false
 
+    console.log(state.watchers.size)
+
     expect(result).toBe('bar')
     expect(state.value).toBe('bar')
     expect(count1).toBe(3)
@@ -84,17 +86,16 @@ describe('Watch & State', () => {
     expect(run.value).toBe(false)
   })
   test('useless rendering with the same state', () => {
-    let count = 0
+    const log = []
     const state = new State('foo')
 
     new Watch(() => {
-      state.value
-      count++
+      log.push(state.value)
     })
-    expect(count).toBe(1)
+    expect(log.length).toBe(1)
 
     state.value = 'foo'
-    expect(count).toBe(1)
+    expect(log.length).toBe(1)
   })
   test('set state in watch', () => {
     let count = 0
@@ -129,7 +130,7 @@ describe('Watch & State', () => {
       new Watch(() => {
         count++
         if (run.value) {
-          new Watch(() => result = state.value)
+          new Watch(() => (result = state.value))
         }
       })
       expect(result).toBe('foo')
@@ -160,8 +161,8 @@ describe('Watch & State', () => {
     })
     test('double value', () => {
       const state = new State()
-      let render1 = []
-      let render2 = []
+      const render1 = []
+      const render2 = []
 
       new Watch(() => {
         render1.push([state.value, state.value])
@@ -195,14 +196,13 @@ describe('Watch & State', () => {
     test('in event', () => {
       const state = new State(1)
       const cache = new Cache(() => state.value)
-      const event = new Event()
 
       expect(cache.value).toBe(1)
 
-      event.start()
-      state.value = 2
-      expect(cache.value).toBe(2)
-      event.end()
+      createEvent(() => {
+        state.value = 2
+        expect(cache.value).toBe(2)
+      })
     })
   })
 })

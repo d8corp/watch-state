@@ -1,4 +1,5 @@
-import { globalEvent } from '../../Event'
+import { scope } from '../../constants'
+import { forceQueueWatchers } from '../../helpers'
 
 /**
  * You can create event function with createEvent
@@ -15,9 +16,13 @@ import { globalEvent } from '../../Event'
  * */
 export function createEvent<F extends Function> (fn: F): F {
   return function () {
-    globalEvent.start()
+    scope.eventDeep++
     const result = fn.apply(this, arguments)
-    globalEvent.end()
+    scope.eventDeep--
+
+    if (!scope.eventDeep) {
+      forceQueueWatchers()
+    }
     return result
   } as unknown as F
 }

@@ -1,16 +1,10 @@
-import { Watch } from './Watch'
-import { Event } from './Event'
-
-export interface Watcher <R = any> {
-  (update?: boolean): R
-}
-
-export interface Destructor <R = any> {
-  (): R
+export interface Observer {
+  childWatchers: Set<Observer>
+  destructors: Set<Function>
+  destroyed: boolean
 }
 
 export interface Scope {
-  activeWatcher?: Watch
-  activeEvent?: Event
-  activeEventDeep: number
+  activeWatcher?: Observer
+  eventDeep: number
 }

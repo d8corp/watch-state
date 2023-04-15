@@ -1,4 +1,4 @@
-import {State, Watch, Event} from '..'
+import { createEvent, State, Watch } from '..'
 
 describe('State', () => {
   describe('constructor', () => {
@@ -12,7 +12,7 @@ describe('State', () => {
       expect(() => new State(Infinity)).not.toThrow()
       expect(() => new State(NaN)).not.toThrow()
       expect(() => new State('1')).not.toThrow()
-      expect(() => new State(Symbol())).not.toThrow()
+      expect(() => new State(Symbol(''))).not.toThrow()
       expect(() => new State({})).not.toThrow()
       expect(() => new State([])).not.toThrow()
       expect(() => new State(new Promise(resolve => resolve(1)))).not.toThrow()
@@ -49,14 +49,13 @@ describe('State', () => {
   describe('loop', () => {
     test('custom loop', () => {
       const count = new State(0)
-      const event = new Event()
       const log = []
 
       new Watch(() => {
         if (count.value < 3) {
-          event.start()
-          log.push(count.value++)
-          event.end()
+          createEvent(() => {
+            log.push(count.value++)
+          })()
         }
       })
 

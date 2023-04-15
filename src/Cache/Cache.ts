@@ -1,93 +1,38 @@
-import { Watch } from '../Watch'
-import { State } from '../State'
-import { Watcher } from '../types'
+import { destroyWatchers, watchWithScope } from '../helpers'
+import { Observable } from '../Observable'
+import { Observer } from '../types'
 
-/**
- * You can cache computed state.
- * The watcher will not be triggered while new result is the same.
- * ```javascript
- * const name = new State('Foo')
- * const surname = new State('Bar')
- *
- * const fullName = new Cache(() => (
- *   `${name.value} ${surname.value[0]}`
- * ))
- *
- * new Watch(() => {
- *   console.log(fullName.value)
- * })
- * // console.log('Foo B')
- *
- * surname.value = 'Baz'
- * // nothing happens
- *
- * surname.value = 'Quux'
- * // console.log('Foo Q')
- * ```
- * */
-export class Cache <V = any> extends Watch {
-  protected updated: boolean
-  private _state: State<V>
+export class Cache<V = unknown> extends Observable<V> implements Observer {
+  // Observer
+  destructors: Set<Function> = new Set()
+  childWatchers: Set<Observer> = new Set()
+  destroyed = false
 
-  constructor (watcher: Watcher<V>, freeParent?: boolean, fireImmediately?: boolean) {
-    super(watcher, freeParent, !fireImmediately)
-  }
-
-  destroy () {
-    return super.destroy()
-  }
-
-  run () {
-    this.updated = true
-    this.value = super.run()
-  }
-
-  get hasWatcher (): boolean {
-    if (this.updated && this.size) {
-      for (const watcher of this._state.watchers) {
-        if (!(watcher instanceof Cache) || watcher.hasWatcher) {
-          return true
-        }
-      }
-    }
-  }
-
-  get size () {
-    return this._state?.watchers?.size
-  }
-
-  deepUpdate () {
-    this.updated = false
-    this.destroy()
-    if (this.size) {
-      for (const watcher of this._state.watchers) {
-        (watcher as Cache).deepUpdate()
-      }
-    }
-  }
-
-  update () {
-    if (this.updated) {
-      if (this.hasWatcher) {
-        this.forceUpdate()
-      } else {
-        this.deepUpdate()
-      }
-    }
-  }
-
-  private get state (): State<V> {
-    return this._state || (this._state = new State())
+  readonly watcher: (update: boolean) => V
+  invalid = true
+  updated = false
+  constructor (watcher: (update: boolean) => V) {
+    super()
+    this.watcher = watcher
   }
 
   get value () {
-    if (!this.updated) {
-      this.forceUpdate()
+    if (this.invalid) {
+      this.invalid = false
+
+      watchWithScope(this, () => {
+        this.rawValue = this.watcher(this.updated ? this.updated = true : false)
+      })
     }
-    return this.state.value
+
+    return super.value
   }
 
-  set value (value) {
-    this.state.value = value
+  destroy () {
+    destroyWatchers(this)
+  }
+
+  invalidate () {
+    this.invalid = true
   }
 }

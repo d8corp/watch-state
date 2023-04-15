@@ -1,38 +1,20 @@
-import { Event } from '../Event'
+import { queueWatchers } from '../helpers'
+import { Observable } from '../Observable'
 
-import { scope } from '../constants'
-
-export class State <T = any> extends Event {
-  constructor (public state?: T) {super()}
-
-  /**
-   * the field returns current state.
-   * ```typescript
-   * const state = new State(1)
-   * console.log(state.value) // 1
-   * ```
-   * */
-  get value (): T {
-    if (scope.activeWatcher) {
-      this.add(scope.activeWatcher)
-    }
-    return this.state
+export class State<V = unknown> extends Observable<V> {
+  constructor (value?: V) {
+    super()
+    this.rawValue = value
   }
 
-  /**
-   * Change the state.
-   * ```typescript
-   * const state = new State(1)
-   * console.log(state.value) // 1
-   *
-   * state.value = 2
-   * console.log(state.value) // 2
-   * ```
-   * */
-  set value (value: T) {
-    if (value !== this.state) {
-      this.state = value
-      this.update()
+  get value () {
+    return super.value
+  }
+
+  set value (value: V) {
+    if (this.rawValue !== value) {
+      this.rawValue = value
+      queueWatchers(...this.watchers)
     }
   }
 }

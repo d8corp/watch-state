@@ -14,7 +14,7 @@ export class State<V = unknown> extends Observable<V> {
   set value (value: V) {
     if (this.rawValue !== value) {
       this.rawValue = value
-      queueWatchers(...this.watchers)
+      queueWatchers(...this.observers)
     }
   }
 }

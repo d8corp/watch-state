@@ -2,16 +2,17 @@ import { scope } from '../constants'
 import { Observer } from '../types'
 
 export class Observable<V> {
-  readonly watchers = new Set<Observer>()
+  readonly observers = new Set<Observer>()
   rawValue: V
 
   get value () {
     const { activeWatcher } = scope
+
     if (activeWatcher) {
-      this.watchers.add(activeWatcher)
+      this.observers.add(activeWatcher)
 
       activeWatcher.destructors.add(() => {
-        this.watchers.delete(activeWatcher)
+        this.observers.delete(activeWatcher)
       })
     }
 

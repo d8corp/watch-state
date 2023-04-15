@@ -1,19 +1,30 @@
+import { scope } from '../constants'
 import { destroyWatchers, watchWithScope } from '../helpers'
 import { Observable } from '../Observable'
 import { Observer } from '../types'
 
 export class Cache<V = unknown> extends Observable<V> implements Observer {
+  invalid = true
+  updated = false
+
   // Observer
   destructors: Set<Function> = new Set()
   childWatchers: Set<Observer> = new Set()
-  destroyed = false
 
   readonly watcher: (update: boolean) => V
-  invalid = true
-  updated = false
   constructor (watcher: (update: boolean) => V) {
     super()
     this.watcher = watcher
+
+    const { activeWatcher } = scope
+
+    if (activeWatcher) {
+      activeWatcher.childWatchers.add(this)
+
+      activeWatcher.destructors.add(() => {
+        activeWatcher.childWatchers.delete(this)
+      })
+    }
   }
 
   get value () {

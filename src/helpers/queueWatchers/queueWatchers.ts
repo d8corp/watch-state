@@ -6,31 +6,29 @@ import { type Observer } from '../../types'
 import { Watch } from '../../Watch'
 
 const cacheStack: Cache[] = []
-const watchersStack: Observer[] = []
+const observersStack: Observer[] = []
 let currentCache: Cache
-let currentWatcher: Observer
+let currentObserver: Observer
 
 export function forceQueueWatchers () {
-  while ((currentCache = cacheStack.shift()) || (currentWatcher = watchersStack.shift())) {
+  while ((currentCache = cacheStack.shift()) || (currentObserver = observersStack.shift())) {
     if (currentCache) {
       currentCache.invalidate()
       continue
     }
 
-    if (!currentWatcher.destroyed) {
-      if (currentWatcher instanceof Watch) {
-        destroyWatchers(...currentWatcher.childWatchers)
-        currentWatcher.childWatchers.clear()
-        currentWatcher.update()
-      }
+    destroyWatchers(currentObserver)
+
+    if (currentObserver instanceof Watch) {
+      currentObserver.update()
     }
   }
 }
 
 export function queueWatchers (...watchers: Observer[]) {
-  const useLoop = !scope.eventDeep && !watchersStack.length && !cacheStack.length
+  const useLoop = !scope.eventDeep && !observersStack.length && !cacheStack.length
 
-  watchersStack.push(...watchers)
+  observersStack.push(...watchers)
 
   for (const watcher of watchers) {
     if (watcher instanceof Cache) {

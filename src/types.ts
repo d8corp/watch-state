@@ -1,7 +1,7 @@
 export interface Observer {
   childWatchers: Set<Observer>
   destructors: Set<Function>
-  destroyed: boolean
+  destroy (): void
 }
 
 export interface Scope {

@@ -69,8 +69,6 @@ describe('Watch & State', () => {
 
     run.value = false
 
-    console.log(state.watchers.size)
-
     expect(result).toBe('bar')
     expect(state.value).toBe('bar')
     expect(count1).toBe(3)
@@ -122,6 +120,36 @@ describe('Watch & State', () => {
     expect(state2.value).toBe('(baz)')
   })
   describe('deep', () => {
+    test('auto-remove small', () => {
+      const run = new State(true)
+      const state = new State('foo')
+      let count = 0
+      let result
+
+      class Watch1 extends Watch {}
+      class Watch2 extends Watch {}
+
+      new Watch1(() => {
+        count++
+        if (run.value) {
+          new Watch2(() => (result = state.value))
+        }
+      })
+
+      run.value = false
+
+      expect(result).toBe('foo')
+      expect(state.value).toBe('foo')
+      expect(count).toBe(2)
+      expect(run.value).toBe(false)
+
+      state.value = 'baz'
+
+      expect(result).toBe('foo')
+      expect(state.value).toBe('baz')
+      expect(count).toBe(2)
+      expect(run.value).toBe(false)
+    })
     test('auto-remove', () => {
       let count = 0
       const run = new State(true)
@@ -170,6 +198,7 @@ describe('Watch & State', () => {
           render2.push([state.value, state.value])
         })
       })
+
       expect(render1.length).toBe(1)
       expect(render2.length).toBe(1)
       expect(render1[0]).toEqual([undefined, undefined])

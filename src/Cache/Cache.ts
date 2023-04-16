@@ -1,5 +1,5 @@
 import { scope } from '../constants'
-import { destroyWatchers, watchWithScope } from '../helpers'
+import { destroyWatchers, invalidateCache, queueWatchers, watchWithScope } from '../helpers'
 import { Observable } from '../Observable'
 import { Observer } from '../types'
 import { Watch } from '../Watch'
@@ -31,7 +31,7 @@ export class Cache<V = unknown> extends Observable<V> implements Observer {
     }
 
     if (fireImmediately) {
-      this.update()
+      this.forceUpdate()
     }
   }
 
@@ -48,7 +48,12 @@ export class Cache<V = unknown> extends Observable<V> implements Observer {
       this.invalid = false
 
       watchWithScope(this, () => {
-        this.rawValue = this.watcher(this.updated ? this.updated = true : false)
+        const newValue = this.watcher(this.updated ? this.updated = true : false)
+
+        if (newValue !== this.rawValue) {
+          this.rawValue = newValue
+          queueWatchers(...this.observers)
+        }
       })
     }
   }
@@ -83,6 +88,6 @@ export class Cache<V = unknown> extends Observable<V> implements Observer {
   }
 
   invalidate () {
-    this.invalid = true
+    invalidateCache(this)
   }
 }

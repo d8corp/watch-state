@@ -1,11 +1,11 @@
-import { createEvent, State, Watch } from '../..'
+import { createEvent, State, unwatch, Watch } from '../..'
 
 describe('createEvent', () => {
   it('works', () => {
     const log = jest.fn()
     const count = new State(0)
     const increase = createEvent(() => {
-      log(count.value++)
+      unwatch(() => log(count.value++))
     })
 
     new Watch(increase)

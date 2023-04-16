@@ -52,7 +52,7 @@ export class Cache<V = unknown> extends Observable<V> implements Observer {
 
         if (newValue !== this.rawValue) {
           this.rawValue = newValue
-          queueWatchers(...this.observers)
+          queueWatchers(this.observers)
         }
       })
     }

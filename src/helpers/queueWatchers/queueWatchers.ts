@@ -22,7 +22,7 @@ export function forceQueueWatchers () {
   }
 }
 
-export function queueWatchers (...watchers: Observer[]) {
+export function queueWatchers (watchers: Set<Observer>) {
   const useLoop = !scope.eventDeep && !observersStack.length && !cacheStack.length
 
   observersStack.push(...watchers)

@@ -3,14 +3,15 @@ import { clearWatcher } from '../clearWatchers'
 import { Cache } from '../../Cache'
 import { scope } from '../../constants'
 import { type Observer } from '../../types'
+import { shiftSet } from '../../utils'
 
-const cacheStack: Cache[] = []
-const observersStack: Observer[] = []
+const cacheStack: Set<Cache> = new Set()
+const observersStack: Set<Observer> = new Set()
 let currentCache: Cache
 let currentObserver: Observer
 
 export function forceQueueWatchers () {
-  while ((currentCache = cacheStack.shift()) || (currentObserver = observersStack.shift())) {
+  while ((currentCache = shiftSet(cacheStack)) || (currentObserver = shiftSet(observersStack))) {
     if (currentCache) {
       currentCache.invalid = true
       continue
@@ -23,15 +24,15 @@ export function forceQueueWatchers () {
 }
 
 export function queueWatchers (watchers: Set<Observer>) {
-  const useLoop = !scope.eventDeep && !observersStack.length && !cacheStack.length
+  const useLoop = !scope.eventDeep && !observersStack.size && !cacheStack.size
 
-  observersStack.push(...watchers)
+  watchers.forEach(watcher => {
+    observersStack.add(watcher)
 
-  for (const watcher of watchers) {
     if (watcher instanceof Cache) {
-      cacheStack.push(watcher)
+      cacheStack.add(watcher)
     }
-  }
+  })
 
   if (!useLoop) {
     return

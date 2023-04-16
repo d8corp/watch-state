@@ -8,6 +8,7 @@ export class Cache<V = unknown> extends Observable<V> implements Observer {
   invalid = true
   updated = false
   destroyed = false
+  isCache = true
 
   // Observer
   destructors: Set<Function> = new Set()

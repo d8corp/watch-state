@@ -1,4 +1,4 @@
-import { Cache } from '../../Cache'
+import { type Cache } from '../../Cache'
 import { Observer } from '../../types'
 
 const invalidateStack: Observer[] = []
@@ -11,9 +11,9 @@ export function invalidateCache (cache: Observer) {
   if (skipLoop) return
 
   while ((currentObserver = invalidateStack.shift())) {
-    if (currentObserver instanceof Cache) {
-      invalidateStack.push(...currentObserver.observers)
-      currentObserver.invalid = true
+    if (currentObserver.isCache) {
+      invalidateStack.push(...(currentObserver as Cache).observers)
+      ;(currentObserver as Cache).invalid = true
     }
   }
 }

@@ -4,6 +4,7 @@ export interface Observer {
   destroy (): void
   update (): void
   destroyed: boolean
+  isCache: boolean
 }
 
 export interface Scope {

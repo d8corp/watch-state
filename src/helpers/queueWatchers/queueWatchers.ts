@@ -1,9 +1,9 @@
 import { clearWatcher } from '../clearWatchers'
 
-import { Cache } from '../../Cache'
+import { type Cache } from '../../Cache'
 import { scope } from '../../constants'
 import { type Observer } from '../../types'
-import { shiftSet } from '../../utils'
+import { shiftSet } from '../../utils/shiftSet'
 
 const cacheStack: Set<Cache> = new Set()
 const observersStack: Set<Observer> = new Set()
@@ -29,8 +29,8 @@ export function queueWatchers (watchers: Set<Observer>) {
   watchers.forEach(watcher => {
     observersStack.add(watcher)
 
-    if (watcher instanceof Cache) {
-      cacheStack.add(watcher)
+    if (watcher.isCache) {
+      cacheStack.add(watcher as Cache)
     }
   })
 

@@ -7,6 +7,7 @@ export class Watch implements Observer {
   destructors: Set<Function> = new Set()
   childWatchers: Set<Observer> = new Set()
   destroyed = false
+  isCache = false
 
   readonly watcher: (update: boolean) => void
   constructor (watcher: (update: boolean) => void) {

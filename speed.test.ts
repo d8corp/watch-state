@@ -1,11 +1,11 @@
-import perfocode, {describe, test} from 'perfocode'
-import {Watch, State, Cache, Event} from './src'
-import {autorun, observable, computed, reaction, action, configure} from 'mobx'
-import {createEvent as ce, createStore as cs} from 'effector'
+import { createEvent as ce, createStore as cs } from 'effector'
 import mazzard from 'mazzard'
-import {createStoreon} from 'storeon'
+import { action, autorun, computed, configure, observable, reaction } from 'mobx'
+import perfocode, { describe, test } from 'perfocode'
+import { createStore } from 'redux'
+import { createStoreon } from 'storeon'
 
-import {createStore} from 'redux'
+import { Cache, createEvent, State, Watch } from './src'
 
 configure({
   enforceActions: 'never',
@@ -20,6 +20,11 @@ perfocode('speed.test', () => {
         test('mobx', () => observable.box())
       })
       describe('watch', () => {
+        test('watch-state', () => new Watch(() => {}))
+        test('mobx: autorun', () => autorun(() => {}))
+        test('mobx: reaction', () => reaction(() => {}, () => {}))
+      })
+      describe('watch + destroy', () => {
         test('watch-state', () => new Watch(() => {}).destroy())
         test('mobx: autorun', () => autorun(() => {})())
         test('mobx: reaction', () => reaction(() => {}, () => {})())
@@ -86,14 +91,12 @@ perfocode('speed.test', () => {
         const state2 = observable.box(0)
         const watcher1 = new Watch(() => state1.value)
         const watcher2 = autorun(() => state2.get())
-        const wsEvent = new Event()
-        const event1 = () => {
-          wsEvent.start()
+        const event1 = createEvent(() => {
           for (let i = 0; i < 10; i++) {
             state1.value++
           }
-          wsEvent.end()
-        }
+        })
+
         const event2 = action(() => {
           for (let i = 0; i < 10; i++) {
             state2.set(state2.get() + 1)
@@ -123,11 +126,11 @@ perfocode('speed.test', () => {
     // redux
     function reducer (state, action) {
       if (action.type === 'INCREMENT') {
-        return {...state, count: state.count + 1}
+        return { ...state, count: state.count + 1 }
       }
       return state
     }
-    const store = createStore(reducer, {count: 0})
+    const store = createStore(reducer, { count: 0 })
     const destroy = store.subscribe(() => store.getState().count)
 
     // effector
@@ -136,7 +139,7 @@ perfocode('speed.test', () => {
     counter.watch(count => count)
 
     // mazzard
-    const MAState = mazzard({value: 0})
+    const MAState = mazzard({ value: 0 })
     const MAWatch = mazzard(() => MAState.value)
 
     // storeon
@@ -146,7 +149,7 @@ perfocode('speed.test', () => {
     }
     const SStore = createStoreon<any>([count])
 
-    const SDispatch = SStore.on('inc', ({count}) => count)
+    const SDispatch = SStore.on('inc', ({ count }) => count)
 
     test('watch-state', () => {
       WSState.value++
@@ -157,7 +160,7 @@ perfocode('speed.test', () => {
     })
 
     test('redux', () => {
-      store.dispatch({type: 'INCREMENT'})
+      store.dispatch({ type: 'INCREMENT' })
     })
 
     test('effector', () => {
@@ -183,7 +186,7 @@ perfocode('speed.test', () => {
     test('watch-state', () => {
       const state = new State(COUNT)
       const watcher = new Watch(() => state.value)
-      while (state.value--) {}
+      while (state.value--) { /* empty */ }
       watcher.destroy()
     })
     test('mobx', () => {
@@ -197,23 +200,23 @@ perfocode('speed.test', () => {
     test('redux', () => {
       function reducer (state, action) {
         if (action.type === 'DECREMENT') {
-          return {...state, count: state.count - 1}
+          return { ...state, count: state.count - 1 }
         }
         return state
       }
-      const store = createStore(reducer, {count: COUNT})
+      const store = createStore(reducer, { count: COUNT })
       const destroy = store.subscribe(() => store.getState().count)
 
       while (store.getState().count) {
-        store.dispatch({type: 'DECREMENT'})
+        store.dispatch({ type: 'DECREMENT' })
       }
       destroy()
     })
     test('mazzard', () => {
-      const store = mazzard({value: COUNT})
+      const store = mazzard({ value: COUNT })
       const stop = mazzard(() => store.value)
 
-      while (store.value--) {}
+      while (store.value--) { /* empty */ }
       stop()
     })
     test('effector', () => {

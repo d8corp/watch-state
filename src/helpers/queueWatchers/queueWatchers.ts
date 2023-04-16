@@ -12,7 +12,7 @@ let currentObserver: Observer
 export function forceQueueWatchers () {
   while ((currentCache = cacheStack.shift()) || (currentObserver = observersStack.shift())) {
     if (currentCache) {
-      currentCache.invalidate()
+      currentCache.invalid = true
       continue
     }
 

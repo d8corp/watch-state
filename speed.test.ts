@@ -1,4 +1,4 @@
-import { createEvent as ce, createStore as cs } from 'effector'
+import { createEvent as createEffectorEvent, createStore as createEffectorStore } from 'effector'
 import mazzard from 'mazzard'
 import { action, autorun, computed, configure, observable, reaction } from 'mobx'
 import perfocode, { describe, test } from 'perfocode'
@@ -38,7 +38,7 @@ perfocode('speed.test', () => {
       const wsColor = new State('red')
       const mobxColor1 = observable.box('red')
       const mobxColor2 = observable.box('red')
-      const messageEvent = ce()
+      const messageEvent = createEffectorEvent()
 
       test('watch-state', () => new Watch(() => wsColor.value).destroy())
       test('mobx: autorun', () => autorun(() => mobxColor1.get())())
@@ -49,8 +49,8 @@ perfocode('speed.test', () => {
       const state = new State(0)
       const stateMobx1 = observable.box(0)
       const stateMobx2 = observable.box(0)
-      const increment = ce()
-      const store = cs(0).on(increment, state => state + 1)
+      const increment = createEffectorEvent()
+      const store = createEffectorStore(0).on(increment, state => state + 1)
 
       const watcher = new Watch(() => state.value)
       const dispatcher1 = autorun(() => stateMobx1.get())
@@ -134,8 +134,8 @@ perfocode('speed.test', () => {
     const destroy = store.subscribe(() => store.getState().count)
 
     // effector
-    const increment = ce()
-    const counter = cs(0).on(increment, state => state + 1)
+    const increment = createEffectorEvent()
+    const counter = createEffectorStore(0).on(increment, state => state + 1)
     counter.watch(count => count)
 
     // mazzard
@@ -181,23 +181,47 @@ perfocode('speed.test', () => {
     MAWatch()
     SDispatch()
   })
-  describe('complex', () => {
+  describe('counter', () => {
     const COUNT = 1000
+
+    const testLog = (log: number[]) => {
+      if (log.length < COUNT) {
+        throw Error(`test failed: log.length expected: ${COUNT}, actual: ${log.length}`)
+      }
+
+      if (log[0] !== COUNT) {
+        throw Error(`test failed: log[0] expected: ${COUNT}, actual: ${log[0]}`)
+      }
+
+      if (log[COUNT] !== 0) {
+        throw Error(`test failed: log[${COUNT}] expected: 0, actual: ${log[COUNT]}`)
+      }
+    }
+
     test('watch-state', () => {
+      const log = []
       const state = new State(COUNT)
-      const watcher = new Watch(() => state.value)
+      const watcher = new Watch(() => log.push(state.value))
+
       while (state.value--) { /* empty */ }
+
+      testLog(log)
       watcher.destroy()
     })
     test('mobx', () => {
+      const log = []
       const state = observable.box(COUNT)
-      const disposer = autorun(() => state.get())
+      const disposer = autorun(() => log.push(state.get()))
+
       while (state.get()) {
         state.set(state.get() - 1)
       }
+
+      testLog(log)
       disposer()
     })
     test('redux', () => {
+      const log = []
       function reducer (state, action) {
         if (action.type === 'DECREMENT') {
           return { ...state, count: state.count - 1 }
@@ -205,41 +229,60 @@ perfocode('speed.test', () => {
         return state
       }
       const store = createStore(reducer, { count: COUNT })
-      const destroy = store.subscribe(() => store.getState().count)
+      log.push(store.getState().count)
+      const destroy = store.subscribe(() => log.push(store.getState().count))
 
       while (store.getState().count) {
         store.dispatch({ type: 'DECREMENT' })
       }
+
+      testLog(log)
       destroy()
     })
     test('mazzard', () => {
+      const log = []
       const store = mazzard({ value: COUNT })
-      const stop = mazzard(() => store.value)
+      const stop = mazzard(() => log.push(store.value))
 
       while (store.value--) { /* empty */ }
+
+      testLog(log)
       stop()
     })
     test('effector', () => {
-      const decrement = ce()
-      const counter = cs(COUNT).on(decrement, state => state - 1)
-      counter.watch(() => {})
+      const log = []
+      const decrement = createEffectorEvent()
+      const counter = createEffectorStore(COUNT).on(decrement, state => state - 1)
+
+      const subscription = counter.watch(state => {
+        log.push(state)
+      })
+
       while (counter.getState()) {
         decrement()
       }
+
+      testLog(log)
+      subscription.unsubscribe()
     })
     test('storeon', () => {
+      const log = []
       const count = store => {
         store.on('@init', () => ({ count: COUNT }))
         store.on('dec', ({ count }) => ({ count: count - 1 }))
       }
       const store = createStoreon<any>([count])
 
-      const dispatch = store.on('dec', () => {})
+      log.push(store.get().count)
+      const dispatch = store.on('dec', ({ count }) => {
+        log.push(count)
+      })
 
       while (store.get().count) {
         store.dispatch('dec')
       }
 
+      testLog(log)
       dispatch()
     })
   })

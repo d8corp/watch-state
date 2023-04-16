@@ -1,18 +1,17 @@
 import { Observer } from '../../types'
-import { shiftSet } from '../../utils'
 
-const destroyStack: Set<Observer> = new Set()
+const destroyStack: Observer[] = []
 let currentWatcher: Observer
 
 export function destroyWatchers (observer: Observer) {
-  const skipLoop = Boolean(destroyStack.size)
-  destroyStack.add(observer)
+  const skipLoop = Boolean(destroyStack.length)
+  destroyStack.push(observer)
 
   if (skipLoop) return
 
-  while ((currentWatcher = shiftSet(destroyStack))) {
+  while ((currentWatcher = destroyStack.shift())) {
     currentWatcher.childWatchers.forEach(observer => {
-      destroyStack.add(observer)
+      destroyStack.push(observer)
     })
 
     for (const destructor of currentWatcher.destructors) {

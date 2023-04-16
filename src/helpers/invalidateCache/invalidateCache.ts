@@ -4,9 +4,9 @@ import { Observer } from '../../types'
 const invalidateStack: Observer[] = []
 let currentObserver: Observer
 
-export function invalidateCache (...caches: Observer[]) {
+export function invalidateCache (cache: Observer) {
   const skipLoop = Boolean(invalidateStack.length)
-  invalidateStack.push(...caches)
+  invalidateStack.push(cache)
 
   if (skipLoop) return
 

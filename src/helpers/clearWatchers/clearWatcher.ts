@@ -5,9 +5,9 @@ import { Observer } from '../../types'
 const clearStack = []
 let currentWatcher: Observer
 
-export function clearWatchers (...watchers: Observer[]) {
+export function clearWatcher (watcher: Observer) {
   const skipLoop = Boolean(clearStack.length)
-  clearStack.push(...watchers)
+  clearStack.push(watcher)
 
   if (skipLoop) return
 

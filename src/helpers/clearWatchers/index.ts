@@ -1,1 +1,1 @@
-export * from './clearWatchers'
+export * from './clearWatcher'

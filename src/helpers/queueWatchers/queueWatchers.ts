@@ -1,4 +1,4 @@
-import { clearWatchers } from '../clearWatchers'
+import { clearWatcher } from '../clearWatchers'
 
 import { Cache } from '../../Cache'
 import { scope } from '../../constants'
@@ -16,7 +16,7 @@ export function forceQueueWatchers () {
       continue
     }
 
-    clearWatchers(currentObserver)
+    clearWatcher(currentObserver)
 
     currentObserver.update()
   }

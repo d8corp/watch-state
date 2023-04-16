@@ -1,9 +1,8 @@
-import { destroyWatchers } from '../destroyWatchers'
+import { clearWatchers } from '../clearWatchers'
 
 import { Cache } from '../../Cache'
 import { scope } from '../../constants'
 import { type Observer } from '../../types'
-import { Watch } from '../../Watch'
 
 const cacheStack: Cache[] = []
 const observersStack: Observer[] = []
@@ -17,11 +16,9 @@ export function forceQueueWatchers () {
       continue
     }
 
-    destroyWatchers(currentObserver)
+    clearWatchers(currentObserver)
 
-    if (currentObserver instanceof Watch) {
-      currentObserver.update()
-    }
+    currentObserver.update()
   }
 }
 

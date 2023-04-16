@@ -16,5 +16,7 @@ export function destroyWatchers (...watchers: Observer[]) {
       currentWatcher.destructors.delete(destructor)
       destructor()
     }
+
+    currentWatcher.destroyed = true
   }
 }

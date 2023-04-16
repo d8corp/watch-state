@@ -39,7 +39,7 @@ describe('Watch', () => {
         watcher2 = new Watch(() => test2++)
       })
 
-      let watcherTest = watcher2
+      const watcherTest = watcher2
       expect(test1).toBe(1)
       expect(test2).toBe(1)
       expect(watcherTest).toBe(watcher2)
@@ -78,63 +78,12 @@ describe('Watch', () => {
       expect(test).toBe(1)
     })
   })
-  describe('onClear', () => {
-    describe('method', () => {
-      test('without update', () => {
-        let test = 0
-        const watcher = new Watch(() => {})
-        watcher.onClear(() => test++)
-        expect(test).toBe(0)
-        watcher.destroy()
-        expect(test).toBe(1)
-        watcher.destroy()
-        expect(test).toBe(1)
-      })
-      test('with update', () => {
-        let test = 0
-        const watcher = new Watch(() => {})
-        watcher.onClear(() => test++)
-        watcher.update()
-        expect(test).toBe(1)
-        watcher.destroy()
-        expect(test).toBe(1)
-      })
-      test('with state', () => {
-        const change = jest.fn()
-        const destroy = jest.fn()
-        const state = new State(0)
-        const watcher = new Watch(() => {
-          change(state.value)
-        }).onClear(destroy)
-
-        expect(destroy).toBeCalledTimes(0)
-        expect(change).toBeCalledTimes(1)
-        expect(change).toHaveBeenLastCalledWith(0)
-
-        state.value++
-
-        expect(destroy).toBeCalledTimes(1)
-        expect(change).toBeCalledTimes(2)
-        expect(change).toHaveBeenLastCalledWith(1)
-
-        state.value++
-
-        expect(destroy).toBeCalledTimes(1)
-        expect(change).toBeCalledTimes(3)
-        expect(change).toHaveBeenLastCalledWith(2)
-
-        watcher.destroy()
-
-        expect(destroy).toBeCalledTimes(1)
-        expect(change).toBeCalledTimes(3)
-        expect(change).toHaveBeenLastCalledWith(2)
-      })
-    })
-  })
   describe('update argument', () => {
     test('update', () => {
       let updated: boolean
-      const watcher = new Watch(update => updated = update)
+      const watcher = new Watch(update => {
+        updated = update
+      })
       expect(updated).toBe(false)
       watcher.update()
       expect(updated).toBe(true)

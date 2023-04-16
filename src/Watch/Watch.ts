@@ -6,6 +6,7 @@ export class Watch implements Observer {
   // Observer
   destructors: Set<Function> = new Set()
   childWatchers: Set<Observer> = new Set()
+  destroyed = false
 
   readonly watcher: (update: boolean) => void
   constructor (watcher: (update: boolean) => void) {
@@ -30,8 +31,10 @@ export class Watch implements Observer {
   }
 
   update () {
-    watchWithScope(this, () => {
-      this.watcher(true)
-    })
+    if (!this.destroyed) {
+      watchWithScope(this, () => {
+        this.watcher(true)
+      })
+    }
   }
 }

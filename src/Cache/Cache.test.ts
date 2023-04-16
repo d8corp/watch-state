@@ -1,5 +1,6 @@
-import {State, Watch} from '..'
-import {Cache} from './Cache'
+import { Cache } from './Cache'
+
+import { State, Watch } from '..'
 
 describe('Cache', () => {
   describe('constructor', () => {
@@ -90,18 +91,20 @@ describe('Cache', () => {
       cache1 = new Cache(() => test2++, false, true)
     }, true, true)
 
-    let watcherTest = cache1
+    const watcherTest = cache1
     expect(test1).toBe(1)
     expect(test2).toBe(1)
     expect(watcherTest).toBe(cache1)
 
     cache1.update()
+    // eslint-disable-next-line no-unused-expressions
     cache1.value
     expect(test1).toBe(1)
     expect(test2).toBe(2)
     expect(watcherTest).toBe(cache1)
 
     cache2.update()
+    // eslint-disable-next-line no-unused-expressions
     cache2.value
     expect(test1).toBe(2)
     expect(test2).toBe(3)

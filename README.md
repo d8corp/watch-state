@@ -123,13 +123,12 @@ const {
   Watch,
   State,
   Cache,
-  Event
 } = watchState
 ```
 
 ## Usage
 ### Simple example:
-You can create an instance of `State` and **watch** it's **value**.
+You can create an instance of `State` and **watch** its **value**.
 ```javascript
 import { Watch, State } from 'watch-state'
 
@@ -346,51 +345,8 @@ console.log(sortedList.value)
 // console.log(['a', 'b', 'c'])
 ```
 
-### Event:
-Use `Event` when you change several states to run their watchers after the event finished.
-```javascript
-const name = new State('Foo')
-const surname = new State('Bar')
-const event = new Event()
-
-new Watch(() => {
-  console.log(name.value, surname.value)
-})
-// console.log('Foo', 'Bar')
-
-event.start()
-name.value = 'Baz'
-surname.value = 'Boo'
-event.end()
-// console.log('Baz', 'Boo')
-```
-You can use an event inside a watcher when you do not want to react on states
-```typescript jsx
-const count = new State(0)
-const event = new Event()
-
-new Watch(() => {
-  event.start()
-  console.log(count.value++)
-  event.end()
-})
-```
-*You will get loop without event*
-
-You can use `globalEvent` every time if you do not want to extend the Event functionality.
-```typescript
-import { State, globalEvent } from 'watch-state'
-const count = new State(0)
-
-new Watch(() => {
-  globalEvent.start()
-  console.log(count.value++)
-  globalEvent.end()
-})
-```
-
 ### createEvent
-You can create event function with createEvent
+You can create event function with `createEvent`
 ```typescript
 import { State, createEvent } from 'watch-state'
 
@@ -399,7 +355,14 @@ const increase = createEvent(() => {
   console.log(count.value++)
 })
 
-new Watch(increase)
+new Watch(() => console.log(count.value))
+// console.log(0)
+
+increase()
+// console.log(1)
+
+increase()
+// console.log(2)
 ```
 
 ### Typescript:
@@ -417,7 +380,7 @@ new Cache<string>(() => false)
 ```
 
 ## Performance
-You can check the performance test with **[MobX](https://www.npmjs.com/package/mobx)**, **[Effector](https://www.npmjs.com/package/effector)**, **[Storeon](https://www.npmjs.com/package/storeon)**, **[Mazzard](https://www.npmjs.com/package/mazzard)** and **[Redux](https://www.npmjs.com/package/redux)**.
+You can check a performance test with **[MobX](https://www.npmjs.com/package/mobx)**, **[Effector](https://www.npmjs.com/package/effector)**, **[Storeon](https://www.npmjs.com/package/storeon)**, **[Mazzard](https://www.npmjs.com/package/mazzard)** and **[Redux](https://www.npmjs.com/package/redux)**.
 Clone the repo, install packages and run this command
 ```shell
 npm run speed

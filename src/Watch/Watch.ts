@@ -10,21 +10,26 @@ export class Watch implements Observer {
   isCache = false
 
   readonly watcher: (update: boolean) => void
-  constructor (watcher: (update: boolean) => void) {
+  constructor (watcher: (update: boolean) => void, freeParent?: boolean, freeUpdate?: boolean) {
     this.watcher = watcher
-    const { activeWatcher } = scope
 
-    if (activeWatcher) {
-      activeWatcher.childWatchers.add(this)
+    if (!freeParent) {
+      const { activeWatcher } = scope
 
-      activeWatcher.destructors.add(() => {
-        activeWatcher.childWatchers.delete(this)
-      })
+      if (activeWatcher) {
+        activeWatcher.childWatchers.add(this)
+
+        activeWatcher.destructors.add(() => {
+          activeWatcher.childWatchers.delete(this)
+        })
+      }
     }
 
-    watchWithScope(this, () => {
-      watcher(false)
-    })
+    if (!freeUpdate) {
+      watchWithScope(this, () => {
+        watcher(false)
+      })
+    }
   }
 
   destroy () {

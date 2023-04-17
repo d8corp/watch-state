@@ -286,4 +286,160 @@ perfocode('speed.test', () => {
       dispatch()
     })
   })
+  describe('counters', () => {
+    const COUNT = 100
+    const COUNTERS_COUNT = 100
+
+    const counters = [...Array(COUNTERS_COUNT)]
+    const testLog = (log: number[]) => {
+      if (log.length < COUNT) {
+        throw Error(`test failed: log.length expected: ${COUNT}, actual: ${log.length}`)
+      }
+
+      if (log[0] !== COUNT) {
+        throw Error(`test failed: log[0] expected: ${COUNT}, actual: ${log[0]}`)
+      }
+
+      if (log[COUNT] !== 0) {
+        throw Error(`test failed: log[${COUNT}] expected: 0, actual: ${log[COUNT]}`)
+      }
+    }
+
+    test('watch-state', () => {
+      const logs: number[][] = counters.map(() => [])
+      const states = counters.map(() => new State(COUNT))
+      const watchers = counters.map((_, i) => new Watch(() => logs[i].push(states[i].value)))
+
+      for (const state of states) {
+        while (state.value--) { /* empty */ }
+      }
+
+      logs.forEach(testLog)
+      watchers.forEach(watcher => watcher.destroy())
+    })
+    test('mobx', () => {
+      const logs: number[][] = counters.map(() => [])
+      const states = counters.map(() => observable.box(COUNT))
+      const disposers = counters.map((_, i) => autorun(() => logs[i].push(states[i].get())))
+
+      for (const state of states) {
+        while (state.get()) {
+          state.set(state.get() - 1)
+        }
+      }
+
+      logs.forEach(testLog)
+      disposers.forEach(disposer => disposer())
+    })
+    test('redux', () => {
+      const logs: number[][] = counters.map(() => [])
+
+      function reducer (state, action) {
+        if (action.type === 'DECREMENT') {
+          const key = `count${action.payload}`
+
+          return {
+            ...state,
+            [key]: state[key] - 1,
+          }
+        }
+        return state
+      }
+
+      const store = createStore(reducer, counters.reduce((v, _, i) => ({ ...v, [`count${i}`]: COUNT }), {}))
+
+      for (let i = 0; i < counters.length; i++) {
+        logs[i].push(store.getState()[`count${i}`])
+      }
+
+      const destroy = store.subscribe(() => {
+        const data = store.getState()
+
+        for (let i = 0; i < counters.length; i++) {
+          if (logs[i].at(-1) !== data[`count${i}`]) {
+            logs[i].push(data[`count${i}`])
+          }
+        }
+      })
+
+      for (let i = 0; i < counters.length; i++) {
+        while (store.getState()[`count${i}`]) {
+          store.dispatch({ type: 'DECREMENT', payload: i })
+        }
+      }
+
+      logs.forEach(testLog)
+
+      destroy()
+    })
+    test('mazzard', () => {
+      const logs: number[][] = counters.map(() => [])
+
+      const store = mazzard({
+        counts: counters.map(() => COUNT),
+      })
+
+      const stops = counters.map((_, index) => mazzard(() => logs[index].push(store.counts[index])))
+
+      for (let i = 0; i < logs.length; i++) {
+        while (store.counts[i]--) { /* empty */ }
+      }
+
+      logs.forEach(testLog)
+
+      stops.forEach(stop => stop())
+    })
+    test('effector', () => {
+      const logs: number[][] = counters.map(() => [])
+
+      const decrements = counters.map(() => createEffectorEvent())
+      const stores = counters.map(
+        (_, index) => createEffectorStore(COUNT)
+          .on(decrements[index], state => state - 1),
+      )
+
+      const subscriptions = stores.map((counter, index) => counter.watch(state => {
+        logs[index].push(state)
+      }))
+
+      for (let i = 0; i < counters.length; i++) {
+        while (stores[i].getState()) {
+          decrements[i]()
+        }
+      }
+
+      logs.forEach(testLog)
+
+      subscriptions.forEach(subscription => {
+        subscription.unsubscribe()
+      })
+    })
+    test('storeon', () => {
+      const logs: number[][] = counters.map(() => [])
+      const modules = counters.map((_, index) => store => {
+        store.on('@init', () => ({ [`count${index}`]: COUNT }))
+        store.on(`dec${index}`, store => ({ [`count${index}`]: store[`count${index}`] - 1 }))
+      })
+      const store = createStoreon<any>(modules)
+
+      counters.forEach((_, index) => {
+        logs[index].push(store.get()[`count${index}`])
+      })
+      const dispatches = counters.map((_, index) => store.on(`dec${index}`, store => {
+        logs[index].push(store[`count${index}`])
+      }))
+
+      for (let i = 0; i < counters.length; i++) {
+        while (store.get()[`count${i}`]) {
+          store.dispatch(`dec${i}`)
+        }
+      }
+
+      logs.forEach(testLog)
+
+      dispatches.forEach(dispatch => {
+        dispatch()
+      })
+    })
+  })
 }, 300)

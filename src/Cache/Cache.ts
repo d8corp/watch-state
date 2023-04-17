@@ -37,7 +37,7 @@ export class Cache<V = unknown> extends Observable<V> implements Observer {
   }
 
   update () {
-    this.invalidate()
+    invalidateCache(this)
 
     if (this.watched) {
       this.forceUpdate()
@@ -86,9 +86,5 @@ export class Cache<V = unknown> extends Observable<V> implements Observer {
 
   destroy () {
     destroyWatchers(this)
-  }
-
-  invalidate () {
-    invalidateCache(this)
   }
 }

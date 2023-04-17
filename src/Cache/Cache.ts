@@ -39,8 +39,17 @@ export class Cache<V = unknown> extends Observable<V> implements Observer {
   update () {
     invalidateCache(this)
 
-    if (this.watched) {
-      this.forceUpdate()
+    const parents = [...this.observers]
+    let parent: Observer
+
+    while ((parent = parents.pop())) {
+      if (parent instanceof Watch) {
+        return this.forceUpdate()
+      }
+
+      if (parent instanceof Cache) {
+        parents.push(...parent.observers)
+      }
     }
   }
 
@@ -57,23 +66,6 @@ export class Cache<V = unknown> extends Observable<V> implements Observer {
         }
       })
     }
-  }
-
-  get watched () {
-    const parents = [...this.observers]
-    let parent: Observer
-
-    while ((parent = parents.pop())) {
-      if (parent instanceof Watch) {
-        return true
-      }
-
-      if (parent instanceof Cache) {
-        parents.push(...parent.observers)
-      }
-    }
-
-    return false
   }
 
   get value () {

@@ -1,6 +1,5 @@
-import { Cache } from './Cache'
-
 import { State, Watch } from '..'
+import { Cache } from './Cache'
 
 describe('Cache', () => {
   describe('constructor', () => {
@@ -97,14 +96,14 @@ describe('Cache', () => {
     expect(watcherTest).toBe(cache1)
 
     cache1.update()
-    // eslint-disable-next-line no-unused-expressions
+    // eslint-disable-next-line no-unused-expressions,@typescript-eslint/no-unused-expressions
     cache1.value
     expect(test1).toBe(1)
     expect(test2).toBe(2)
     expect(watcherTest).toBe(cache1)
 
     cache2.update()
-    // eslint-disable-next-line no-unused-expressions
+    // eslint-disable-next-line no-unused-expressions,@typescript-eslint/no-unused-expressions
     cache2.value
     expect(test1).toBe(2)
     expect(test2).toBe(3)

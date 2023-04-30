@@ -1,4 +1,4 @@
-import { State, Watch } from '..'
+import { Watch } from '..'
 
 describe('Watch', () => {
   describe('constructor', () => {

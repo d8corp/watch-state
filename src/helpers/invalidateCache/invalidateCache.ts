@@ -1,5 +1,5 @@
 import { type Cache } from '../../Cache'
-import { Observer } from '../../types'
+import { type Observer } from '../../types'
 
 const invalidateStack: Observer[] = []
 let currentObserver: Observer

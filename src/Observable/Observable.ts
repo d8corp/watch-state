@@ -1,5 +1,5 @@
 import { scope } from '../constants'
-import { Observer } from '../types'
+import { type Observer } from '../types'
 
 export class Observable<V> {
   readonly observers = new Set<Observer>()

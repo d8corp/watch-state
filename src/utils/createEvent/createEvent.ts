@@ -1,7 +1,6 @@
-import { unwatch } from '../unwatch'
-
 import { scope } from '../../constants'
 import { forceQueueWatchers } from '../../helpers'
+import { unwatch } from '../unwatch'
 
 /**
  * You can create event function with createEvent

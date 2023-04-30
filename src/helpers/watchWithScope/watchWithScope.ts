@@ -1,5 +1,5 @@
 import { scope } from '../../constants'
-import { Observer } from '../../types'
+import { type Observer } from '../../types'
 
 export function watchWithScope (watcher: Observer, target: () => void) {
   const prevWatcher = scope.activeWatcher

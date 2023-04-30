@@ -1,4 +1,4 @@
-import { Observer } from '../../types'
+import { type Observer } from '../../types'
 
 const destroyStack: Observer[] = []
 let currentWatcher: Observer

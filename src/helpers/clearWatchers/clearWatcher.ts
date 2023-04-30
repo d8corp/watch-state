@@ -1,6 +1,5 @@
+import { type Observer } from '../../types'
 import { destroyWatchers } from '../destroyWatchers'
-
-import { Observer } from '../../types'
 
 const clearStack = []
 let currentWatcher: Observer

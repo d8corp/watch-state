@@ -1,4 +1,4 @@
-import { Scope } from './types'
+import { type Scope } from './types'
 
 export const scope: Scope = {
   activeWatcher: undefined,

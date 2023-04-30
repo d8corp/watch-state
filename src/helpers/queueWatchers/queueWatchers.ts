@@ -1,12 +1,11 @@
-import { clearWatcher } from '../clearWatchers'
-
 import { type Cache } from '../../Cache'
 import { scope } from '../../constants'
 import { type Observer } from '../../types'
 import { shiftSet } from '../../utils/shiftSet'
+import { clearWatcher } from '../clearWatchers'
 
-const cacheStack: Set<Cache> = new Set()
-const observersStack: Set<Observer> = new Set()
+const cacheStack = new Set<Cache>()
+const observersStack = new Set<Observer>()
 let currentCache: Cache
 let currentObserver: Observer
 

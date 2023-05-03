@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1682836281605" clover="3.2.0">
-  <project timestamp="1682836281605" name="All files">
+<coverage generated="1683097134304" clover="3.2.0">
+  <project timestamp="1683097134304" name="All files">
     <metrics statements="198" coveredstatements="197" conditionals="33" coveredconditionals="28" methods="34" coveredmethods="33" elements="265" coveredelements="258" complexity="0" loc="198" ncloc="198" packages="16" files="30" classes="30"/>
     <package name="src">
       <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -154,17 +154,17 @@
       <metrics statements="12" coveredstatements="12" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="1"/>
       <file name="clearWatcher.ts" path="/Users/deight/cantinc/watch-state/src/helpers/clearWatchers/clearWatcher.ts">
         <metrics statements="11" coveredstatements="11" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="1" count="7" type="stmt"/>
-        <line num="5" count="7" type="stmt"/>
-        <line num="8" count="7" type="stmt"/>
+        <line num="2" count="7" type="stmt"/>
+        <line num="4" count="7" type="stmt"/>
+        <line num="7" count="7" type="stmt"/>
+        <line num="8" count="35" type="stmt"/>
         <line num="9" count="35" type="stmt"/>
-        <line num="10" count="35" type="stmt"/>
-        <line num="12" count="35" type="cond" truecount="0" falsecount="1"/>
+        <line num="11" count="35" type="cond" truecount="0" falsecount="1"/>
+        <line num="13" count="35" type="stmt"/>
         <line num="14" count="35" type="stmt"/>
-        <line num="15" count="35" type="stmt"/>
-        <line num="17" count="35" type="stmt"/>
+        <line num="16" count="35" type="stmt"/>
+        <line num="17" count="51" type="stmt"/>
         <line num="18" count="51" type="stmt"/>
-        <line num="19" count="51" type="stmt"/>
       </file>
       <file name="index.ts" path="/Users/deight/cantinc/watch-state/src/helpers/clearWatchers/index.ts">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -220,27 +220,27 @@
       </file>
       <file name="queueWatchers.ts" path="/Users/deight/cantinc/watch-state/src/helpers/queueWatchers/queueWatchers.ts">
         <metrics statements="21" coveredstatements="21" conditionals="8" coveredconditionals="8" methods="3" coveredmethods="3"/>
-        <line num="1" count="7" type="stmt"/>
+        <line num="2" count="7" type="stmt"/>
         <line num="4" count="7" type="stmt"/>
-        <line num="6" count="7" type="stmt"/>
+        <line num="5" count="7" type="stmt"/>
+        <line num="7" count="7" type="stmt"/>
         <line num="8" count="7" type="stmt"/>
-        <line num="9" count="7" type="stmt"/>
-        <line num="13" count="7" type="stmt"/>
-        <line num="14" count="70" type="cond" truecount="2" falsecount="0"/>
-        <line num="15" count="47" type="cond" truecount="1" falsecount="0"/>
+        <line num="12" count="7" type="stmt"/>
+        <line num="13" count="70" type="cond" truecount="2" falsecount="0"/>
+        <line num="14" count="47" type="cond" truecount="1" falsecount="0"/>
+        <line num="15" count="12" type="stmt"/>
         <line num="16" count="12" type="stmt"/>
-        <line num="17" count="12" type="stmt"/>
-        <line num="20" count="35" type="stmt"/>
-        <line num="22" count="35" type="stmt"/>
-        <line num="26" count="7" type="stmt"/>
-        <line num="27" count="71" type="cond" truecount="3" falsecount="0"/>
-        <line num="29" count="71" type="stmt"/>
-        <line num="30" count="35" type="stmt"/>
-        <line num="32" count="35" type="cond" truecount="1" falsecount="0"/>
-        <line num="33" count="12" type="stmt"/>
-        <line num="37" count="71" type="cond" truecount="1" falsecount="0"/>
-        <line num="38" count="6" type="stmt"/>
-        <line num="41" count="65" type="stmt"/>
+        <line num="19" count="35" type="stmt"/>
+        <line num="21" count="35" type="stmt"/>
+        <line num="25" count="7" type="stmt"/>
+        <line num="26" count="71" type="cond" truecount="3" falsecount="0"/>
+        <line num="28" count="71" type="stmt"/>
+        <line num="29" count="35" type="stmt"/>
+        <line num="31" count="35" type="cond" truecount="1" falsecount="0"/>
+        <line num="32" count="12" type="stmt"/>
+        <line num="36" count="71" type="cond" truecount="1" falsecount="0"/>
+        <line num="37" count="6" type="stmt"/>
+        <line num="40" count="65" type="stmt"/>
       </file>
     </package>
     <package name="src.helpers.watchWithScope">
@@ -274,18 +274,18 @@
       <file name="createEvent.ts" path="/Users/deight/cantinc/watch-state/src/utils/createEvent/createEvent.ts">
         <metrics statements="13" coveredstatements="13" conditionals="1" coveredconditionals="1" methods="3" coveredmethods="3"/>
         <line num="1" count="7" type="stmt"/>
+        <line num="2" count="7" type="stmt"/>
         <line num="3" count="7" type="stmt"/>
-        <line num="4" count="7" type="stmt"/>
-        <line num="19" count="7" type="stmt"/>
+        <line num="18" count="7" type="stmt"/>
+        <line num="19" count="5" type="stmt"/>
         <line num="20" count="5" type="stmt"/>
         <line num="21" count="5" type="stmt"/>
         <line num="22" count="5" type="stmt"/>
         <line num="23" count="5" type="stmt"/>
         <line num="24" count="5" type="stmt"/>
-        <line num="25" count="5" type="stmt"/>
-        <line num="28" count="5" type="cond" truecount="1" falsecount="0"/>
-        <line num="29" count="5" type="stmt"/>
-        <line num="32" count="5" type="stmt"/>
+        <line num="27" count="5" type="cond" truecount="1" falsecount="0"/>
+        <line num="28" count="5" type="stmt"/>
+        <line num="31" count="5" type="stmt"/>
       </file>
       <file name="index.ts" path="/Users/deight/cantinc/watch-state/src/utils/createEvent/index.ts">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>

@@ -370,7 +370,7 @@ Generic of `State`
 const key = new State<string | number>()
 
 key.value = false
-// error, you can use only streng or number
+// error, you can use only string or number
 ```
 Generic of `Cache`
 ```typescript

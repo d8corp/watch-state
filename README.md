@@ -66,7 +66,7 @@
     <img src="https://img.shields.io/badge/Changelog-⋮-brightgreen" alt="watch-state changelog">
   </a>
   <a href="https://d8corp.github.io/watch-state/coverage/lcov-report" target="_blank">
-    <img src="https://github.com/d8corp/watch-state/workflows/tests/badge.svg" alt="watch-state tests">
+    <img src="https://github.com/d8corp/watch-state/actions/workflows/tests.yml/badge.svg" alt="watch-state tests">
   </a>
 </div>
 <br>
@@ -105,18 +105,17 @@ watch {
 *You can transpile it supporting old browsers, but the performance decreases.*
 
 ## Install
+
 npm
 ```shell
 npm i watch-state
 ```
+
 yarn
 ```shell
 yarn add watch-state
 ```
-Or you can include this script to the head. 
-```html
-<script defer src="https://unpkg.com/watch-state/watch-state.min.js"></script>
-```
+
 Use `watchState` to get any class from the library.
 ```js
 const {

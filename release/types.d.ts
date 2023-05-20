@@ -10,3 +10,4 @@ export interface Scope {
     activeWatcher?: Observer;
     eventDeep: number;
 }
+export type Watcher<T> = (update: boolean) => T;

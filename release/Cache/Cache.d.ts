@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { type Observer } from '../types';
+import { type Observer, type Watcher } from '../types';
 export declare class Cache<V = unknown> extends Observable<V> implements Observer {
     invalid: boolean;
     updated: boolean;
@@ -7,8 +7,8 @@ export declare class Cache<V = unknown> extends Observable<V> implements Observe
     isCache: boolean;
     destructors: Set<Function>;
     childWatchers: Set<Observer>;
-    readonly watcher: (update: boolean) => V;
-    constructor(watcher: (update: boolean) => V, freeParent?: boolean, fireImmediately?: boolean);
+    readonly watcher: Watcher<V>;
+    constructor(watcher: Watcher<V>, freeParent?: boolean, fireImmediately?: boolean);
     update(): void;
     forceUpdate(): void;
     get value(): V;

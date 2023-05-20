@@ -1,6 +1,6 @@
 import { scope } from '../constants'
 import { destroyWatchers, watchWithScope } from '../helpers'
-import { type Observer } from '../types'
+import { type Observer, type Watcher } from '../types'
 
 export class Watch implements Observer {
   // Observer
@@ -9,8 +9,8 @@ export class Watch implements Observer {
   destroyed = false
   isCache = false
 
-  readonly watcher: (update: boolean) => void
-  constructor (watcher: (update: boolean) => void, freeParent?: boolean, freeUpdate?: boolean) {
+  readonly watcher: Watcher<void>
+  constructor (watcher: Watcher<void>, freeParent?: boolean, freeUpdate?: boolean) {
     this.watcher = watcher
 
     if (!freeParent) {

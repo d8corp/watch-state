@@ -1,7 +1,7 @@
 import { scope } from '../constants'
 import { destroyWatchers, invalidateCache, queueWatchers, watchWithScope } from '../helpers'
 import { Observable } from '../Observable'
-import { type Observer } from '../types'
+import { type Observer, type Watcher } from '../types'
 import { Watch } from '../Watch'
 
 export class Cache<V = unknown> extends Observable<V> implements Observer {
@@ -14,8 +14,8 @@ export class Cache<V = unknown> extends Observable<V> implements Observer {
   destructors = new Set<Function>()
   childWatchers = new Set<Observer>()
 
-  readonly watcher: (update: boolean) => V
-  constructor (watcher: (update: boolean) => V, freeParent?: boolean, fireImmediately?: boolean) {
+  readonly watcher: Watcher<V>
+  constructor (watcher: Watcher<V>, freeParent?: boolean, fireImmediately?: boolean) {
     super()
     this.watcher = watcher
 

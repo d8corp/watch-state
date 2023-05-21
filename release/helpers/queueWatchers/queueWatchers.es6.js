@@ -8,7 +8,11 @@ const cacheStack = new Set();
 const observersStack = new Set();
 let currentCache;
 let currentObserver;
+let forcedQueueWatchers = false;
 function forceQueueWatchers() {
+    if (forcedQueueWatchers)
+        return;
+    forcedQueueWatchers = true;
     while ((currentCache = shiftSet(cacheStack)) || (currentObserver = shiftSet(observersStack))) {
         if (currentCache) {
             currentCache.invalid = true;
@@ -17,6 +21,7 @@ function forceQueueWatchers() {
         clearWatcher(currentObserver);
         currentObserver.update();
     }
+    forcedQueueWatchers = false;
 }
 function queueWatchers(watchers) {
     const useLoop = !scope.eventDeep && !observersStack.size && !cacheStack.size;

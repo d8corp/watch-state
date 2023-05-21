@@ -8,8 +8,12 @@ const cacheStack = new Set<Cache>()
 const observersStack = new Set<Observer>()
 let currentCache: Cache
 let currentObserver: Observer
+let forcedQueueWatchers = false
 
 export function forceQueueWatchers () {
+  if (forcedQueueWatchers) return
+  forcedQueueWatchers = true
+
   while ((currentCache = shiftSet(cacheStack)) || (currentObserver = shiftSet(observersStack))) {
     if (currentCache) {
       currentCache.invalid = true
@@ -20,6 +24,8 @@ export function forceQueueWatchers () {
 
     currentObserver.update()
   }
+
+  forcedQueueWatchers = false
 }
 
 export function queueWatchers (watchers: Set<Observer>) {

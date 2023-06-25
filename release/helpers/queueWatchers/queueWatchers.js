@@ -29,16 +29,18 @@ function forceQueueWatchers() {
 }
 function queueWatchers(watchers) {
     const useLoop = !constants.scope.eventDeep && !observersStack.size && !cacheStack.size;
+    const oldObserversStack = [...observersStack];
+    observersStack.clear();
     watchers.forEach(watcher => {
         observersStack.add(watcher);
         if (watcher.isCache) {
             cacheStack.add(watcher);
         }
     });
-    if (!useLoop) {
-        return;
+    oldObserversStack.forEach(observer => observersStack.add(observer));
+    if (useLoop) {
+        forceQueueWatchers();
     }
-    forceQueueWatchers();
 }
 
 exports.forceQueueWatchers = forceQueueWatchers;

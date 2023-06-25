@@ -233,4 +233,43 @@ describe('Cache', () => {
 
     expect(log).toEqual([[0, 0], [2, 4]])
   })
+  test('destroy out cache with cache', () => {
+    const fn = jest.fn()
+    const state = new State(true)
+    const cache1 = new Cache(() => state.value)
+    const cache2 = new Cache(() => state.value)
+
+    new Watch(() => {
+      if (cache1.value) {
+        new Watch(() => fn(cache2.value))
+      }
+    })
+
+    expect(fn).toBeCalledTimes(1)
+
+    state.value = false
+
+    expect(fn).toBeCalledTimes(1)
+
+    state.value = true
+
+    expect(fn).toBeCalledTimes(2)
+  })
+  test('destroy out cache', () => {
+    const state = new State(true)
+    const cache = new Cache(() => state.value)
+    const fn = jest.fn()
+
+    new Watch(() => {
+      if (cache.value) {
+        new Watch(() => fn(state.value))
+      }
+    })
+
+    expect(fn).toBeCalledTimes(1)
+
+    state.value = false
+
+    expect(fn).toBeCalledTimes(1)
+  })
 })

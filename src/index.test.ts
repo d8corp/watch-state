@@ -1,6 +1,6 @@
 import { Cache, createEvent, State, Watch } from '.'
 
-describe('Watch & State', () => {
+describe('cases', () => {
   test('simple', () => {
     const state = new State('foo')
     let result

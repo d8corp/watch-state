@@ -1,6 +1,7 @@
 import { createEvent as createEffectorEvent, createStore as createEffectorStore } from 'effector'
 import mazzard from 'mazzard'
-import { action, autorun, computed, configure, observable, reaction } from 'mobx'
+import {action, autorun, computed, configure, observable, reaction} from 'mobx'
+import { atom } from 'nanostores'
 import perfocode, { describe, test } from 'perfocode'
 import { createStore } from 'redux'
 import { createStoreon } from 'storeon'
@@ -17,6 +18,7 @@ perfocode('speed.test', () => {
     describe('empty create', () => {
       describe('state', () => {
         test('watch-state', () => new State())
+        test('nanostores', () => atom())
         test('mobx', () => observable.box())
       })
       describe('watch', () => {
@@ -316,6 +318,20 @@ perfocode('speed.test', () => {
 
       logs.forEach(testLog)
       watchers.forEach(watcher => watcher.destroy())
+    })
+    test('nanostores', () => {
+      const logs: number[][] = counters.map(() => [])
+      const states = counters.map(() => atom(COUNT))
+      const watchers = states.map((state, i) => state.subscribe((value) => logs[i].push(value)))
+
+      for (const state of states) {
+        while (state.get()) {
+          state.set(state.get() - 1)
+        }
+      }
+
+      logs.forEach(testLog)
+      watchers.forEach(destroy => destroy())
     })
     test('mobx', () => {
       const logs: number[][] = counters.map(() => [])

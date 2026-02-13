@@ -30,7 +30,7 @@
       <br>
       <b>Light</b>
       <br>
-      About 1kb minzip
+      Less than 1 KB minzip
     </span></td>
     <td align="center"><span>
       <a href="https://d8corp.github.io/watch-state/coverage/lcov-report/" target="_blank">

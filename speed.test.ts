@@ -1,7 +1,7 @@
 import { createEvent as createEffectorEvent, createStore as createEffectorStore } from 'effector'
 import mazzard from 'mazzard'
 import {action, autorun, computed, configure, observable, reaction} from 'mobx'
-import { atom } from 'nanostores'
+import { atom, computed as nanoComputed } from 'nanostores'
 import perfocode, { describe, test } from 'perfocode'
 import { createStore } from 'redux'
 import { createStoreon } from 'storeon'
@@ -310,7 +310,7 @@ perfocode('speed.test', () => {
     test('watch-state', () => {
       const logs: number[][] = counters.map(() => [])
       const states = counters.map(() => new State(COUNT))
-      const watchers = counters.map((_, i) => new Watch(() => logs[i].push(states[i].value)))
+      const watchers = states.map((state, i) => new Watch(() => logs[i].push(state.value)))
 
       for (const state of states) {
         while (state.value--) { /* empty */ }
@@ -336,7 +336,7 @@ perfocode('speed.test', () => {
     test('mobx', () => {
       const logs: number[][] = counters.map(() => [])
       const states = counters.map(() => observable.box(COUNT))
-      const disposers = counters.map((_, i) => autorun(() => logs[i].push(states[i].get())))
+      const disposers = states.map((state, i) => autorun(() => logs[i].push(state.get())))
 
       for (const state of states) {
         while (state.get()) {
@@ -456,6 +456,41 @@ perfocode('speed.test', () => {
       dispatches.forEach(dispatch => {
         dispatch()
       })
+    })
+  })
+  describe('unused computed', () => {
+    const COUNT = 100
+    const COUNTERS_COUNT = 100
+
+    const counters = [...Array(COUNTERS_COUNT)]
+
+    test('watch-state', () => {
+      const states = counters.map(() => new State(COUNT))
+      states.map((state) => new Cache(() => state.value))
+
+      for (const state of states) {
+        while (state.value--) { /* empty */ }
+      }
+    })
+    test('nanostores', () => {
+      const states = counters.map(() => atom(COUNT))
+      states.map((state) => nanoComputed(state, value => value))
+
+      for (const state of states) {
+        while (state.get()) {
+          state.set(state.get() - 1)
+        }
+      }
+    })
+    test('mobx', () => {
+      const states = counters.map(() => observable.box(COUNT))
+      states.map((state) => computed(() => state.get()))
+
+      for (const state of states) {
+        while (state.get()) {
+          state.set(state.get() - 1)
+        }
+      }
     })
   })
 }, 300)

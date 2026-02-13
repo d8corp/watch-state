@@ -29,7 +29,22 @@
     "observable",
     "front-end"
   ],
+  "scripts": {
+    "build": "innetjs release",
+    "test": "npm run test:jest && npm run test:size",
+    "test:jest": "jest",
+    "test:coverage": "jest --coverage",
+    "test:size": "size-limit",
+    "speed": "innetjs run speed.test.ts",
+    "release": "innetjs release -p",
+    "patch": "innetjs patch",
+    "minor": "innetjs minor",
+    "major": "innetjs major",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix"
+  },
   "devDependencies": {
+    "@size-limit/preset-small-lib": "^12.0.0",
     "@types/jest": "^29.5.1",
     "@types/node": "^18.16.3",
     "@typescript-eslint/eslint-plugin": "^5.59.1",
@@ -52,20 +67,27 @@
     "nanostores": "^1.1.0",
     "perfocode": "^1.1.1",
     "redux": "^4.2.1",
+    "size-limit": "^12.0.0",
     "storeon": "^3.1.5",
     "ts-jest": "^29.1.0",
     "typescript": "^5.0.4"
   },
-  "scripts": {
-    "build": "innetjs release",
-    "test": "jest",
-    "test:coverage": "jest --coverage",
-    "speed": "innetjs run speed.test.ts",
-    "release": "innetjs release -p",
-    "patch": "innetjs patch",
-    "minor": "innetjs minor",
-    "major": "innetjs major",
-    "lint": "eslint src --ext .ts,.tsx",
-    "lint:fix": "eslint src --ext .ts,.tsx --fix"
-  }
+  "size-limit": [
+    {
+      "name": "List",
+      "path": "./release/index.es6.js",
+      "import": {
+        "./release/index.es6.js": "{ State }"
+      },
+      "limit": "458 B"
+    },
+    {
+      "name": "List",
+      "path": "./release/index.es6.js",
+      "import": {
+        "./release/index.es6.js": "{ Watch, State, Cache, onDestroy, createEvent }"
+      },
+      "limit": "844 B"
+    }
+  ]
 }

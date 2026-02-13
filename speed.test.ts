@@ -1,12 +1,12 @@
 import { createEvent as createEffectorEvent, createStore as createEffectorStore } from 'effector'
 import mazzard from 'mazzard'
-import {action, autorun, computed, configure, observable, reaction} from 'mobx'
+import { action, autorun, computed, configure, observable, reaction } from 'mobx'
 import { atom, computed as nanoComputed } from 'nanostores'
 import perfocode, { describe, test } from 'perfocode'
 import { createStore } from 'redux'
 import { createStoreon } from 'storeon'
 
-import { Cache, createEvent, State, Watch } from './src'
+import { Compute, createEvent, State, Watch } from './src'
 
 configure({
   enforceActions: 'never',
@@ -14,6 +14,7 @@ configure({
 
 perfocode('speed.test', () => {
   test('max value', () => {})
+
   describe('watch-state vs mobx', () => {
     describe('empty create', () => {
       describe('state', () => {
@@ -21,21 +22,25 @@ perfocode('speed.test', () => {
         test('nanostores', () => atom())
         test('mobx', () => observable.box())
       })
+
       describe('watch', () => {
         test('watch-state', () => new Watch(() => {}))
         test('mobx: autorun', () => autorun(() => {}))
         test('mobx: reaction', () => reaction(() => {}, () => {}))
       })
+
       describe('watch + destroy', () => {
         test('watch-state', () => new Watch(() => {}).destroy())
         test('mobx: autorun', () => autorun(() => {})())
         test('mobx: reaction', () => reaction(() => {}, () => {})())
       })
+
       describe('computed', () => {
-        test('watch-state', () => new Cache(() => {}).destroy())
+        test('watch-state', () => new Compute(() => {}).destroy())
         test('mobx', () => computed(() => {}))
       })
     })
+
     describe('watch state', () => {
       const wsColor = new State('red')
       const mobxColor1 = observable.box('red')
@@ -47,6 +52,7 @@ perfocode('speed.test', () => {
       test('mobx: reaction', () => reaction(() => mobxColor2.get(), () => {})())
       test('effector', () => messageEvent.watch(() => {}))
     })
+
     describe('update', () => {
       const state = new State(0)
       const stateMobx1 = observable.box(0)
@@ -67,6 +73,7 @@ perfocode('speed.test', () => {
       dispatcher2()
       test('effector', () => increment())
     })
+
     describe('event', () => {
       describe('without event x10', () => {
         const state1 = new State(0)
@@ -79,6 +86,7 @@ perfocode('speed.test', () => {
             state1.value++
           }
         })
+
         watcher1.destroy()
 
         test('mobx', () => {
@@ -86,13 +94,16 @@ perfocode('speed.test', () => {
             state2.set(state2.get() + 1)
           }
         })
+
         watcher2()
       })
+
       describe('with event x10', () => {
         const state1 = new State(0)
         const state2 = observable.box(0)
         const watcher1 = new Watch(() => state1.value)
         const watcher2 = autorun(() => state2.get())
+
         const event1 = createEvent(() => {
           for (let i = 0; i < 10; i++) {
             state1.value++
@@ -108,14 +119,18 @@ perfocode('speed.test', () => {
         test('watch-state', () => {
           event1()
         })
+
         watcher1.destroy()
+
         test('mobx', () => {
           event2()
         })
+
         watcher2()
       })
     })
   })
+
   describe('update watched value', () => {
     // watch-state
     const WSState = new State(0)
@@ -130,8 +145,10 @@ perfocode('speed.test', () => {
       if (action.type === 'INCREMENT') {
         return { ...state, count: state.count + 1 }
       }
+
       return state
     }
+
     const store = createStore(reducer, { count: 0 })
     const destroy = store.subscribe(() => store.getState().count)
 
@@ -149,6 +166,7 @@ perfocode('speed.test', () => {
       store.on('@init', () => ({ count: 0 }))
       store.on('inc', ({ count }) => ({ count: count + 1 }))
     }
+
     const SStore = createStoreon<any>([count])
 
     const SDispatch = SStore.on('inc', ({ count }) => count)
@@ -183,6 +201,7 @@ perfocode('speed.test', () => {
     MAWatch()
     SDispatch()
   })
+
   describe('counter', () => {
     const COUNT = 1000
 
@@ -210,6 +229,7 @@ perfocode('speed.test', () => {
       testLog(log)
       watcher.destroy()
     })
+
     test('mobx', () => {
       const log = []
       const state = observable.box(COUNT)
@@ -222,14 +242,18 @@ perfocode('speed.test', () => {
       testLog(log)
       disposer()
     })
+
     test('redux', () => {
       const log = []
+
       function reducer (state, action) {
         if (action.type === 'DECREMENT') {
           return { ...state, count: state.count - 1 }
         }
+
         return state
       }
+
       const store = createStore(reducer, { count: COUNT })
       log.push(store.getState().count)
       const destroy = store.subscribe(() => log.push(store.getState().count))
@@ -241,6 +265,7 @@ perfocode('speed.test', () => {
       testLog(log)
       destroy()
     })
+
     test('mazzard', () => {
       const log = []
       const store = mazzard({ value: COUNT })
@@ -251,6 +276,7 @@ perfocode('speed.test', () => {
       testLog(log)
       stop()
     })
+
     test('effector', () => {
       const log = []
       const decrement = createEffectorEvent()
@@ -267,15 +293,19 @@ perfocode('speed.test', () => {
       testLog(log)
       subscription.unsubscribe()
     })
+
     test('storeon', () => {
       const log = []
+
       const count = store => {
         store.on('@init', () => ({ count: COUNT }))
         store.on('dec', ({ count }) => ({ count: count - 1 }))
       }
+
       const store = createStoreon<any>([count])
 
       log.push(store.get().count)
+
       const dispatch = store.on('dec', ({ count }) => {
         log.push(count)
       })
@@ -288,11 +318,13 @@ perfocode('speed.test', () => {
       dispatch()
     })
   })
+
   describe('counters', () => {
     const COUNT = 100
     const COUNTERS_COUNT = 100
 
     const counters = [...Array(COUNTERS_COUNT)]
+
     const testLog = (log: number[]) => {
       if (log.length < COUNT) {
         throw Error(`test failed: log.length expected: ${COUNT}, actual: ${log.length}`)
@@ -319,6 +351,7 @@ perfocode('speed.test', () => {
       logs.forEach(testLog)
       watchers.forEach(watcher => watcher.destroy())
     })
+
     test('nanostores', () => {
       const logs: number[][] = counters.map(() => [])
       const states = counters.map(() => atom(COUNT))
@@ -333,6 +366,7 @@ perfocode('speed.test', () => {
       logs.forEach(testLog)
       watchers.forEach(destroy => destroy())
     })
+
     test('mobx', () => {
       const logs: number[][] = counters.map(() => [])
       const states = counters.map(() => observable.box(COUNT))
@@ -347,6 +381,7 @@ perfocode('speed.test', () => {
       logs.forEach(testLog)
       disposers.forEach(disposer => disposer())
     })
+
     test('redux', () => {
       const logs: number[][] = counters.map(() => [])
 
@@ -359,6 +394,7 @@ perfocode('speed.test', () => {
             [key]: state[key] - 1,
           }
         }
+
         return state
       }
 
@@ -372,7 +408,7 @@ perfocode('speed.test', () => {
         const data = store.getState()
 
         for (let i = 0; i < counters.length; i++) {
-          if (logs[i].at(-1) !== data[`count${i}`]) {
+          if (logs[i][logs[i].length - 1] !== data[`count${i}`]) {
             logs[i].push(data[`count${i}`])
           }
         }
@@ -388,6 +424,7 @@ perfocode('speed.test', () => {
 
       destroy()
     })
+
     test('mazzard', () => {
       const logs: number[][] = counters.map(() => [])
 
@@ -405,10 +442,12 @@ perfocode('speed.test', () => {
 
       stops.forEach(stop => stop())
     })
+
     test('effector', () => {
       const logs: number[][] = counters.map(() => [])
 
       const decrements = counters.map(() => createEffectorEvent())
+
       const stores = counters.map(
         (_, index) => createEffectorStore(COUNT)
           .on(decrements[index], state => state - 1),
@@ -430,17 +469,21 @@ perfocode('speed.test', () => {
         subscription.unsubscribe()
       })
     })
+
     test('storeon', () => {
       const logs: number[][] = counters.map(() => [])
+
       const modules = counters.map((_, index) => store => {
         store.on('@init', () => ({ [`count${index}`]: COUNT }))
         store.on(`dec${index}`, store => ({ [`count${index}`]: store[`count${index}`] - 1 }))
       })
+
       const store = createStoreon<any>(modules)
 
       counters.forEach((_, index) => {
         logs[index].push(store.get()[`count${index}`])
       })
+
       const dispatches = counters.map((_, index) => store.on(`dec${index}`, store => {
         logs[index].push(store[`count${index}`])
       }))
@@ -458,6 +501,7 @@ perfocode('speed.test', () => {
       })
     })
   })
+
   describe('unused computed', () => {
     const COUNT = 100
     const COUNTERS_COUNT = 100
@@ -466,12 +510,13 @@ perfocode('speed.test', () => {
 
     test('watch-state', () => {
       const states = counters.map(() => new State(COUNT))
-      states.map((state) => new Cache(() => state.value))
+      states.map((state) => new Compute(() => state.value))
 
       for (const state of states) {
         while (state.value--) { /* empty */ }
       }
     })
+
     test('nanostores', () => {
       const states = counters.map(() => atom(COUNT))
       states.map((state) => nanoComputed(state, value => value))
@@ -482,6 +527,7 @@ perfocode('speed.test', () => {
         }
       }
     })
+
     test('mobx', () => {
       const states = counters.map(() => observable.box(COUNT))
       states.map((state) => computed(() => state.get()))

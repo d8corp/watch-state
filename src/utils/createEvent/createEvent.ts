@@ -1,10 +1,11 @@
+import { unwatch } from '../unwatch'
+
 import { scope } from '../../constants'
 import { forceQueueWatchers } from '../../helpers'
-import { unwatch } from '../unwatch'
 
 /**
  * You can create event function with createEvent
- * ```typescript
+ * ```ts
  * import { State, createEvent } from 'watch-state'
  *
  * const count = new State(0)
@@ -16,11 +17,12 @@ import { unwatch } from '../unwatch'
  * ```
  * */
 export function createEvent<F extends Function> (fn: F): F {
-  return function () {
+  return function (...args: any[]) {
     const result = unwatch(() => {
       scope.eventDeep++
-      const result = fn.apply(this, arguments)
+      const result = fn.apply(this, args)
       scope.eventDeep--
+
       return result
     })
 

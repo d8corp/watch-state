@@ -1,12 +1,13 @@
-import { type Cache } from '../../Cache'
+import { clearWatcher } from '../clearWatchers'
+
+import { type Compute } from '../../Compute'
 import { scope } from '../../constants'
 import { type Observer } from '../../types'
 import { shiftSet } from '../../utils/shiftSet'
-import { clearWatcher } from '../clearWatchers'
 
-const cacheStack = new Set<Cache>()
+const cacheStack = new Set<Compute>()
 const observersStack = new Set<Observer>()
-let currentCache: Cache
+let currentCache: Compute
 let currentObserver: Observer
 let forcedQueueWatchers = false
 
@@ -38,7 +39,7 @@ export function queueWatchers (watchers: Set<Observer>) {
     observersStack.add(watcher)
 
     if (watcher.isCache) {
-      cacheStack.add(watcher as Cache)
+      cacheStack.add(watcher as Compute)
     }
   })
 

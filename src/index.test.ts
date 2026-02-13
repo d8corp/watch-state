@@ -1,4 +1,4 @@
-import { Cache, createEvent, State, Watch } from '.'
+import { Compute, createEvent, State, Watch } from '.'
 
 describe('cases', () => {
   test('simple', () => {
@@ -8,6 +8,7 @@ describe('cases', () => {
     new Watch(() => {
       result = state.value
     })
+
     expect(result).toBe('foo')
 
     state.value = 'bar'
@@ -16,6 +17,7 @@ describe('cases', () => {
     state.value = 'baz'
     expect(result).toBe('baz')
   })
+
   test('destroy', () => {
     const state = new State('foo')
     let result
@@ -40,19 +42,23 @@ describe('cases', () => {
     expect(state.value).toBe('foo')
     expect(result).toBe('bar')
   })
+
   test('condition', () => {
     let count1 = 0
     let count2 = 0
     const run = new State(true)
     const state = new State('foo')
     let result
+
     new Watch(() => {
       count1++
+
       if (run.value) {
         count2++
         result = state.value
       }
     })
+
     expect(result).toBe('foo')
     expect(state.value).toBe('foo')
     expect(count1).toBe(1)
@@ -83,6 +89,7 @@ describe('cases', () => {
     expect(count2).toBe(2)
     expect(run.value).toBe(false)
   })
+
   test('useless rendering with the same state', () => {
     const log = []
     const state = new State('foo')
@@ -90,19 +97,23 @@ describe('cases', () => {
     new Watch(() => {
       log.push(state.value)
     })
+
     expect(log.length).toBe(1)
 
     state.value = 'foo'
     expect(log.length).toBe(1)
   })
+
   test('set state in watch', () => {
     let count = 0
     const state1 = new State('foo')
     const state2 = new State('')
+
     new Watch(() => {
       count++
       state2.value = `(${state1.value})`
     })
+
     expect(count).toBe(1)
     expect(state1.value).toBe('foo')
     expect(state2.value).toBe('(foo)')
@@ -119,6 +130,7 @@ describe('cases', () => {
     expect(state1.value).toBe('baz')
     expect(state2.value).toBe('(baz)')
   })
+
   describe('deep', () => {
     test('auto-remove small', () => {
       const run = new State(true)
@@ -131,6 +143,7 @@ describe('cases', () => {
 
       new Watch1(() => {
         count++
+
         if (run.value) {
           new Watch2(() => (result = state.value))
         }
@@ -150,17 +163,21 @@ describe('cases', () => {
       expect(count).toBe(2)
       expect(run.value).toBe(false)
     })
+
     test('auto-remove', () => {
       let count = 0
       const run = new State(true)
       const state = new State('foo')
       let result
+
       new Watch(() => {
         count++
+
         if (run.value) {
           new Watch(() => (result = state.value))
         }
       })
+
       expect(result).toBe('foo')
       expect(state.value).toBe('foo')
       expect(count).toBe(1)
@@ -187,6 +204,7 @@ describe('cases', () => {
       expect(count).toBe(2)
       expect(run.value).toBe(false)
     })
+
     test('double value', () => {
       const state = new State()
       const render1 = []
@@ -194,6 +212,7 @@ describe('cases', () => {
 
       new Watch(() => {
         render1.push([state.value, state.value])
+
         new Watch(() => {
           render2.push([state.value, state.value])
         })
@@ -211,20 +230,22 @@ describe('cases', () => {
       expect(render2[1]).toEqual([true, true])
     })
   })
-  describe('Cache', () => {
+
+  describe('Compute', () => {
     test('simple', () => {
       const name = new State('Mike')
       const surname = new State('Deight')
-      const fullName = new Cache(() => `${name.value} ${surname.value[0]}.`)
+      const fullName = new Compute(() => `${name.value} ${surname.value[0]}.`)
 
       expect(fullName.value).toBe('Mike D.')
 
       surname.value = 'Mighty'
       expect(fullName.value).toBe('Mike M.')
     })
+
     test('in event', () => {
       const state = new State(1)
-      const cache = new Cache(() => state.value)
+      const cache = new Compute(() => state.value)
 
       expect(cache.value).toBe(1)
 

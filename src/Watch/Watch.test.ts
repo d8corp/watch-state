@@ -5,19 +5,23 @@ describe('Watch', () => {
     test('empty watcher without error', () => {
       expect(() => new Watch(() => {})).not.toThrow()
     })
+
     test('value watcher without error', () => {
       expect(() => new Watch(() => 1)).not.toThrow()
     })
+
     test('instance of Watch', () => {
       expect(new Watch(() => {})).toBeInstanceOf(Watch)
     })
   })
+
   describe('update method', () => {
     it('has the method', () => {
       const watcher = new Watch(() => {})
       expect('update' in watcher).toBe(true)
       expect(typeof watcher.update).toBe('function')
     })
+
     it('runs the watcher', () => {
       let test = 0
       const watcher = new Watch(() => test++)
@@ -30,10 +34,12 @@ describe('Watch', () => {
       watcher.update()
       expect(test).toBe(3)
     })
+
     test('deep watcher destroy', () => {
       let test1 = 0
       let test2 = 0
       let watcher2: Watch
+
       const watcher1 = new Watch(() => {
         test1++
         watcher2 = new Watch(() => test2++)
@@ -55,12 +61,14 @@ describe('Watch', () => {
       expect(watcherTest).not.toBe(watcher2)
     })
   })
+
   describe('destroy method', () => {
     test('has the method', () => {
       const watcher = new Watch(() => {})
       expect('destroy' in watcher).toBe(true)
       expect(typeof watcher.destroy).toBe('function')
     })
+
     test('deep1', () => {
       let test = 0
       const watcher = new Watch(() => test++)
@@ -69,6 +77,7 @@ describe('Watch', () => {
       watcher.destroy()
       expect(test).toBe(1)
     })
+
     test('deep2', () => {
       let test = 0
       const watcher = new Watch(() => new Watch(() => test++))
@@ -78,12 +87,15 @@ describe('Watch', () => {
       expect(test).toBe(1)
     })
   })
+
   describe('update argument', () => {
     test('update', () => {
       let updated: boolean
+
       const watcher = new Watch(update => {
         updated = update
       })
+
       expect(updated).toBe(false)
       watcher.update()
       expect(updated).toBe(true)

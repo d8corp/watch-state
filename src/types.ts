@@ -1,6 +1,8 @@
+export type Destructor = () => void
+
 export interface Observer {
   childWatchers: Set<Observer>
-  destructors: Set<Function>
+  destructors: Set<Destructor>
   destroy: () => void
   update: () => void
   destroyed: boolean

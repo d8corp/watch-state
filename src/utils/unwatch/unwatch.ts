@@ -19,5 +19,6 @@ export function unwatch<T> (fn: () => T): T {
   scope.activeWatcher = undefined
   const result = fn()
   scope.activeWatcher = activeWatcher
+
   return result
 }

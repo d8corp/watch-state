@@ -1,10 +1,10 @@
 import { scope } from '../constants'
 import { destroyWatchers, watchWithScope } from '../helpers'
-import { type Observer, type Watcher } from '../types'
+import type { Destructor, Observer, Watcher } from '../types'
 
 export class Watch implements Observer {
   // Observer
-  destructors = new Set<Function>()
+  destructors = new Set<Destructor>()
   childWatchers = new Set<Observer>()
   destroyed = false
   isCache = false

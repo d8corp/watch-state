@@ -1,4 +1,4 @@
-export * from './onDestroy'
 export * from './createEvent'
-export * from './unwatch'
+export * from './onDestroy'
 export * from './shiftSet'
+export * from './unwatch'

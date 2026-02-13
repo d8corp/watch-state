@@ -1,32 +1,32 @@
-import { Cache } from './Cache'
+import { Compute } from './Compute'
 
 import { State, Watch } from '..'
 
-describe('Cache', () => {
+describe('Compute', () => {
   describe('constructor', () => {
     test('empty watcher without error', () => {
-      expect(() => new Cache(() => {})).not.toThrow()
+      expect(() => new Compute(() => {})).not.toThrow()
     })
 
     test('value watcher without error', () => {
-      expect(() => new Cache(() => 1)).not.toThrow()
+      expect(() => new Compute(() => 1)).not.toThrow()
     })
 
-    test('instance of Cache', () => {
-      expect(new Cache(() => {})).toBeInstanceOf(Cache)
+    test('instance of Compute', () => {
+      expect(new Compute(() => {})).toBeInstanceOf(Compute)
     })
   })
 
   describe('fields', () => {
     describe('value', () => {
       let test = 0
-      const cache = new Cache(() => test++)
+      const compute = new Compute(() => test++)
 
       expect(test).toBe(0)
-      expect(cache.value).toBe(0)
+      expect(compute.value).toBe(0)
       expect(test).toBe(1)
 
-      expect(cache.value).toBe(0)
+      expect(compute.value).toBe(0)
       expect(test).toBe(1)
     })
   })
@@ -34,22 +34,22 @@ describe('Cache', () => {
   describe('methods', () => {
     describe('destroy', () => {
       it('has the method', () => {
-        const cache = new Cache(() => {})
-        expect('destroy' in cache).toBe(true)
-        expect(typeof cache.destroy).toBe('function')
+        const compute = new Compute(() => {})
+        expect('destroy' in compute).toBe(true)
+        expect(typeof compute.destroy).toBe('function')
       })
 
       it('works', () => {
         let test = 0
         const state = new State(0)
 
-        const cache = new Cache(() => {
+        const compute = new Compute(() => {
           test++
 
           return state.value
         })
 
-        new Watch(() => cache.value)
+        new Watch(() => compute.value)
 
         expect(test).toBe(1)
 
@@ -59,7 +59,7 @@ describe('Cache', () => {
         state.value++
         expect(test).toBe(3)
 
-        cache.destroy()
+        compute.destroy()
         state.value++
         expect(test).toBe(3)
       })
@@ -67,77 +67,77 @@ describe('Cache', () => {
 
     describe('update', () => {
       it('has the method', () => {
-        const cache = new Cache(() => {})
-        expect('update' in cache).toBe(true)
-        expect(typeof cache.update).toBe('function')
+        const compute = new Compute(() => {})
+        expect('update' in compute).toBe(true)
+        expect(typeof compute.update).toBe('function')
       })
 
       it('runs target', () => {
         let test = 0
-        const cache = new Cache(() => test++)
+        const compute = new Compute(() => test++)
 
         expect(test).toBe(0)
 
-        cache.update()
+        compute.update()
         expect(test).toBe(0)
-        expect(cache.value).toBe(0)
+        expect(compute.value).toBe(0)
         expect(test).toBe(1)
 
-        cache.update()
+        compute.update()
         expect(test).toBe(1)
-        expect(cache.value).toBe(1)
+        expect(compute.value).toBe(1)
         expect(test).toBe(2)
       })
     })
   })
 
-  test('deep cache destroy', () => {
+  test('deep Compute destroy', () => {
     let test1 = 0
     let test2 = 0
 
-    let cache1: Cache
+    let compute1: Compute
 
-    const cache2 = new Cache(() => {
+    const compute2 = new Compute(() => {
       test1++
-      cache1 = new Cache(() => test2++, false, true)
+      compute1 = new Compute(() => test2++, false, true)
     }, true, true)
 
-    const watcherTest = cache1
+    const watcherTest = compute1
     expect(test1).toBe(1)
     expect(test2).toBe(1)
-    expect(watcherTest).toBe(cache1)
+    expect(watcherTest).toBe(compute1)
 
-    cache1.update()
+    compute1.update()
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    cache1.value
+    compute1.value
     expect(test1).toBe(1)
     expect(test2).toBe(2)
-    expect(watcherTest).toBe(cache1)
+    expect(watcherTest).toBe(compute1)
 
-    cache2.update()
+    compute2.update()
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    cache2.value
+    compute2.value
     expect(test1).toBe(2)
     expect(test2).toBe(3)
-    expect(watcherTest).not.toBe(cache1)
+    expect(watcherTest).not.toBe(compute1)
   })
 
   test('deep update', () => {
     const state = new State(0)
-    const cache1 = new Cache(() => state.value)
-    const cache2 = new Cache(() => cache1.value)
+    const compute1 = new Compute(() => state.value)
+    const compute2 = new Compute(() => compute1.value)
 
-    expect(cache2.value).toBe(0)
+    expect(compute2.value).toBe(0)
 
     state.value = 1
 
-    expect(cache2.value).toBe(1)
+    expect(compute2.value).toBe(1)
   })
 
   test('fullName', () => {
     const name = new State('Mike')
     const surname = new State('Deight')
-    const fullName = new Cache(() => `${name.value} ${surname.value[0]}.`)
+    const fullName = new Compute(() => `${name.value} ${surname.value[0]}.`)
     let result; let count = 0
 
     new Watch(() => {
@@ -162,7 +162,7 @@ describe('Cache', () => {
     const name = new State('Mike')
     const surname = new State('Deight')
 
-    const fullName = new Cache(() => {
+    const fullName = new Compute(() => {
       count++
 
       return `${name.value} ${surname.value[0]}.`
@@ -198,17 +198,17 @@ describe('Cache', () => {
   })
 
   test('fast destructor', () => {
-    new Cache(() => {}).destroy()
+    new Compute(() => {}).destroy()
   })
 
   test('auto-destroy', () => {
     const log = []
     const state = new State(1)
-    const cache = new Cache(() => state.value + 1)
+    const compute = new Compute(() => state.value + 1)
 
     new Watch(() => {
       if (state.value) {
-        new Watch(() => log.push(cache.value))
+        new Watch(() => log.push(compute.value))
       }
     })
 
@@ -220,7 +220,7 @@ describe('Cache', () => {
 
   test('without watcher', () => {
     const state = new State(true)
-    const test = new Cache(() => state.value)
+    const test = new Compute(() => state.value)
 
     expect(test.value).toBe(true)
 
@@ -231,7 +231,7 @@ describe('Cache', () => {
 
   test('without state', () => {
     let state = 1
-    const test = new Cache(() => state)
+    const test = new Compute(() => state)
 
     expect(test.value).toBe(1)
 
@@ -241,35 +241,37 @@ describe('Cache', () => {
   })
 
   test('empty clear', () => {
-    const test = new Cache(() => {})
+    const test = new Compute(() => {})
 
     expect(() => test.update()).not.toThrow()
   })
 
   test('watch dependency', () => {
     const state = new State(0)
-    const cache = new Cache(() => state.value * 2)
+    const compute = new Compute(() => state.value * 2)
 
     const log = []
 
-    new Watch(() => log.push([state.value, cache.value]))
+    const watcher = new Watch(() => log.push([state.value, compute.value]))
 
     expect(log).toEqual([[0, 0]])
 
     state.value = 2
 
     expect(log).toEqual([[0, 0], [2, 4]])
+
+    watcher.destroy()
   })
 
-  test('destroy out cache with cache', () => {
+  test('destroy out Compute with Compute', () => {
     const fn = jest.fn()
     const state = new State(true)
-    const cache1 = new Cache(() => state.value)
-    const cache2 = new Cache(() => state.value)
+    const compute1 = new Compute(() => state.value)
+    const compute2 = new Compute(() => state.value)
 
     new Watch(() => {
-      if (cache1.value) {
-        new Watch(() => fn(cache2.value))
+      if (compute1.value) {
+        new Watch(() => fn(compute2.value))
       }
     })
 
@@ -284,13 +286,13 @@ describe('Cache', () => {
     expect(fn).toHaveBeenCalledTimes(2)
   })
 
-  test('destroy out cache', () => {
+  test('destroy out Compute', () => {
     const state = new State(true)
-    const cache = new Cache(() => state.value)
+    const compute = new Compute(() => state.value)
     const fn = jest.fn()
 
     new Watch(() => {
-      if (cache.value) {
+      if (compute.value) {
         new Watch(() => fn(state.value))
       }
     })
@@ -302,7 +304,7 @@ describe('Cache', () => {
     expect(fn).toHaveBeenCalledTimes(1)
   })
 
-  test('cache in watcher', () => {
+  test('Compute in Watcher', () => {
     const state = new State(0)
     const run = new State(true)
     const fn = jest.fn()
@@ -310,9 +312,9 @@ describe('Cache', () => {
 
     new Watch(() => {
       if (run.value) {
-        const cache = new Cache(() => state.value * 2)
+        const square = new Compute(() => state.value * 2)
         fn1()
-        new Watch(() => fn(cache.value))
+        new Watch(() => fn(square.value))
       }
     })
 

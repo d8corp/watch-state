@@ -4,6 +4,7 @@ describe('createEvent', () => {
   it('works', () => {
     const log = jest.fn()
     const count = new State(0)
+
     const increase = createEvent(() => {
       log(count.value++)
     })

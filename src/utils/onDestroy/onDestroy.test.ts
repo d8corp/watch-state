@@ -10,22 +10,22 @@ describe('onDestroy', () => {
       onDestroy(() => log('destroy'))
     })
 
-    expect(log).toBeCalledTimes(1)
+    expect(log).toHaveBeenCalledTimes(1)
     expect(log).toHaveBeenLastCalledWith(0)
 
     state.value = 1
 
-    expect(log).toBeCalledTimes(3)
+    expect(log).toHaveBeenCalledTimes(3)
     expect(log).toHaveBeenLastCalledWith(1)
 
     watcher.destroy()
 
-    expect(log).toBeCalledTimes(4)
+    expect(log).toHaveBeenCalledTimes(4)
     expect(log).toHaveBeenLastCalledWith('destroy')
 
     watcher.destroy()
 
-    expect(log).toBeCalledTimes(4)
+    expect(log).toHaveBeenCalledTimes(4)
     expect(log).toHaveBeenLastCalledWith('destroy')
   })
 })

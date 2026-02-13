@@ -245,15 +245,15 @@ describe('Cache', () => {
       }
     })
 
-    expect(fn).toBeCalledTimes(1)
+    expect(fn).toHaveBeenCalledTimes(1)
 
     state.value = false
 
-    expect(fn).toBeCalledTimes(1)
+    expect(fn).toHaveBeenCalledTimes(1)
 
     state.value = true
 
-    expect(fn).toBeCalledTimes(2)
+    expect(fn).toHaveBeenCalledTimes(2)
   })
   test('destroy out cache', () => {
     const state = new State(true)
@@ -266,10 +266,42 @@ describe('Cache', () => {
       }
     })
 
-    expect(fn).toBeCalledTimes(1)
+    expect(fn).toHaveBeenCalledTimes(1)
 
     state.value = false
 
-    expect(fn).toBeCalledTimes(1)
+    expect(fn).toHaveBeenCalledTimes(1)
+  })
+  test('cache in watcher', () => {
+    const state = new State(0)
+    const run = new State(true)
+    const fn = jest.fn()
+    const fn1 = jest.fn()
+
+    new Watch(() => {
+      if (run.value) {
+        const cache = new Cache(() => state.value * 2)
+        fn1()
+        new Watch(() => fn(cache.value))
+      }
+    })
+
+    expect(fn).toHaveBeenCalledTimes(1)
+    expect(fn1).toHaveBeenCalledTimes(1)
+
+    state.value++
+
+    expect(fn).toHaveBeenCalledTimes(2)
+    expect(fn1).toHaveBeenCalledTimes(1)
+
+    run.value = false
+
+    expect(fn).toHaveBeenCalledTimes(2)
+    expect(fn1).toHaveBeenCalledTimes(1)
+
+    state.value++
+
+    expect(fn).toHaveBeenCalledTimes(2)
+    expect(fn1).toHaveBeenCalledTimes(1)
   })
 })

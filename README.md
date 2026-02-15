@@ -434,18 +434,18 @@ surname.value = 'Baz'
 surname.value = 'Quux'
 // console.log('Foo Q')
 ```
-You can force update the cache by `update` method.
+You can force update the computed state by `update` method.
 ```typescript
 fullName.update()
 // console.log('Foo Q')
 ```
-> Cache will be immediately updated only if a watcher looks after the cache.
+> `Compute` will be immediately updated only if a watcher looks after the `Compute`.
 
 You can use `destroy` and `onDestroy` like you do it on a watcher.
 ```typescript
 fullName.destroy()
 ```
-The computing will be triggered only when a state inside the cache will be changed. So you can modify data only when it's needed.
+The computing will be triggered only when a state inside the `Compute` will be changed. So you can modify data only when it's needed.
 ```typescript
 const list = new State(['foo', 'bar', 'baz'])
 
@@ -611,7 +611,7 @@ key.value = false
 Generic of `Compute`
 ```typescript
 new Compute<string>(() => false)
-// error, target of cache should return string
+// error, target of `Compute` should return string
 ```
 
 ## Performance

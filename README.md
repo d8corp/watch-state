@@ -104,8 +104,9 @@ Was born during working on [@innet/dom](https://www.npmjs.com/package/@innet/dom
 - [Usage](#usage)
   - [Simple example](#simple-example)
   - [Example Vanilla JS](#example-vanilla-js)
-- [State](#state)
+  - [Example @innet/dom](#example-innetdom)
 - [Watch](#watch)
+- [State](#state)
 
 ## Install
 
@@ -201,10 +202,56 @@ export function CountButton () {
 }
 ```
 
+### Example @innet/dom:
+
+**Zero-runtime reactivity with @innet/dom:**
+
+`@innet/dom` automatically watches accessed states and **updates only changed DOM content** — **no full re-renders**.
+
+```tsx
+import { State } from 'watch-state'
+
+const count = new State(0)
+
+const increase = () => {
+  count.value++
+}
+
+export function CountButton () {
+  return <button onClick={increase}>{count}</button>
+}
+```
+
+Key benefits:
+
+- No Watch or useWatch needed — framework handles reactivity
+- Only button content updates, no re-renders of component/DOM tree
+- Direct state access {count} auto-triggers minimal updates
+- Works with any JSX/TSX without extra setup
+
 ## Watch
 
+**Reactive effect that automatically tracks and reacts to state changes.**
+
+`Watch` executes a callback when any accessed `State.value` changes.
+Accessing `.value` **inside the callback auto-subscribes** to that state — no manual registration needed.
+
+```ts
+// Create state
+const count = new State(0)
+
+// Create watcher that logs the state changes
+new Watch(() => console.log(count.value)) // auto-subscribes to count
+
+count.value = 1 // triggers watcher callback
+```
+
 ### Update argument:
-You can check if the watching ran first by `update` argument.
+
+**Distinguish initial run from updates using `update` parameter.**
+
+`update` is `false` on **first execution** (initial subscription), `true` on **subsequent re-runs** when states change.
+
 ```javascript
 const count = new State(0)
 
@@ -219,7 +266,9 @@ count.value++
 count.value++
 // console.log(true, 2)
 ```
-As example, you can watch a state once
+
+**Watch state once using `update` flag and auto-destroy:**
+
 ```typescript jsx
 const count = new State(0)
 
@@ -246,22 +295,10 @@ count.value++
 // nothing happens
 ```
 
-### Force update of State
-You can run watchers of a state with `update` method.
-```typescript
-const count = new State(0)
-
-new Watch(() => {
-  console.log(count.value)
-})
-// console.log(0)
-
-count.update()
-// console.log(0)
-```
-
 ### Force update of Watch
+
 You can run a watcher even when it's states are not updated.
+
 ```typescript
 const count = new State(0)
 
@@ -275,7 +312,9 @@ watcher.update()
 ```
 
 ### destroy
+
 You can stop watching by `destroy` method of `Watch`.
+
 ```javascript
 const count = new State(0)
 
@@ -291,6 +330,22 @@ watcher.destroy()
 
 count.value++
 // nothing happens
+```
+
+## State
+
+### Force update of State
+You can run watchers of a state with `update` method.
+```typescript
+const count = new State(0)
+
+new Watch(() => {
+  console.log(count.value)
+})
+// console.log(0)
+
+count.update()
+// console.log(0)
 ```
 
 ### onDestroy()

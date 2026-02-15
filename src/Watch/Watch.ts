@@ -12,7 +12,7 @@ import type { Destructor, Observer, Watcher } from '../types'
  * const count = new State(0)
  *
  * // Create watcher that logs the state changes
- * new Watch(() => console.log(count.value))
+ * new Watch(() => console.log(count.value)) // auto-subscribes to count
  *
  * count.value = 1 // triggers watcher callback
  */

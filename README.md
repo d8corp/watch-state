@@ -106,9 +106,14 @@ Was born during working on [@innet/dom](https://www.npmjs.com/package/@innet/dom
   - [Example Vanilla JS](#example-vanilla-js)
   - [Example @innet/dom](#example-innetdom)
 - [Watch](#watch)
+  - [Update argument](#update-argument)
+  - [Force update of Watch](#force-update-of-watch)
+  - [Destroy Watch](#destroy-watch)
+  - [Deep/Nested watchers](#deepnested-watchers)
 - [State](#state)
 
 ## Install
+###### [🏠︎](#index) / Install [↓](#usage)
 
 npm
 ```shell
@@ -128,8 +133,12 @@ html
 [minified on GitHub](https://github.com/d8corp/watch-state/blob/master/release/index.min.js)
 
 ## Usage
+###### [🏠︎](#index) / Usage [↑](#install) [↓](#watch)
 
-### Simple example:
+<sup>[Simple example](#simple-example) • [Example Vanilla JS](#example-vanilla-js) • [Example React](#example-react) • [Example @innet/dom](#example-innetdom)</sup>
+
+### Simple example
+###### [🏠︎](#index) / [Usage](#usage) / Simple example [↓](#example-vanilla-js)
 
 You can create an instance of `State` and **watch** its **value**.
 
@@ -148,7 +157,8 @@ count.value++
 // console.log(2)
 ```
 
-### Example Vanilla JS:
+### Example Vanilla JS
+###### [🏠︎](#index) / [Usage](#usage) / Example Vanilla JS [↑](#simple-example) [↓](#example-react)
 
 Simple reactive state without build tools or framework dependencies.
 
@@ -181,7 +191,8 @@ Simple reactive state without build tools or framework dependencies.
 </html>
 ```
 
-### Example React:
+### Example React
+###### [🏠︎](#index) / [Usage](#usage) / Example React [↑](#example-vanilla-js) [↓](#example-innetdom)
 
 `@watch-state/react` provides `useWatch()` hook that automatically subscribes React components to state changes and re-renders only when needed.
 
@@ -202,7 +213,8 @@ export function CountButton () {
 }
 ```
 
-### Example @innet/dom:
+### Example @innet/dom
+###### [🏠︎](#index) / [Usage](#usage) / Example @innet/dom [↑](#example-react)
 
 **Zero-runtime reactivity with @innet/dom:**
 
@@ -230,6 +242,7 @@ Key benefits:
 - Works with any JSX/TSX without extra setup
 
 ## Watch
+###### [🏠︎](#index) / Watch [↑](#usage) [↓](#state)
 
 **Reactive effect that automatically tracks and reacts to state changes.**
 
@@ -246,7 +259,8 @@ new Watch(() => console.log(count.value)) // auto-subscribes to count
 count.value = 1 // triggers watcher callback
 ```
 
-### Update argument:
+### Update argument
+###### [🏠︎](#index) / [Watch](#watch) / Update argument
 
 **Distinguish initial run from updates using `update` parameter.**
 
@@ -296,6 +310,7 @@ count.value++
 ```
 
 ### Force update of Watch
+###### [🏠︎](#index) / [Watch](#watch) / Force update of Watch
 
 You can run a watcher even when it's states are not updated.
 
@@ -311,7 +326,8 @@ watcher.update()
 // console.log(0)
 ```
 
-### destroy
+### Destroy Watch
+###### [🏠︎](#index) / [Watch](#watch) / Destroy Watch
 
 You can stop watching by `destroy` method of `Watch`.
 
@@ -332,10 +348,47 @@ count.value++
 // nothing happens
 ```
 
+### Deep/Nested watchers
+###### [🏠︎](#index) / [Watch](#watch) / Deep/Nested watchers
+
+**Create conditional and nested reactive effects.**
+
+Each `Watch` **independently tracks only states accessed within its callback**.
+Nested watchers created inside parent watchers form a **dependency tree** with separate reactivity.
+
+```javascript
+const watching = new State(true)
+const state = new State(0)
+
+new Watch(() => {
+  console.log('Root Render')
+
+  if (watching.value) {
+    new Watch(() => {
+      console.log(`Deep Render: ${state.value}`)
+    })
+  }
+})
+// logs: Root Render, Deep Render: 0
+
+state.value++
+// logs: Deep Render: 1  (only deep watcher reacts)
+
+watching.value = false
+// logs: Root Render     (deep watcher destroyed)
+
+state.value++
+// nothing happens       (no active deep watcher)
+```
+
 ## State
+###### [🏠︎](#index) / State
 
 ### Force update of State
+###### [🏠︎](#index) / [State](#state) / Force update of State
+
 You can run watchers of a state with `update` method.
+
 ```typescript
 const count = new State(0)
 
@@ -348,60 +401,9 @@ count.update()
 // console.log(0)
 ```
 
-### onDestroy()
-You can subscribe on destroy or update of watcher
-```javascript
-const count = new State(0)
-const watcher = new Watch(() => {
-  console.log('count', count.value)
-  // the order does not matter
-  onDestroy(() => console.log('destructor'))
-})
-// console.log('count', 0)
+### Compute:
+###### [🏠︎](#index) / Compute
 
-count.value++
-// console.log('destructor')
-// console.log('count', 1)
-
-watcher.destroy()
-// console.log('destructor')
-
-watcher.destroy()
-count.value++
-// nothing happens
-```
-
-### Deep watch:
-You can use `Watch` inside a watcher.
-Each watcher reacts on that states which used only inside it.
-```javascript
-const watching = new State(true)
-const state = new State(0)
-let test = 0
-
-new Watch(() => {
-  test++
-  if (watching.value) {
-    new Watch(() => {
-      console.log(state.value)
-    })
-  }
-})
-// console.log(0), test = 1
-
-state.value++
-// console.log(1), test = 1
-
-watching.value = false
-// test = 2
-
-state.value++
-// nothing happens
-```
-
-### Cache:
-You can cache computed state.  
-The watcher will not be triggered while new result is the same.
 ```javascript
 const name = new State('Foo')
 const surname = new State('Bar')
@@ -457,6 +459,32 @@ list.value = ['b', 'c', 'a']
 console.log(sortedList.value)
 // console.log('computing')
 // console.log(['a', 'b', 'c'])
+```
+
+### onDestroy()
+###### [🏠︎](#index) / [State](#state) / onDestroy()
+
+You can subscribe on destroy or update of watcher
+
+```javascript
+const count = new State(0)
+const watcher = new Watch(() => {
+  console.log('count', count.value)
+  // the order does not matter
+  onDestroy(() => console.log('destructor'))
+})
+// console.log('count', 0)
+
+count.value++
+// console.log('destructor')
+// console.log('count', 1)
+
+watcher.destroy()
+// console.log('destructor')
+
+watcher.destroy()
+count.value++
+// nothing happens
 ```
 
 ### createEvent

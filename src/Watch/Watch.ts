@@ -23,8 +23,14 @@ export class Watch implements Observer {
   /** Cleanup functions to run when watcher is destroyed */
   readonly destructors = new Set<Destructor>()
 
-  /** Child watchers created within this watcher's scope */
-  childWatchers = new Set<Observer>()
+  /** Child observers created within this watcher's scope */
+  readonly childrenObservers = new Set<Observer>()
+
+  // TODO: remove in major release
+  /** @deprecated Use `childrenObservers` */
+  get childWatchers () {
+    return this.childrenObservers
+  }
 
   constructor (readonly watcher: Watcher<void>, freeParent?: boolean, freeUpdate?: boolean) {
     if (!freeParent) {

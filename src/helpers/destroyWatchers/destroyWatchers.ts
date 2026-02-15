@@ -10,7 +10,7 @@ export function destroyWatchers (observer: Observer) {
   if (skipLoop) return
 
   while ((currentWatcher = destroyStack.shift())) {
-    currentWatcher.childWatchers.forEach(observer => {
+    currentWatcher.childrenObservers.forEach(observer => {
       destroyStack.push(observer)
     })
 

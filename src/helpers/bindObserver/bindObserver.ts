@@ -5,10 +5,10 @@ export function bindObserver (observer: Observer) {
   const { activeWatcher } = scope
 
   if (activeWatcher) {
-    activeWatcher.childWatchers.add(observer)
+    activeWatcher.childrenObservers.add(observer)
 
     activeWatcher.destructors.add(() => {
-      activeWatcher.childWatchers.delete(observer)
+      activeWatcher.childrenObservers.delete(observer)
     })
   }
 }

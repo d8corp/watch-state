@@ -417,7 +417,7 @@ count.update()
 const name = new State('Foo')
 const surname = new State('Bar')
 
-const fullName = new Cache(() => (
+const fullName = new Compute(() => (
   `${name.value} ${surname.value[0]}`
 ))
 
@@ -447,7 +447,7 @@ The computing will be triggered only when a state inside the cache will be chang
 ```typescript
 const list = new State(['foo', 'bar', 'baz'])
 
-const sortedList = new Cache(() => {
+const sortedList = new Compute(() => {
   console.log('computing')
   return [...list.value].sort()
 })
@@ -577,6 +577,24 @@ increase()
 
 ### unwatch
 ###### [🏠︎](#index) / [Utils](#utils) / unwatch [↑](#createevent)
+
+**Disables automatic state subscriptions** by wrapping value access in `unwatch`.
+
+**Unlike `callEvent`/`createEvent`**, `unwatch` does **NOT batch updates**.
+
+```ts
+import { State, Watch, unwatch } from 'watch-state'
+
+const count = new State(0)
+
+new Watch(() => {
+  console.log(unwatch(() => count.value++))
+})                       // logs: 0
+
+count.value++            // logs: 1
+
+console.log(count.value) // logs: 2
+```
 
 ## Typescript
 ###### [🏠︎](#index) / Typescript [↑](#utils) [↓](#performance)

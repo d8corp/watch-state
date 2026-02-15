@@ -1,7 +1,10 @@
 import { scope } from '../../constants'
 
 /**
- * You can stop watching a piece of code
+ * **Disables automatic state subscriptions** by wrapping value access in `unwatch`.
+ *
+ * **Unlike `callEvent`/`createEvent`**, `unwatch` does **NOT batch updates**.
+ *
  * ```ts
  * import { State, Watch, unwatch } from 'watch-state'
  *
@@ -9,9 +12,11 @@ import { scope } from '../../constants'
  *
  * new Watch(() => {
  *   console.log(unwatch(() => count.value++))
- * })
+ * })                       // logs: 0
  *
- * count.value++
+ * count.value++            // logs: 1
+ *
+ * console.log(count.value) // logs: 2
  * ```
  * */
 export function unwatch<T> (fn: () => T): T {

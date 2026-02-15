@@ -391,7 +391,7 @@ state.value++
 ```
 
 ## State
-###### [🏠︎](#index) / State
+###### [🏠︎](#index) / State [↑](#watch) [↓](#compute)
 
 ### Force update of State
 ###### [🏠︎](#index) / [State](#state) / Force update of State
@@ -411,7 +411,7 @@ count.update()
 ```
 
 ## Compute
-###### [🏠︎](#index) / Compute
+###### [🏠︎](#index) / Compute [↑](#state) [↓](#utils)
 
 ```javascript
 const name = new State('Foo')
@@ -471,6 +471,7 @@ console.log(sortedList.value)
 ```
 
 ## Utils
+###### [🏠︎](#index) / Utils [↑](#compute) [↓](#typescript)
 
 ### onDestroy
 ###### [🏠︎](#index) / [State](#state) / onDestroy()
@@ -519,6 +520,8 @@ increase()
 ```
 
 ## Typescript
+###### [🏠︎](#index) / Typescript [↑](#utils) [↓](#performance)
+
 Generic of `State`
 ```typescript
 const key = new State<string | number>()
@@ -533,6 +536,8 @@ new Cache<string>(() => false)
 ```
 
 ## Performance
+###### [🏠︎](#index) / Performance [↑](#typescript)
+
 You can check a performance test with **[MobX](https://www.npmjs.com/package/mobx)**, **[Effector](https://www.npmjs.com/package/effector)**, **[Storeon](https://www.npmjs.com/package/storeon)**, **[Mazzard](https://www.npmjs.com/package/mazzard)** and **[Redux](https://www.npmjs.com/package/redux)**.
 Clone the repo, install packages and run this command
 ```shell

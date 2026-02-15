@@ -1,4 +1,4 @@
-import { queueWatchers } from '../helpers'
+import { queueWatchers } from '../Compute'
 import { Observable } from '../Observable'
 
 /**

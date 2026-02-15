@@ -1,13 +1,87 @@
-import { bindObserver, destroyWatchers, queueWatchers, watchWithScope } from '../helpers'
-import { invalidateCompute } from '../helpers/invalidateCompute'
+import { scope } from '../constants'
+import { bindObserver } from '../helpers/bindObserver'
+import { clearWatcher } from '../helpers/clearWatcher'
+import { destroyWatchers } from '../helpers/destroyWatchers'
+import { watchWithScope } from '../helpers/watchWithScope'
 import { Observable } from '../Observable'
 import type { Destructor, Observer, Watcher } from '../types'
-import { Watch } from '../Watch'
+import { shiftSet } from '../utils/shiftSet'
+
+/* queue */
+
+let currentCompute: Compute
+let currentObserver: Observer
+let forcedQueue: boolean
+
+const computeStack = new Set<Compute>()
+const observersStack = new Set<Observer>()
+
+export function forceQueueWatchers () {
+  if (forcedQueue) return
+  forcedQueue = true
+
+  while ((currentCompute = shiftSet(computeStack)) || (currentObserver = shiftSet(observersStack))) {
+    if (currentCompute) {
+      currentCompute.invalid = true
+      continue
+    }
+
+    clearWatcher(currentObserver)
+
+    currentObserver.update()
+  }
+
+  forcedQueue = false
+}
+
+export function queueWatchers (watchers: Set<Observer>) {
+  const useLoop = !scope.eventDeep && !observersStack.size && !computeStack.size
+  const oldObserversStack = [...observersStack]
+
+  observersStack.clear()
+
+  watchers.forEach(watcher => {
+    observersStack.add(watcher)
+
+    if (watcher instanceof Compute) {
+      computeStack.add(watcher)
+    }
+  })
+
+  oldObserversStack.forEach(observer => observersStack.add(observer))
+
+  if (useLoop) {
+    forceQueueWatchers()
+  }
+}
+
+/* invalidateCompute */
+
+const invalidateStack: Observer[] = []
+let currentInvalidateObserver: Observer
+
+export function invalidateCompute (cache: Observer) {
+  const skipLoop = invalidateStack.length
+  invalidateStack.push(cache)
+
+  if (skipLoop) return
+
+  while ((currentInvalidateObserver = invalidateStack.shift())) {
+    if (currentInvalidateObserver instanceof Compute) {
+      invalidateStack.push(...currentInvalidateObserver.observers)
+
+      currentInvalidateObserver.invalid = true
+    }
+  }
+}
+
+/* Compute */
 
 export class Compute<V = unknown> extends Observable<V> implements Observer {
   invalid = true
   updated = false
   destroyed = false
+  // TODO: remove in major version
   isCache = true
 
   destructors = new Set<Destructor>()
@@ -34,13 +108,11 @@ export class Compute<V = unknown> extends Observable<V> implements Observer {
     let parent: Observer
 
     while ((parent = parents.pop())) {
-      if (parent instanceof Watch) {
+      if (!(parent instanceof Compute)) {
         return this.forceUpdate()
       }
 
-      if (parent instanceof Compute) {
-        parents.push(...parent.observers)
-      }
+      parents.push(...parent.observers)
     }
   }
 

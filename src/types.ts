@@ -7,6 +7,9 @@ export interface Observer {
   destroy: () => void
   update: () => void
   destroyed: boolean
+
+  // TODO: remove in major version
+  /** @deprecated Use `observer instanceof Compute` */
   isCache?: boolean
 }
 

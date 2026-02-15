@@ -2,9 +2,9 @@ import { bindObserver, destroyWatchers, watchWithScope } from '../helpers'
 import type { Destructor, Observer, Watcher } from '../types'
 
 export class Watch implements Observer {
+  destroyed = false
   destructors = new Set<Destructor>()
   childWatchers = new Set<Observer>()
-  destroyed = false
 
   constructor (readonly watcher: Watcher<void>, freeParent?: boolean, freeUpdate?: boolean) {
     if (!freeParent) {

@@ -1,5 +1,4 @@
-import { invalidateCompute } from '../invalidateCompute'
-
+import { invalidateCompute } from '../../Compute'
 import { type Observer } from '../../types'
 
 /**

@@ -244,6 +244,8 @@ Key benefits:
 ## Watch
 ###### [🏠︎](#index) / Watch [↑](#usage) [↓](#state)
 
+<sup>[Update argument](#update-argument) • [Force update of Watch](#force-update-of-watch) • [Destroy Watch](#destroy-watch) • [Deep/Nested watchers](#deepnested-watchers)</sup>
+
 **Reactive effect that automatically tracks and reacts to state changes.**
 
 `Watch` executes a callback when any accessed `State.value` changes.
@@ -260,7 +262,7 @@ count.value = 1 // triggers watcher callback
 ```
 
 ### Update argument
-###### [🏠︎](#index) / [Watch](#watch) / Update argument
+###### [🏠︎](#index) / [Watch](#watch) / Update argument [↓](#force-update-of-watch)
 
 **Distinguish initial run from updates using `update` parameter.**
 
@@ -310,7 +312,7 @@ count.value++
 ```
 
 ### Force update of Watch
-###### [🏠︎](#index) / [Watch](#watch) / Force update of Watch
+###### [🏠︎](#index) / [Watch](#watch) / Force update of Watch [↑](#update-argument) [↓](#destroy-watch)
 
 You can run a watcher even when it's states are not updated.
 
@@ -327,7 +329,7 @@ watcher.update()
 ```
 
 ### Destroy Watch
-###### [🏠︎](#index) / [Watch](#watch) / Destroy Watch
+###### [🏠︎](#index) / [Watch](#watch) / Destroy Watch [↑](#force-update-of-watch) [↓](#deepnested-watchers)
 
 You can stop watching by `destroy` method of `Watch`.
 
@@ -349,7 +351,7 @@ count.value++
 ```
 
 ### Deep/Nested watchers
-###### [🏠︎](#index) / [Watch](#watch) / Deep/Nested watchers
+###### [🏠︎](#index) / [Watch](#watch) / Deep/Nested watchers [↑](#destroy-watch)
 
 **Create conditional and nested reactive effects.**
 

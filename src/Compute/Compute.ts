@@ -1,5 +1,4 @@
-import { scope } from '../constants'
-import { destroyWatchers, queueWatchers, watchWithScope } from '../helpers'
+import { bindObserver, destroyWatchers, queueWatchers, watchWithScope } from '../helpers'
 import { invalidateCompute } from '../helpers/invalidateCompute'
 import { Observable } from '../Observable'
 import type { Destructor, Observer, Watcher } from '../types'
@@ -20,15 +19,7 @@ export class Compute<V = unknown> extends Observable<V> implements Observer {
     this.watcher = watcher
 
     if (!freeParent) {
-      const { activeWatcher } = scope
-
-      if (activeWatcher) {
-        activeWatcher.childWatchers.add(this)
-
-        activeWatcher.destructors.add(() => {
-          activeWatcher.childWatchers.delete(this)
-        })
-      }
+      bindObserver(this)
     }
 
     if (fireImmediately) {

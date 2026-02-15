@@ -1,9 +1,9 @@
 import { scope } from '../../constants'
 import { type Observer } from '../../types'
 
-export function watchWithScope (watcher: Observer, target: () => void) {
-  const prevWatcher = scope.activeWatcher
-  scope.activeWatcher = watcher
+export function watchWithScope (observer: Observer, target: () => void) {
+  const prevObserver = scope.activeWatcher
+  scope.activeWatcher = observer
   target()
-  scope.activeWatcher = prevWatcher
+  scope.activeWatcher = prevObserver
 }

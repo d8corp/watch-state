@@ -1,3 +1,4 @@
+/** Cleanup function called on observer destruction. */
 export type Destructor = () => void
 
 export interface Observer {
@@ -6,12 +7,17 @@ export interface Observer {
   destroy: () => void
   update: () => void
   destroyed: boolean
-  isCache: boolean
+  isCache?: boolean
 }
 
+/** Global singleton tracking active watcher and event depth */
 export interface Scope {
+  /** Currently executing watcher (for auto-subscription) */
   activeWatcher?: Observer
+
+  /** Current nesting depth of events */
   eventDeep: number
 }
 
+/** Watcher callback signature. First call: `update=false`, updates: `update=true`. */
 export type Watcher<T> = (update: boolean) => T

@@ -1,3 +1,4 @@
+export * from './bindObserver'
 export * from './clearWatchers'
 export * from './destroyWatchers'
 export * from './invalidateCache'

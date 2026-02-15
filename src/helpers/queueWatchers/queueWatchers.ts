@@ -1,23 +1,24 @@
 import { clearWatcher } from '../clearWatchers'
 
-import { type Compute } from '../../Compute'
+import type { Compute } from '../../Compute'
 import { scope } from '../../constants'
 import { type Observer } from '../../types'
 import { shiftSet } from '../../utils/shiftSet'
 
-const cacheStack = new Set<Compute>()
-const observersStack = new Set<Observer>()
-let currentCache: Compute
+let currentCompute: Compute
 let currentObserver: Observer
-let forcedQueueWatchers = false
+let forcedQueue: boolean
+
+const computeStack = new Set<Compute>()
+const observersStack = new Set<Observer>()
 
 export function forceQueueWatchers () {
-  if (forcedQueueWatchers) return
-  forcedQueueWatchers = true
+  if (forcedQueue) return
+  forcedQueue = true
 
-  while ((currentCache = shiftSet(cacheStack)) || (currentObserver = shiftSet(observersStack))) {
-    if (currentCache) {
-      currentCache.invalid = true
+  while ((currentCompute = shiftSet(computeStack)) || (currentObserver = shiftSet(observersStack))) {
+    if (currentCompute) {
+      currentCompute.invalid = true
       continue
     }
 
@@ -26,11 +27,11 @@ export function forceQueueWatchers () {
     currentObserver.update()
   }
 
-  forcedQueueWatchers = false
+  forcedQueue = false
 }
 
 export function queueWatchers (watchers: Set<Observer>) {
-  const useLoop = !scope.eventDeep && !observersStack.size && !cacheStack.size
+  const useLoop = !scope.eventDeep && !observersStack.size && !computeStack.size
   const oldObserversStack = [...observersStack]
 
   observersStack.clear()
@@ -39,7 +40,7 @@ export function queueWatchers (watchers: Set<Observer>) {
     observersStack.add(watcher)
 
     if (watcher.isCache) {
-      cacheStack.add(watcher as Compute)
+      computeStack.add(watcher as Compute)
     }
   })
 

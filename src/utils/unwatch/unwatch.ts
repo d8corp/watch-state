@@ -2,8 +2,8 @@ import { scope } from '../../constants'
 
 /**
  * You can stop watching a piece of code
- * ```typescript
- * import { State, Watch, unwatch } from '../..'
+ * ```ts
+ * import { State, Watch, unwatch } from 'watch-state'
  *
  * const count = new State(0)
  *

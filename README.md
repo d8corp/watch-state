@@ -115,7 +115,9 @@ Was born during working on [@innet/dom](https://www.npmjs.com/package/@innet/dom
 - [Compute](#compute)
 - [Utils](#utils)
   - [onDestroy](#ondestroy)
+  - [callEvent](#callevent)
   - [createEvent](#createevent)
+  - [unwatch](#unwatch)
 - [Typescript](#typescript)
 - [Performance](#performance)
 

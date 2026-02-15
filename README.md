@@ -104,6 +104,7 @@ Was born during working on [@innet/dom](https://www.npmjs.com/package/@innet/dom
 - [Usage](#usage)
   - [Simple example](#simple-example)
   - [Example Vanilla JS](#example-vanilla-js)
+  - [Example React](#example-react)
   - [Example @innet/dom](#example-innetdom)
 - [Watch](#watch)
   - [Update argument](#update-argument)
@@ -111,6 +112,12 @@ Was born during working on [@innet/dom](https://www.npmjs.com/package/@innet/dom
   - [Destroy Watch](#destroy-watch)
   - [Deep/Nested watchers](#deepnested-watchers)
 - [State](#state)
+- [Compute](#compute)
+- [Utils](#utils)
+  - [onDestroy](#ondestroy)
+  - [createEvent](#createevent)
+- [Typescript](#typescript)
+- [Performance](#performance)
 
 ## Install
 ###### [🏠︎](#index) / Install [↓](#usage)
@@ -403,7 +410,7 @@ count.update()
 // console.log(0)
 ```
 
-### Compute:
+## Compute
 ###### [🏠︎](#index) / Compute
 
 ```javascript
@@ -463,7 +470,9 @@ console.log(sortedList.value)
 // console.log(['a', 'b', 'c'])
 ```
 
-### onDestroy()
+## Utils
+
+### onDestroy
 ###### [🏠︎](#index) / [State](#state) / onDestroy()
 
 You can subscribe on destroy or update of watcher
@@ -509,7 +518,7 @@ increase()
 // console.log(2)
 ```
 
-### Typescript:
+## Typescript
 Generic of `State`
 ```typescript
 const key = new State<string | number>()

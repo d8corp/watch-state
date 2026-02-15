@@ -473,8 +473,10 @@ console.log(sortedList.value)
 ## Utils
 ###### [🏠︎](#index) / Utils [↑](#compute) [↓](#typescript)
 
+<sup>[onDestroy](#ondestroy) • [callEvent](#callevent) • [createEvent](#createevent) • [unwatch](#unwatch)</sup>
+
 ### onDestroy
-###### [🏠︎](#index) / [Utils](#utils) / onDestroy [↓](#createevent)
+###### [🏠︎](#index) / [Utils](#utils) / onDestroy [↓](#callevent)
 
 You can subscribe on destroy or update of watcher
 
@@ -499,8 +501,60 @@ count.value++
 // nothing happens
 ```
 
+### callEvent
+###### [🏠︎](#index) / [Utils](#utils) / callEvent [↑](#ondestroy) [↓](#createevent)
+
+**Immediately executes reactive effect** (unlike [createEvent](#createevent)).
+
+Both `callEvent` and `createEvent`:
+- **Ignores** automatic state subscriptions (`unwatch`)
+- **Batches** state updates and **flushes queue** at the end
+- Perfect for **side effects** and **mutations**
+
+**Key differences:**
+- `callEvent(fn)` → **executes NOW** and returns result
+- `createEvent(fn)` → **returns reusable function**
+
+```ts
+const a = new State(0)
+const b = new State(0)
+
+new Watch(() => {
+  console.log(a.value, b.value)
+})
+// logs: 0, 0
+
+a.value = 1
+// logs: 1, 0
+
+b.value = 1
+// logs: 1, 1
+
+callEvent(() => {
+  a.value = 2
+  b.value = 2
+})
+// logs: 1, 1
+```
+
+`callEvent` executes your callback and returns exactly what your callback
+returns — TypeScript infers the correct type automatically.
+
+```ts
+const count = new State(0)
+
+new Watch(() => console.log(count.value))
+// logs: 0
+
+const prev = callEvent(() => count.value++)
+// logs: 1
+
+console.log(prev)
+// logs: 0
+```
+
 ### createEvent
-###### [🏠︎](#index) / [Utils](#utils) / createEvent [↑](#ondestroy)
+###### [🏠︎](#index) / [Utils](#utils) / createEvent [↑](#callevent) [↓](#unwatch)
 
 You can create event function with `createEvent`
 ```typescript
@@ -520,6 +574,9 @@ increase()
 increase()
 // console.log(2)
 ```
+
+### unwatch
+###### [🏠︎](#index) / [Utils](#utils) / unwatch [↑](#createevent)
 
 ## Typescript
 ###### [🏠︎](#index) / Typescript [↑](#utils) [↓](#performance)

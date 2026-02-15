@@ -34,13 +34,13 @@ export function forceQueueWatchers () {
   forcedQueue = false
 }
 
-export function queueWatchers (watchers: Set<Observer>) {
+export function queueWatchers (observers: Set<Observer>) {
   const useLoop = !scope.eventDeep && !observersStack.size && !computeStack.size
   const oldObserversStack = [...observersStack]
 
   observersStack.clear()
 
-  watchers.forEach(watcher => {
+  observers.forEach(watcher => {
     observersStack.add(watcher)
 
     if (watcher instanceof Compute) {
@@ -60,9 +60,9 @@ export function queueWatchers (watchers: Set<Observer>) {
 const invalidateStack: Observer[] = []
 let currentInvalidateObserver: Observer
 
-export function invalidateCompute (cache: Observer) {
+export function invalidateCompute (observer: Observer) {
   const skipLoop = invalidateStack.length
-  invalidateStack.push(cache)
+  invalidateStack.push(observer)
 
   if (skipLoop) return
 

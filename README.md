@@ -7,7 +7,7 @@
 
 <h1 align="center">watch-state</h1>
 
-<p align="center">CANT inc. state management system.</p>
+<p align="center">CANT inc. Reactive State Engine</p>
 
 <br>
 
@@ -71,19 +71,13 @@
 </div>
 <br>
 
-This is a fast, tiny and smart state management system.
-Based on simplest principles: you have a **state** and you can **watch** for the state changes.
-Was born during working on [innet](https://www.npmjs.com/package/innet).
+`watch-state` is a **lightweight, high-performance reactive state engine** designed to power UI frameworks — **or replace them.**
 
+It provides **memory-safe reactivity** without Proxy, without magic, and without framework lock-in.
 
-**watch-state** inspired by **async-await** pattern, you can image it like this:
-```typescript jsx
-state count = 0
+Use it as the core state layer in your own framework, embed it in React components, or build a full UI — **no JSX, no virtual DOM, no framework required**.
 
-watch {
-  console.log(count)
-}
-```
+Was born during working on [@innet/dom](https://www.npmjs.com/package/@innet/dom).
 
 [![stars](https://img.shields.io/github/stars/d8corp/watch-state?style=social)](https://github.com/d8corp/watch-state/stargazers)
 [![watchers](https://img.shields.io/github/watchers/d8corp/watch-state?style=social)](https://github.com/d8corp/watch-state/watchers)
@@ -104,6 +98,15 @@ watch {
 
 *You can transpile it supporting old browsers, but the performance decreases.*
 
+## Index
+
+- [Install](#install)
+- [Usage](#usage)
+  - [Simple example](#simple-example)
+  - [Example Vanilla JS](#example-vanilla-js)
+- [State](#state)
+- [Watch](#watch)
+
 ## Install
 
 npm
@@ -116,18 +119,19 @@ yarn
 yarn add watch-state
 ```
 
-Use `watchState` to get any class from the library.
-```js
-const {
-  Watch,
-  State,
-  Cache,
-} = watchState
+html
+```html
+<script src="https://cdn.jsdelivr.net/npm/watch-state"></script>
 ```
 
+[minified on GitHub](https://github.com/d8corp/watch-state/blob/master/release/index.min.js)
+
 ## Usage
+
 ### Simple example:
+
 You can create an instance of `State` and **watch** its **value**.
+
 ```javascript
 import { Watch, State } from 'watch-state'
 
@@ -142,6 +146,62 @@ count.value++
 count.value++
 // console.log(2)
 ```
+
+### Example Vanilla JS:
+
+Simple reactive state without build tools or framework dependencies.
+
+```html
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Counter</title>
+    <script src="https://cdn.jsdelivr.net/npm/watch-state"></script>
+    <script type="module">
+      const { State, Watch } = WatchState
+
+      const count = new State(0)
+      const button = document.createElement('button');
+
+      document.body.appendChild(button);
+
+      new Watch(() => {
+        button.innerText = count.value
+      })
+
+      button.addEventListener('click', () => {
+        count.value++
+      })
+    </script>
+</head>
+<body>
+</body>
+</html>
+```
+
+### Example React:
+
+`@watch-state/react` provides `useWatch()` hook that automatically subscribes React components to state changes and re-renders only when needed.
+
+```tsx
+import { State } from 'watch-state'
+import { useWatch } from '@watch-state/react'
+
+const $count = new State(0)
+
+const increase = () => {
+  $count.value++
+}
+
+export function CountButton () {
+  const count = useWatch($count)
+
+  return <button onClick={increase}>{count}</button>
+}
+```
+
+## Watch
 
 ### Update argument:
 You can check if the watching ran first by `update` argument.
@@ -183,7 +243,7 @@ count.value++
 // console.log('The value was changed')
 
 count.value++
-// nothing happenes
+// nothing happens
 ```
 
 ### Force update of State

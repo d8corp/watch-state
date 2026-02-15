@@ -474,7 +474,7 @@ console.log(sortedList.value)
 ###### [🏠︎](#index) / Utils [↑](#compute) [↓](#typescript)
 
 ### onDestroy
-###### [🏠︎](#index) / [State](#state) / onDestroy()
+###### [🏠︎](#index) / [Utils](#utils) / onDestroy [↓](#createevent)
 
 You can subscribe on destroy or update of watcher
 
@@ -500,6 +500,8 @@ count.value++
 ```
 
 ### createEvent
+###### [🏠︎](#index) / [Utils](#utils) / createEvent [↑](#ondestroy)
+
 You can create event function with `createEvent`
 ```typescript
 import { State, createEvent } from 'watch-state'
@@ -529,9 +531,9 @@ const key = new State<string | number>()
 key.value = false
 // error, you can use only string or number
 ```
-Generic of `Cache`
+Generic of `Compute`
 ```typescript
-new Cache<string>(() => false)
+new Compute<string>(() => false)
 // error, target of cache should return string
 ```
 

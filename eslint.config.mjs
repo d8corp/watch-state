@@ -40,7 +40,6 @@ export default defineConfig([
     },
     rules: {
       'no-new': 'off',
-      '@typescript-eslint/no-unsafe-function-type': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       'lines-between-class-members': ['error', 'always', {
         exceptAfterSingleLine: true,

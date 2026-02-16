@@ -112,6 +112,9 @@ Was born during working on [@innet/dom](https://www.npmjs.com/package/@innet/dom
   - [Destroy Watch](#destroy-watch)
   - [Deep/Nested watchers](#deepnested-watchers)
 - [State](#state)
+  - [Get or Set value](#get-or-set-value)
+  - [Force update of State](#force-update-of-watch)
+  - [Raw value](#raw-value)
 - [Compute](#compute)
 - [Utils](#utils)
   - [onDestroy](#ondestroy)
@@ -225,7 +228,7 @@ export function CountButton () {
 ### Example @innet/dom
 ###### [🏠︎](#index) / [Usage](#usage) / Example @innet/dom [↑](#example-react)
 
-**Zero-runtime reactivity with @innet/dom:**
+**Zero-runtime reactivity with [@innet/dom](https://www.npmjs.com/package/@innet/dom):**
 
 `@innet/dom` automatically watches accessed states and **updates only changed DOM content** — **no full re-renders**.
 
@@ -395,21 +398,57 @@ state.value++
 ## State
 ###### [🏠︎](#index) / State [↑](#watch) [↓](#compute)
 
+<sup>[Get or Set value](#get-or-set-value) • [Force update of State](#force-update-of-watch) • [Raw value](#raw-value)</sup>
+
+**Reactive primitive** that automatically notifies all subscribed watchers when `.value` changes.
+
+### Get or Set value
+###### [🏠︎](#index) / [State](#state) / Get or Set value [↓](#force-update-of-state)
+
+**Access or mutate the state value.** Reading `.value` inside `Watch` **auto-subscribes** to changes. Writing `.value` **triggers all watchers**.
+
+```ts
+const count = new State(0)
+
+new Watch(() => console.log(count.value))
+// auto-subscribes and logs 0
+
+count.value++ // triggers: logs 1
+```
+
 ### Force update of State
-###### [🏠︎](#index) / [State](#state) / Force update of State
+###### [🏠︎](#index) / [State](#state) / Force update of State [↑](#get-or-set-value) [↓](#raw-value)
 
 You can run watchers of a state with `update` method.
 
-```typescript
-const count = new State(0)
+```ts
+// Create state
+const log = new State([])
 
-new Watch(() => {
-  console.log(count.value)
-})
-// console.log(0)
+// Subscribe to changes
+new Watch(() => console.log(log.value)) // logs: []
 
-count.update()
-// console.log(0)
+log.value.push(1) // no logs
+
+// Update value
+count.update() // logs: [1]
+```
+
+### Raw value
+###### [🏠︎](#index) / [State](#state) / Raw value [↑](#force-update-of-state)
+
+`rawValue` returns the current value but **doesn't subscribe** to changes — unlike `value` which auto-subscribes in `Watch`.
+
+```ts
+const foo = new State(0)
+const bar = new State(0)
+
+new Watch(() => console.log(foo.value, bar.rawValue))
+// logs: 0, 0
+
+foo.value++ // logs: 1, 0
+bar.value++ // no logs
+foo.value++ // logs: 2, 1
 ```
 
 ## Compute
@@ -617,7 +656,7 @@ new Compute<string>(() => false)
 ## Performance
 ###### [🏠︎](#index) / Performance [↑](#typescript)
 
-You can check a performance test with **[MobX](https://www.npmjs.com/package/mobx)**, **[Effector](https://www.npmjs.com/package/effector)**, **[Storeon](https://www.npmjs.com/package/storeon)**, **[Mazzard](https://www.npmjs.com/package/mazzard)** and **[Redux](https://www.npmjs.com/package/redux)**.
+You can check a performance test with **[MobX](https://www.npmjs.com/package/mobx)**, **[Effector](https://www.npmjs.com/package/effector)**, **[Storeon](https://www.npmjs.com/package/storeon)**, **[Nano Stores](https://www.npmjs.com/package/nanostores)**, **[Mazzard](https://www.npmjs.com/package/mazzard)** and **[Redux](https://www.npmjs.com/package/redux)**.
 Clone the repo, install packages and run this command
 ```shell
 npm run speed

@@ -1,6 +1,6 @@
 {
   "name": "watch-state",
-  "version": "3.5.0-alpha.3",
+  "version": "3.5.0-alpha.4",
   "description": "CANT inc. state management system.",
   "author": "Mikhail Lysikov <d8corp@mail.ru>",
   "license": "MIT",
@@ -8,6 +8,9 @@
   "module": "index.es6.js",
   "jsnext:main": "index.es6.js",
   "types": "index.d.ts",
+  "unpkg": "index.min.js",
+  "jsdelivr": "index.min.js",
+  "browser": "index.min.js",
   "private": true,
   "homepage": "https://github.com/d8corp/watch-state",
   "bugs": {
@@ -30,13 +33,13 @@
     "front-end"
   ],
   "scripts": {
-    "build": "innetjs release",
+    "build": "innetjs release -m",
     "test": "npm run test:jest && npm run test:size",
     "test:jest": "jest",
     "test:coverage": "jest --coverage",
     "test:size": "size-limit",
     "speed": "innetjs run speed.test.ts",
-    "release": "innetjs release -p",
+    "release": "innetjs release -p -m",
     "patch": "innetjs patch",
     "minor": "innetjs minor",
     "major": "innetjs major",
@@ -57,7 +60,7 @@
     "eslint-plugin-jest": "^29.14.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-unused-imports": "^4.3.0",
-    "innetjs": "^2.5.3",
+    "innetjs": "^3.0.2",
     "jest": "^30.2.0",
     "jest-environment-jsdom": "^30.2.0",
     "mazzard": "^1.0.0-rc-2",
@@ -74,20 +77,20 @@
   },
   "size-limit": [
     {
-      "name": "List",
+      "name": "Full",
       "path": "./release/index.es6.js",
       "import": {
-        "./release/index.es6.js": "{ State }"
+        "./release/index.es6.js": "*"
       },
-      "limit": "466 B"
+      "limit": "1.06 kB"
     },
     {
-      "name": "List",
+      "name": "Core",
       "path": "./release/index.es6.js",
       "import": {
         "./release/index.es6.js": "{ Watch, State, Compute, createEvent }"
       },
-      "limit": "850 B"
+      "limit": "843 B"
     }
   ]
 }

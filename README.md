@@ -33,8 +33,8 @@
       Less than 1 KB minzip
     </span></td>
     <td align="center"><span>
-      <a href="https://d8corp.github.io/watch-state/coverage/lcov-report/" target="_blank">
-        <img width="64" height="64" src="https://raw.githubusercontent.com/d8corp/watch-state/v3.3.1/img/smart.svg" alt="watch-state fast">
+      <a href="https://d8corp.github.io/watch-state/coverage/lcov-report" target="_blank">
+        <img width="64" height="64" src="https://raw.githubusercontent.com/d8corp/watch-state/v3.3.1/img/smart.svg" alt="watch-state smart">
       </a>
       <br>
       <b>Smart</b>
@@ -103,7 +103,7 @@ Was born during working on [@innet/dom](https://www.npmjs.com/package/@innet/dom
 <sup>**[ [Install](#install) ]**</sup>  
 <sup>**[ [Usage](#usage) ]** [Simple example](#simple-example) • [Example Vanilla JS](#example-vanilla-js) • [Example React](#example-react) • [Example @innet/dom](#example-innetdom)</sup>  
 <sup>**[ [Watch](#watch) ]** [Update argument](#update-argument) • [Force update of Watch](#force-update-of-watch) • [Destroy Watch](#destroy-watch) • [Deep/Nested watchers](#deepnested-watchers)</sup>  
-<sup>**[ [State](#state) ]** [Get or Set value](#get-or-set-value) • [Force update of State](#force-update-of-watch) • [Raw value](#raw-value)</sup>  
+<sup>**[ [State](#state) ]** [Get or Set value](#get-or-set-value) • [Force update of State](#force-update-of-state) • [Raw value](#raw-value)</sup>  
 <sup>**[ [Compute](#compute) ]** [Lazy computation](#lazy-computation) • [Force update of Compute](#force-update-of-compute) • [Destroy Compute](#destroy-compute)</sup>  
 <sup>**[ [Utils](#utils) ]** [onDestroy](#ondestroy) • [callEvent](#callevent) • [createEvent](#createevent) • [unwatch](#unwatch)</sup>  
 <sup>**[ [Typescript](#typescript) ]**</sup>  
@@ -383,7 +383,7 @@ state.value++
 ## State
 ###### [🏠︎](#index) / State [↑](#watch) [↓](#compute)
 
-<sup>[Get or Set value](#get-or-set-value) • [Force update of State](#force-update-of-watch) • [Raw value](#raw-value)</sup>
+<sup>[Get or Set value](#get-or-set-value) • [Force update of State](#force-update-of-state) • [Raw value](#raw-value)</sup>
 
 **Reactive primitive** that automatically notifies all subscribed watchers when `.value` changes.
 
@@ -416,7 +416,7 @@ new Watch(() => console.log(log.value)) // logs: []
 log.value.push(1) // no logs
 
 // Update value
-count.update() // logs: [1]
+log.update() // logs: [1]
 ```
 
 ### Raw value
@@ -556,21 +556,21 @@ You can subscribe on destroy or update of watcher
 
 ```javascript
 const count = new State(0)
+
 const watcher = new Watch(() => {
   console.log('count', count.value)
   // the order does not matter
   onDestroy(() => console.log('destructor'))
 })
-// console.log('count', 0)
+// logs: 'count', 0
 
 count.value++
-// console.log('destructor')
-// console.log('count', 1)
+// logs: 'destructor'
+// logs: 'count', 1
 
 watcher.destroy()
-// console.log('destructor')
+// logs: 'destructor'
 
-watcher.destroy()
 count.value++
 // nothing happens
 ```

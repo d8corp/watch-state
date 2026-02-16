@@ -1,2 +1,5 @@
 import { type Observer } from '../../types';
-export declare function invalidateCache(cache: Observer): void;
+/**
+ * @deprecated Use `invalidateCompute`
+ */
+export declare function invalidateCache(observer: Observer): void;

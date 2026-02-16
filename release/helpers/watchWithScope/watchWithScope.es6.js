@@ -1,10 +1,10 @@
 import { scope } from '../../constants.es6.js';
 
-function watchWithScope(watcher, target) {
-    const prevWatcher = scope.activeWatcher;
-    scope.activeWatcher = watcher;
+function watchWithScope(observer, target) {
+    const prevObserver = scope.activeWatcher;
+    scope.activeWatcher = observer;
     target();
-    scope.activeWatcher = prevWatcher;
+    scope.activeWatcher = prevObserver;
 }
 
 export { watchWithScope };

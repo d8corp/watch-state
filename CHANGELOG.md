@@ -1,5 +1,12 @@
 # Changelog
 
+## v3.5
+
+### v3.5.0 [![16.02.2026](https://img.shields.io/date/1771273063)](https://github.com/d8corp/watch-state/tree/v3.5.0)
+
+- Added: `callEvent`, `Compute`
+- Deprecated: `Cache`, `Observer.isCache`, `Observer.childWatchers`
+
 ## v3.4
 
 ### v3.4.5 [![08.09.2022](https://img.shields.io/date/1662654013)](https://github.com/d8corp/watch-state/tree/v3.4.5)

@@ -1,16 +1,11 @@
-const invalidateStack = [];
-let currentObserver;
-function invalidateCache(cache) {
-    const skipLoop = Boolean(invalidateStack.length);
-    invalidateStack.push(cache);
-    if (skipLoop)
-        return;
-    while ((currentObserver = invalidateStack.shift())) {
-        if (currentObserver.isCache) {
-            invalidateStack.push(...currentObserver.observers);
-            currentObserver.invalid = true;
-        }
-    }
+import '../../Compute/index.es6.js';
+import { invalidateCompute } from '../../Compute/Compute.es6.js';
+
+/**
+ * @deprecated Use `invalidateCompute`
+ */
+function invalidateCache(observer) {
+    invalidateCompute(observer);
 }
 
 export { invalidateCache };

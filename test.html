@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Counter</title>
+    <script src="https://cdn.jsdelivr.net/npm/watch-state"></script>
+    <script type="module">
+      const { State, Watch } = WatchState
+
+      const count = new State(0)
+      const button = document.createElement('button');
+
+      document.body.appendChild(button);
+
+      new Watch(() => {
+        button.innerText = count.value
+      })
+
+      button.addEventListener('click', () => {
+        count.value++
+      })
+    </script>
+</head>
+<body>
+</body>
+</html>

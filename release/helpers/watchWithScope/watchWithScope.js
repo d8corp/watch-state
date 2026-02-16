@@ -4,11 +4,11 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var constants = require('../../constants.js');
 
-function watchWithScope(watcher, target) {
-    const prevWatcher = constants.scope.activeWatcher;
-    constants.scope.activeWatcher = watcher;
+function watchWithScope(observer, target) {
+    const prevObserver = constants.scope.activeWatcher;
+    constants.scope.activeWatcher = observer;
     target();
-    constants.scope.activeWatcher = prevWatcher;
+    constants.scope.activeWatcher = prevObserver;
 }
 
 exports.watchWithScope = watchWithScope;

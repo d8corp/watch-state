@@ -1,6 +1,7 @@
+import type { Destructor } from '../../types';
 /**
  * You can subscribe on destroy or update of watcher
- * ```javascript
+ * ```ts
  * const count = new State(0)
  * const watcher = new Watch(() => {
  *   console.log('count', count.value)
@@ -21,4 +22,4 @@
  * // nothing happens
  * ```
  * */
-export declare function onDestroy(destructor: Function): void;
+export declare function onDestroy(destructor: Destructor): void;

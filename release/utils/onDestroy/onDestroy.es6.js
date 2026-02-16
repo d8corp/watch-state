@@ -2,7 +2,7 @@ import { scope } from '../../constants.es6.js';
 
 /**
  * You can subscribe on destroy or update of watcher
- * ```javascript
+ * ```ts
  * const count = new State(0)
  * const watcher = new Watch(() => {
  *   console.log('count', count.value)

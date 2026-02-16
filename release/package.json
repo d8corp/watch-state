@@ -1,6 +1,6 @@
 {
   "name": "watch-state",
-  "version": "3.5.0-alpha.3",
+  "version": "3.5.0",
   "description": "CANT inc. state management system.",
   "author": "Mikhail Lysikov <d8corp@mail.ru>",
   "license": "MIT",
@@ -8,6 +8,9 @@
   "module": "index.es6.js",
   "jsnext:main": "index.es6.js",
   "types": "index.d.ts",
+  "unpkg": "index.min.js",
+  "jsdelivr": "index.min.js",
+  "browser": "index.min.js",
   "homepage": "https://github.com/d8corp/watch-state",
   "bugs": {
     "url": "https://github.com/d8corp/watch-state/issues"
@@ -29,15 +32,35 @@
     "front-end"
   ],
   "scripts": {
-    "build": "innetjs release",
-    "test": "jest",
+    "build": "innetjs release -m",
+    "test": "npm run test:jest && npm run test:size",
+    "test:jest": "jest",
     "test:coverage": "jest --coverage",
+    "test:size": "size-limit",
     "speed": "innetjs run speed.test.ts",
-    "release": "innetjs release -p",
+    "release": "innetjs release -p -m",
     "patch": "innetjs patch",
     "minor": "innetjs minor",
     "major": "innetjs major",
-    "lint": "eslint src --ext .ts,.tsx",
-    "lint:fix": "eslint src --ext .ts,.tsx --fix"
-  }
+    "lint": "eslint",
+    "lint:fix": "eslint --fix"
+  },
+  "size-limit": [
+    {
+      "name": "Full",
+      "path": "./release/index.es6.js",
+      "import": {
+        "./release/index.es6.js": "*"
+      },
+      "limit": "1.06 kB"
+    },
+    {
+      "name": "Core",
+      "path": "./release/index.es6.js",
+      "import": {
+        "./release/index.es6.js": "{ Watch, State, Compute, createEvent }"
+      },
+      "limit": "843 B"
+    }
+  ]
 }

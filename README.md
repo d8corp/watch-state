@@ -104,7 +104,7 @@ Was born during working on [@innet/dom](https://www.npmjs.com/package/@innet/dom
 <sup>**[ [Usage](#usage) ]** [Simple example](#simple-example) • [Example Vanilla JS](#example-vanilla-js) • [Example React](#example-react) • [Example @innet/dom](#example-innetdom)</sup>  
 <sup>**[ [Watch](#watch) ]** [Update argument](#update-argument) • [Force update of Watch](#force-update-of-watch) • [Destroy Watch](#destroy-watch) • [Deep/Nested watchers](#deepnested-watchers)</sup>  
 <sup>**[ [State](#state) ]** [Get or Set value](#get-or-set-value) • [Force update of State](#force-update-of-watch) • [Raw value](#raw-value)</sup>  
-<sup>**[ [Compute](#compute) ]** [Get or Set value](#get-or-set-value) • [Force update of State](#force-update-of-watch) • [Raw value](#raw-value)</sup>  
+<sup>**[ [Compute](#compute) ]** [Lazy computation](#lazy-computation) • [Force update of Compute](#force-update-of-compute) • [Destroy Compute](#destroy-compute)</sup>  
 <sup>**[ [Utils](#utils) ]** [onDestroy](#ondestroy) • [callEvent](#callevent) • [createEvent](#createevent) • [unwatch](#unwatch)</sup>  
 <sup>**[ [Typescript](#typescript) ]**</sup>  
 <sup>**[ [Performance](#performance) ]**</sup>
@@ -439,61 +439,109 @@ foo.value++ // logs: 2, 1
 ## Compute
 ###### [🏠︎](#index) / Compute [↑](#state) [↓](#utils)
 
+<sup>[Lazy computation](#lazy-computation) • [Force update of Compute](#force-update-of-compute) • [Destroy Compute](#destroy-compute)</sup>
+
+**Derived reactive state** that automatically recomputes when its dependencies change.  
+**Lazy execution** — only computes when `.value` is accessed.
+
+### Lazy computation
+###### [🏠︎](#index) / [Compute](#compute) / Lazy computation [↓](#force-update-of-compute)
+
+`Compute` doesn't execute immediately — waits for `.value` access.  
+Dependencies (`State.value` reads inside callback) auto-subscribe like `Watch`.
+
 ```javascript
 const name = new State('Foo')
 const surname = new State('Bar')
 
 const fullName = new Compute(() => (
-  `${name.value} ${surname.value[0]}`
+  `${name.value} ${surname.value[0]}` // auto-subscribes to name+surname
 ))
+// NO COMPUTATION YET — lazy!
 
 new Watch(() => {
-  console.log(fullName.value)
+  console.log(fullName.value) // FIRST ACCESS → computes!
 })
-// console.log('Foo B')
+// logs: 'Foo B'
 
-surname.value = 'Baz'
+surname.value = 'Baz' // surname[0] still "B"
 // nothing happens
 
-surname.value = 'Quux'
-// console.log('Foo Q')
+surname.value = 'Quux' // surname[0] = "Q"
+// logs: 'Foo Q'
 ```
-You can force update the computed state by `update` method.
-```typescript
-fullName.update()
-// console.log('Foo Q')
-```
-> `Compute` will be immediately updated only if a watcher looks after the `Compute`.
 
-You can use `destroy` and `onDestroy` like you do it on a watcher.
-```typescript
-fullName.destroy()
-```
-The computing will be triggered only when a state inside the `Compute` will be changed. So you can modify data only when it's needed.
-```typescript
-const list = new State(['foo', 'bar', 'baz'])
+**Benefits:**
+- **Zero overhead** for unused computed values
+- **Automatic dependency tracking** — no manual subscriptions
+- **Cached result** — same `.value` reads return cached value
 
-const sortedList = new Compute(() => {
-  console.log('computing')
-  return [...list.value].sort()
+### Force update of Compute
+###### [🏠︎](#index) / [Compute](#compute) / Force update of Compute [↑](#lazy-computation) [↓](#destroy-compute)
+
+**Call `.update()` to manually trigger recomputation** — forces callback execution **even when no dependencies changed**.
+
+**Perfect for:**
+- **Array mutations** (`push`, `pop`, `splice`)
+- **Object mutations** (adding properties)
+- **External data refresh**
+- **Debugging** stale values
+
+```ts
+const items = new State([])
+
+const itemCount = new Compute(() => {
+  console.log('🔄 Recomputing length...')
+  return items.value.length
 })
-// nothing happens
 
-const value = sortedList.value
-// console.log('computing')
+new Watch(() => console.log('Watcher sees:', itemCount.value))
+// 🔄 Recomputing length...
+// Watcher sees: 0
 
-console.log(sortedList.value)
-// console.log(['bar', 'baz', 'foo'])
+items.value.push('apple')  // ❌ Array reference SAME → NO recompute!
+console.log('Direct length:', items.value.length) // 1
+console.log(itemCount.value) // STALE: 0 ❌
 
-console.log(value === sortedList.value)
-// console.log(true)
+itemCount.update()  // ✅ FORCES recompute
+// 🔄 Recomputing length...
+// Watcher sees: 1 ✅
+```
 
-list.value = ['b', 'c', 'a']
-// nothing happens
+### Destroy Compute
+###### [🏠︎](#index) / [Compute](#compute) / Destroy Compute [↑](#force-update-of-compute)
 
-console.log(sortedList.value)
-// console.log('computing')
-// console.log(['a', 'b', 'c'])
+Call `.destroy()` to completely stop reactivity — unsubscribes from all dependency states, clears cached value, and prevents any future recomputations.
+
+Triggers `onDestroy` callbacks registered inside `Compute` callback:
+
+```ts
+const user = new State({ name: 'Alice', age: 30 })
+
+const userName = new Compute(() => {
+  console.log('Computing')
+
+  onDestroy(() => {
+    console.log('Cleanup')
+  })
+
+  return user.value.name.toUpperCase()
+})
+
+new Watch(() => console.log(userName.value))
+// logs: Computing
+// logs: ALICE
+
+user.value = { name: 'Mike', age: 32 }
+// logs: Cleanup
+// logs: Computing
+// logs: MIKE
+
+userName.destroy()
+// logs: Cleanup
+
+user.value = { name: 'Bob', age: 31 }
+// nothing happens — fully disconnected!
 ```
 
 ## Utils

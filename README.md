@@ -100,14 +100,14 @@ Was born during working on [@innet/dom](https://www.npmjs.com/package/@innet/dom
 
 ## Index
 
-<sup>**[Install](#install)**</sup>  
-<sup>**[Usage](#usage):** [Simple example](#simple-example) • [Example Vanilla JS](#example-vanilla-js) • [Example React](#example-react) • [Example @innet/dom](#example-innetdom)</sup>  
-<sup>**[Watch](#watch):** [Update argument](#update-argument) • [Force update of Watch](#force-update-of-watch) • [Destroy Watch](#destroy-watch) • [Deep/Nested watchers](#deepnested-watchers)</sup>  
-<sup>**[State](#state):** [Get or Set value](#get-or-set-value) • [Force update of State](#force-update-of-watch) • [Raw value](#raw-value)</sup>  
-<sup>**[Compute](#compute):** [Get or Set value](#get-or-set-value) • [Force update of State](#force-update-of-watch) • [Raw value](#raw-value)</sup>  
-<sup>**[Utils](#utils):** [onDestroy](#ondestroy) • [callEvent](#callevent) • [createEvent](#createevent) • [unwatch](#unwatch)</sup>  
-<sup>**[Typescript](#typescript)**</sup>  
-<sup>**[Performance](#performance)**</sup>
+<sup>**[ [Install](#install) ]**</sup>  
+<sup>**[ [Usage](#usage) ]** [Simple example](#simple-example) • [Example Vanilla JS](#example-vanilla-js) • [Example React](#example-react) • [Example @innet/dom](#example-innetdom)</sup>  
+<sup>**[ [Watch](#watch) ]** [Update argument](#update-argument) • [Force update of Watch](#force-update-of-watch) • [Destroy Watch](#destroy-watch) • [Deep/Nested watchers](#deepnested-watchers)</sup>  
+<sup>**[ [State](#state) ]** [Get or Set value](#get-or-set-value) • [Force update of State](#force-update-of-watch) • [Raw value](#raw-value)</sup>  
+<sup>**[ [Compute](#compute) ]** [Get or Set value](#get-or-set-value) • [Force update of State](#force-update-of-watch) • [Raw value](#raw-value)</sup>  
+<sup>**[ [Utils](#utils) ]** [onDestroy](#ondestroy) • [callEvent](#callevent) • [createEvent](#createevent) • [unwatch](#unwatch)</sup>  
+<sup>**[ [Typescript](#typescript) ]**</sup>  
+<sup>**[ [Performance](#performance) ]**</sup>
 
 ## Install
 ###### [🏠︎](#index) / Install [↓](#usage)

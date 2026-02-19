@@ -191,11 +191,11 @@ Simple reactive state without build tools or framework dependencies.
 ### Example React
 ###### [🏠︎](#index) / [Usage](#usage) / Example React [↑](#example-vanilla-js) [↓](#example-innetdom)
 
-[@watch-state/react](https://www.npmjs.com/package/@watch-state/react) provides `useWatch()` hook that automatically subscribes React components to state changes and re-renders only when needed.
+[@watch-state/react](https://www.npmjs.com/package/@watch-state/react) provides `useObservable()` hook that automatically subscribes React components to state changes and re-renders only when needed.
 
 ```tsx
 import { State } from 'watch-state'
-import { useWatch } from '@watch-state/react'
+import { useObservable } from '@watch-state/react'
 
 const $count = new State(0)
 
@@ -204,7 +204,7 @@ const increase = () => {
 }
 
 export function CountButton () {
-  const count = useWatch($count)
+  const count = useObservable($count)
 
   return <button onClick={increase}>{count}</button>
 }

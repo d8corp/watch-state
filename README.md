@@ -50,8 +50,8 @@
   <a href="https://www.npmjs.com/package/watch-state" target="_blank">
     <img src="https://img.shields.io/npm/v/watch-state.svg" alt="watch-state npm">
   </a>
-  <a href="https://bundlephobia.com/result?p=watch-state" target="_blank">
-    <img src="https://img.shields.io/bundlephobia/minzip/watch-state" alt="watch-state minzipped size">
+  <a href="https://www.typescriptlang.org" target="_blank">
+    <img src="https://img.shields.io/npm/types/watch-state" alt="TypeSctipt">
   </a>
   <a href="https://www.npmtrends.com/watch-state" target="_blank">
     <img src="https://img.shields.io/npm/dm/watch-state.svg" alt="watch-state downloads">

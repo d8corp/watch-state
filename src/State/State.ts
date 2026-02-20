@@ -23,6 +23,16 @@ export class State<V = never | unknown> extends Observable<V extends never ? unk
   /** Current value. No auto-subscription on direct access (unlike `value`). */
   rawValue: V extends never ? unknown : V
 
+  /**
+   * Initial state value set during construction.
+   * Used by `reset()` to restore state to its original value.
+   * Allows checking if the state has been modified.
+   *
+   * @example
+   * const count = new State(0)
+   *
+   * const isChanged = count.init === count.rawValue
+   */
   readonly init: V extends never ? unknown : V
 
   constructor (...args: V extends never | undefined ? [V?] : [V])

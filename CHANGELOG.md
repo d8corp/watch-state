@@ -2,6 +2,10 @@
 
 ## v3.5
 
+### v3.5.2 [![20.02.2026](https://img.shields.io/date/1771593510)](https://github.com/d8corp/watch-state/tree/v3.5.2)
+
+- Add: `State.set`
+
 ### v3.5.1 [![20.02.2026](https://img.shields.io/date/1771584705)](https://github.com/d8corp/watch-state/tree/v3.5.1)
 
 - Fix: a bug of minified version

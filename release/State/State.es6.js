@@ -47,6 +47,16 @@ class State extends Observable {
         }
     }
     /**
+     * @experimental
+     * Sets the state value. Identical to the `value` setter but returns `void`.
+     * Useful as a shorthand in arrow functions: `() => state.set(value)` instead of `() => { state.value = value }`
+     *
+     * `state.set` cannot be used as a standalone function: `const set = state.set`
+     */
+    set(value) {
+        this.value = value;
+    }
+    /**
      * Force triggers all watchers even if value didn't change.
      *
      * @example

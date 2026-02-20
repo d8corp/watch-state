@@ -33,6 +33,14 @@ export declare class State<V = unknown> extends Observable<V> {
     get value(): V;
     set value(value: V);
     /**
+     * @experimental
+     * Sets the state value. Identical to the `value` setter but returns `void`.
+     * Useful as a shorthand in arrow functions: `() => state.set(value)` instead of `() => { state.value = value }`
+     *
+     * `state.set` cannot be used as a standalone function: `const set = state.set`
+     */
+    set(value: V): void;
+    /**
      * Force triggers all watchers even if value didn't change.
      *
      * @example

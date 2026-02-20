@@ -403,7 +403,9 @@ state.value++
 ### Get or Set value
 ###### [🏠︎](#index) / [State](#state) / Get or Set value [↓](#force-update-of-state)
 
-**Access or mutate the state value.** Reading `.value` inside `Watch` **auto-subscribes** to changes. Writing `.value` **triggers all watchers**.
+**Access or mutate the state value.**
+
+Reading `.value` inside `Watch` **auto-subscribes** to changes. Writing `.value` **triggers all watchers**.
 
 ```ts
 const count = new State(0)

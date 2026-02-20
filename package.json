@@ -10,7 +10,6 @@
   "types": "index.d.ts",
   "unpkg": "index.min.js",
   "jsdelivr": "index.min.js",
-  "browser": "index.min.js",
   "private": true,
   "homepage": "https://github.com/d8corp/watch-state",
   "bugs": {

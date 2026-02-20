@@ -103,7 +103,7 @@ Was born during working on [@innet/dom](https://www.npmjs.com/package/@innet/dom
 <sup>**[ [Install](#install) ]**</sup>  
 <sup>**[ [Usage](#usage) ]** [Simple example](#simple-example) • [Example Vanilla JS](#example-vanilla-js) • [Example React](#example-react) • [Example @innet/dom](#example-innetdom)</sup>  
 <sup>**[ [Watch](#watch) ]** [Update argument](#update-argument) • [Force update of Watch](#force-update-of-watch) • [Destroy Watch](#destroy-watch) • [Deep/Nested watchers](#deepnested-watchers)</sup>  
-<sup>**[ [State](#state) ]** [Get or Set value](#get-or-set-value) • [Force update of State](#force-update-of-state) • [Raw value](#raw-value)</sup>  
+<sup>**[ [State](#state) ]** [Get or Set value](#get-or-set-value) • [Force update of State](#force-update-of-state) • [Raw value](#raw-value) • [State.set (experimental)](#stateset-experimental)</sup>  
 <sup>**[ [Compute](#compute) ]** [Lazy computation](#lazy-computation) • [Force update of Compute](#force-update-of-compute) • [Destroy Compute](#destroy-compute)</sup>  
 <sup>**[ [Utils](#utils) ]** [onDestroy](#ondestroy) • [callEvent](#callevent) • [createEvent](#createevent) • [unwatch](#unwatch)</sup>  
 <sup>**[ [Typescript](#typescript) ]**</sup>  
@@ -396,7 +396,7 @@ state.value++
 ## State
 ###### [🏠︎](#index) / State [↑](#watch) [↓](#compute)
 
-<sup>[Get or Set value](#get-or-set-value) • [Force update of State](#force-update-of-state) • [Raw value](#raw-value)</sup>
+<sup>[Get or Set value](#get-or-set-value) • [Force update of State](#force-update-of-state) • [Raw value](#raw-value) • [State.set (experimental)](#stateset-experimental)</sup>
 
 **Reactive primitive** that automatically notifies all subscribed watchers when `.value` changes.
 
@@ -433,7 +433,7 @@ log.update() // logs: [1]
 ```
 
 ### Raw value
-###### [🏠︎](#index) / [State](#state) / Raw value [↑](#force-update-of-state)
+###### [🏠︎](#index) / [State](#state) / Raw value [↑](#force-update-of-state) [↓](#stateset-experimental)
 
 `rawValue` returns the current value but **doesn't subscribe** to changes — unlike `value` which auto-subscribes in `Watch`.
 
@@ -447,6 +447,24 @@ new Watch(() => console.log(foo.value, bar.rawValue))
 foo.value++ // logs: 1, 0
 bar.value++ // no logs
 foo.value++ // logs: 2, 1
+```
+
+### State.set (experimental)
+###### [🏠︎](#index) / [State](#state) / State.set [↑](#get-or-set-value)
+
+`State.set` mirrors the behavior of the value setter but returns `void`.
+It is useful as a shorthand in arrow functions: `() => state.set(nextValue)` instead of `() => { state.value = nextValue }`.
+
+Note: `state.set` cannot be used as a standalone function; `const set = state.set` is not supported.
+
+```ts
+const count = new State(0)
+
+// Subscribing
+new Watch(() => console.log(count.value))
+// log: 0
+
+count.set(1) // triggers: log: 1
 ```
 
 ## Compute

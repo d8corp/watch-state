@@ -50,11 +50,11 @@
   <a href="https://www.npmjs.com/package/watch-state" target="_blank">
     <img src="https://img.shields.io/npm/v/watch-state.svg" alt="watch-state npm">
   </a>
-  <a href="https://bundlephobia.com/result?p=watch-state" target="_blank">
-    <img src="https://img.shields.io/bundlephobia/minzip/watch-state" alt="watch-state minzipped size">
-  </a>
   <a href="https://www.npmtrends.com/watch-state" target="_blank">
     <img src="https://img.shields.io/npm/dm/watch-state.svg" alt="watch-state downloads">
+  </a>
+  <a href="https://www.typescriptlang.org" target="_blank">
+    <img src="https://img.shields.io/npm/types/watch-state" alt="TypeSctipt">
   </a>
   <a href="https://packagequality.com/#?package=watch-state" target="_blank">
     <img src="https://packagequality.com/shield/watch-state.svg" alt="watch-state quality">
@@ -134,6 +134,19 @@ html
 
 <sup>[Simple example](#simple-example) • [Example Vanilla JS](#example-vanilla-js) • [Example React](#example-react) • [Example @innet/dom](#example-innetdom)</sup>
 
+The library is based on the core concepts of `Observable` (something that can be observed) and `Observer` (something that can observe). On top of these concepts, the core classes `State`, `Compute`, and `Watch` are built according to the following scheme:
+
+```
+   ┌────────────┐ ┌─────────────┐
+   │ Observable │ │  Observer   │
+   │ (abstract) │ │ (interface) │
+   └──────┬─────┘ └──────┬──────┘  
+     ┌────┴─────┐ ┌──────┴───┐
+┌────┴────┐ ┌───┴─┴───┐ ┌────┴────┐
+│  State  │ │ Compute │ │  Watch  │
+└─────────┘ └─────────┘ └─────────┘
+```
+
 ### Simple example
 ###### [🏠︎](#index) / [Usage](#usage) / Simple example [↓](#example-vanilla-js)
 
@@ -191,11 +204,11 @@ Simple reactive state without build tools or framework dependencies.
 ### Example React
 ###### [🏠︎](#index) / [Usage](#usage) / Example React [↑](#example-vanilla-js) [↓](#example-innetdom)
 
-`@watch-state/react` provides `useWatch()` hook that automatically subscribes React components to state changes and re-renders only when needed.
+[@watch-state/react](https://www.npmjs.com/package/@watch-state/react) provides `useObservable()` hook that automatically subscribes React components to state changes and re-renders only when needed.
 
 ```tsx
 import { State } from 'watch-state'
-import { useWatch } from '@watch-state/react'
+import { useObservable } from '@watch-state/react'
 
 const $count = new State(0)
 
@@ -204,7 +217,7 @@ const increase = () => {
 }
 
 export function CountButton () {
-  const count = useWatch($count)
+  const count = useObservable($count)
 
   return <button onClick={increase}>{count}</button>
 }

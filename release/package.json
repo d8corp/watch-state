@@ -1,6 +1,6 @@
 {
   "name": "watch-state",
-  "version": "3.5.0",
+  "version": "3.5.1",
   "description": "CANT inc. state management system.",
   "author": "Mikhail Lysikov <d8corp@mail.ru>",
   "license": "MIT",
@@ -10,7 +10,6 @@
   "types": "index.d.ts",
   "unpkg": "index.min.js",
   "jsdelivr": "index.min.js",
-  "browser": "index.min.js",
   "homepage": "https://github.com/d8corp/watch-state",
   "bugs": {
     "url": "https://github.com/d8corp/watch-state/issues"

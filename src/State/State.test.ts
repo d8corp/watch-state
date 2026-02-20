@@ -52,6 +52,31 @@ describe('State', () => {
     })
   })
 
+  describe('set method', () => {
+    test('updates value and notifies watchers', () => {
+      const state = new State<number>(0)
+      const log: number[] = []
+
+      new Watch(() => {
+        log.push(state.value)
+      })
+
+      expect(log).toEqual([0])
+
+      state.set(1)
+
+      expect(state.value).toBe(1)
+      expect(log).toEqual([0, 1])
+    })
+
+    test('returns void', () => {
+      const state = new State<string>('a')
+
+      expect(state.set('b')).toBeUndefined()
+      expect(state.value).toBe('b')
+    })
+  })
+
   describe('loop', () => {
     test('custom loop', () => {
       const count = new State(0)

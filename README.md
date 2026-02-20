@@ -437,7 +437,7 @@ log.update() // logs: [1]
 ### Raw value
 ###### [🏠︎](#index) / [State](#state) / Raw value [↑](#force-update-of-state) [↓](#stateset-experimental)
 
-`rawValue` returns the current value but **doesn't subscribe** to changes — unlike `value` which auto-subscribes in `Watch`.
+`rawValue` returns the current value but **doesn't subscribe** to changes — unlike `value`.
 
 ```ts
 const foo = new State(0)

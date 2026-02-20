@@ -142,8 +142,7 @@ The library is based on the core concepts of `Observable` (something that can be
    │ (abstract) │ │ (interface) │
    └──────┬─────┘ └──────┬──────┘  
      ┌────┴─────┐ ┌──────┴───┐
-     ▼          ▼ ▼          ▼
-┌─────────┐ ┌─────────┐ ┌─────────┐
+┌────┴────┐ ┌───┴─┴───┐ ┌────┴────┐
 │  State  │ │ Compute │ │  Watch  │
 └─────────┘ └─────────┘ └─────────┘
 ```

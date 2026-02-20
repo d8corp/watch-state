@@ -405,7 +405,7 @@ state.value++
 
 **Access or mutate the state value.**
 
-Reading `.value` inside `Watch` **auto-subscribes** to changes. Writing `.value` **triggers all watchers**.
+Reading `.value` inside `Observer` **auto-subscribes** to changes. Writing `.value` **triggers all watchers**.
 
 ```ts
 const count = new State(0)

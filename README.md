@@ -450,7 +450,7 @@ foo.value++ // logs: 2, 1
 ```
 
 ### State.set (experimental)
-###### [🏠︎](#index) / [State](#state) / State.set [↑](#get-or-set-value)
+###### [🏠︎](#index) / [State](#state) / State.set [↑](#raw-value)
 
 `State.set` mirrors the behavior of the value setter but returns `void`.
 It is useful as a shorthand in arrow functions: `() => state.set(nextValue)` instead of `() => { state.value = nextValue }`.

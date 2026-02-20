@@ -206,9 +206,9 @@ describe('cases', () => {
     })
 
     test('double value', () => {
-      const state = new State()
-      const render1 = []
-      const render2 = []
+      const state = new State(false)
+      const render1: boolean[][] = []
+      const render2: boolean[][] = []
 
       new Watch(() => {
         render1.push([state.value, state.value])
@@ -220,8 +220,8 @@ describe('cases', () => {
 
       expect(render1.length).toBe(1)
       expect(render2.length).toBe(1)
-      expect(render1[0]).toEqual([undefined, undefined])
-      expect(render2[0]).toEqual([undefined, undefined])
+      expect(render1[0]).toEqual([false, false])
+      expect(render2[0]).toEqual([false, false])
 
       state.value = true
       expect(render1.length).toBe(2)

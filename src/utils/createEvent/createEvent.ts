@@ -66,6 +66,7 @@ export function createEvent<F extends (...args: any[]) => any> (callback: F): F 
   return function (...args: any[]) {
     const result = unwatch(() => {
       scope.eventDeep++
+      // @ts-expect-error this
       const result = callback.apply(this, args)
       scope.eventDeep--
 

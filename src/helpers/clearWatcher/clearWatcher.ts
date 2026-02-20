@@ -2,8 +2,8 @@ import { destroyWatchers } from '../destroyWatchers'
 
 import { type Observer } from '../../types'
 
-const clearStack = []
-let currentWatcher: Observer
+const clearStack: Observer[] = []
+let currentWatcher: Observer | undefined
 
 export function clearWatcher (watcher: Observer) {
   const skipLoop = Boolean(clearStack.length)

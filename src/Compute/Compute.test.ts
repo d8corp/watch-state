@@ -95,7 +95,7 @@ describe('Compute', () => {
     let test1 = 0
     let test2 = 0
 
-    let compute1: Compute
+    let compute1: Compute | undefined
 
     const compute2 = new Compute(() => {
       test1++
@@ -107,9 +107,9 @@ describe('Compute', () => {
     expect(test2).toBe(1)
     expect(watcherTest).toBe(compute1)
 
-    compute1.update()
+    compute1?.update()
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    compute1.value
+    compute1?.value
     expect(test1).toBe(1)
     expect(test2).toBe(2)
     expect(watcherTest).toBe(compute1)
@@ -202,7 +202,7 @@ describe('Compute', () => {
   })
 
   test('auto-destroy', () => {
-    const log = []
+    const log: number[] = []
     const state = new State(1)
     const compute = new Compute(() => state.value + 1)
 
@@ -250,7 +250,7 @@ describe('Compute', () => {
     const state = new State(0)
     const compute = new Compute(() => state.value * 2)
 
-    const log = []
+    const log: number[][] = []
 
     const watcher = new Watch(() => log.push([state.value, compute.value]))
 

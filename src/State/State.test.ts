@@ -3,7 +3,7 @@ import { createEvent, State, Watch } from '..'
 describe('State', () => {
   describe('constructor', () => {
     test('empty constructor without error', () => {
-      expect(() => new State()).not.toThrow()
+      expect(() => new State<undefined>()).not.toThrow()
     })
 
     test('regular constructor without error', () => {
@@ -20,7 +20,7 @@ describe('State', () => {
     })
 
     test('instance of State', () => {
-      expect(new State()).toBeInstanceOf(State)
+      expect(new State<undefined>()).toBeInstanceOf(State)
     })
   })
 
@@ -31,7 +31,7 @@ describe('State', () => {
     })
 
     test('writable value', () => {
-      const state = new State()
+      const state = new State<string | undefined>()
 
       expect(state.value).toBe(undefined)
 
@@ -54,7 +54,7 @@ describe('State', () => {
 
   describe('set method', () => {
     test('updates value and notifies watchers', () => {
-      const state = new State<number>(0)
+      const state = new State(0)
       const log: number[] = []
 
       new Watch(() => {
@@ -70,7 +70,7 @@ describe('State', () => {
     })
 
     test('returns void', () => {
-      const state = new State<string>('a')
+      const state = new State('a')
 
       expect(state.set('b')).toBeUndefined()
       expect(state.value).toBe('b')
@@ -80,7 +80,7 @@ describe('State', () => {
   describe('loop', () => {
     test('custom loop', () => {
       const count = new State(0)
-      const log = []
+      const log: number[] = []
 
       new Watch(() => {
         if (count.value < 3) {
@@ -95,7 +95,7 @@ describe('State', () => {
 
     test('custom inverse loop', () => {
       const count = new State(0)
-      const log = []
+      const log: number[] = []
 
       new Watch(() => {
         if (count.value < 2) {

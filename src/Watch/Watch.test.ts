@@ -38,7 +38,7 @@ describe('Watch', () => {
     test('deep watcher destroy', () => {
       let test1 = 0
       let test2 = 0
-      let watcher2: Watch
+      let watcher2: Watch | undefined
 
       const watcher1 = new Watch(() => {
         test1++
@@ -50,7 +50,7 @@ describe('Watch', () => {
       expect(test2).toBe(1)
       expect(watcherTest).toBe(watcher2)
 
-      watcher2.update()
+      watcher2?.update()
       expect(test1).toBe(1)
       expect(test2).toBe(2)
       expect(watcherTest).toBe(watcher2)
@@ -90,7 +90,7 @@ describe('Watch', () => {
 
   describe('update argument', () => {
     test('update', () => {
-      let updated: boolean
+      let updated: boolean | undefined
 
       const watcher = new Watch(update => {
         updated = update

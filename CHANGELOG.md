@@ -2,6 +2,9 @@
 
 ## v3.5
 
+- Improve types
+- Add `State.reset`
+
 ### v3.5.2 [![20.02.2026](https://img.shields.io/date/1771593510)](https://github.com/d8corp/watch-state/tree/v3.5.2)
 
 - Add: `State.set`

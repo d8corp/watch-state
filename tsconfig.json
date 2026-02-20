@@ -15,7 +15,9 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "declaration": true
+    "declaration": true,
+    "strict": true,
+    "strictNullChecks": true
   },
   "include": [
     "src"

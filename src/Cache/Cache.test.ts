@@ -95,7 +95,7 @@ describe('Cache', () => {
     let test1 = 0
     let test2 = 0
 
-    let cache1: Cache
+    let cache1: Cache | undefined
 
     const cache2 = new Cache(() => {
       test1++
@@ -107,9 +107,9 @@ describe('Cache', () => {
     expect(test2).toBe(1)
     expect(watcherTest).toBe(cache1)
 
-    cache1.update()
+    cache1?.update()
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    cache1.value
+    cache1?.value
     expect(test1).toBe(1)
     expect(test2).toBe(2)
     expect(watcherTest).toBe(cache1)
@@ -202,7 +202,7 @@ describe('Cache', () => {
   })
 
   test('auto-destroy', () => {
-    const log = []
+    const log: number[] = []
     const state = new State(1)
     const cache = new Cache(() => state.value + 1)
 
@@ -250,7 +250,7 @@ describe('Cache', () => {
     const state = new State(0)
     const cache = new Cache(() => state.value * 2)
 
-    const log = []
+    const log: number[][] = []
 
     new Watch(() => log.push([state.value, cache.value]))
 

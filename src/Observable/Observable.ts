@@ -14,7 +14,7 @@ export abstract class Observable<V> {
   readonly observers = new Set<Observer>()
 
   /** Raw value. No auto-subscription on direct access (unlike `value`). */
-  rawValue: V
+  abstract rawValue: V
 
   /**
    * Current value with automatic subscription.

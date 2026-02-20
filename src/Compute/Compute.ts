@@ -58,7 +58,7 @@ export function queueWatchers (observers: Set<Observer>) {
 /* invalidateCompute */
 
 const invalidateStack: Observer[] = []
-let currentInvalidateObserver: Observer
+let currentInvalidateObserver: Observer | undefined
 
 export function invalidateCompute (observer: Observer) {
   const skipLoop = invalidateStack.length
@@ -121,6 +121,8 @@ export class Compute<V = unknown> extends Observable<V> implements Observer {
   /** Tracks if the computation has run at least once. */
   updated = false
 
+  rawValue: V = undefined as V
+
   /**
    * Indicates if observer has been destroyed.
    * Prevents accidental use after cleanup.
@@ -163,7 +165,7 @@ export class Compute<V = unknown> extends Observable<V> implements Observer {
     invalidateCompute(this)
 
     const parents = [...this.observers]
-    let parent: Observer
+    let parent: Observer | undefined
 
     while ((parent = parents.pop())) {
       if (!(parent instanceof Compute)) {

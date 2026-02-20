@@ -50,11 +50,11 @@
   <a href="https://www.npmjs.com/package/watch-state" target="_blank">
     <img src="https://img.shields.io/npm/v/watch-state.svg" alt="watch-state npm">
   </a>
-  <a href="https://www.typescriptlang.org" target="_blank">
-    <img src="https://img.shields.io/npm/types/watch-state" alt="TypeSctipt">
-  </a>
   <a href="https://www.npmtrends.com/watch-state" target="_blank">
     <img src="https://img.shields.io/npm/dm/watch-state.svg" alt="watch-state downloads">
+  </a>
+  <a href="https://www.typescriptlang.org" target="_blank">
+    <img src="https://img.shields.io/npm/types/watch-state" alt="TypeSctipt">
   </a>
   <a href="https://packagequality.com/#?package=watch-state" target="_blank">
     <img src="https://packagequality.com/shield/watch-state.svg" alt="watch-state quality">

@@ -134,6 +134,20 @@ html
 
 <sup>[Simple example](#simple-example) • [Example Vanilla JS](#example-vanilla-js) • [Example React](#example-react) • [Example @innet/dom](#example-innetdom)</sup>
 
+The library is based on the core concepts of `Observable` (something that can be observed) and `Observer` (something that can observe). On top of these concepts, the core classes `State`, `Compute`, and `Watch` are built according to the following scheme:
+
+```
+   ┌────────────┐ ┌─────────────┐
+   │ Observable │ │  Observer   │
+   │ (abstract) │ │ (interface) │
+   └──────┬─────┘ └──────┬──────┘  
+     ┌────┴─────┐ ┌──────┴───┐
+     ▼          ▼ ▼          ▼
+┌─────────┐ ┌─────────┐ ┌─────────┐
+│  State  │ │ Compute │ │  Watch  │
+└─────────┘ └─────────┘ └─────────┘
+```
+
 ### Simple example
 ###### [🏠︎](#index) / [Usage](#usage) / Simple example [↓](#example-vanilla-js)
 

@@ -20,8 +20,10 @@ import { Observable } from '../Observable'
  * count.value++ // logs: 1
  */
 export class State<V = never | unknown> extends Observable<V extends never ? unknown : V> {
+  /** Current value. No auto-subscription on direct access (unlike `value`). */
   rawValue: V extends never ? unknown : V
-  init: V extends never ? unknown : V
+
+  readonly init: V extends never ? unknown : V
 
   constructor (...args: V extends never | undefined ? [V?] : [V])
   constructor (init?: any) {
@@ -62,6 +64,19 @@ export class State<V = never | unknown> extends Observable<V extends never ? unk
     this.value = value
   }
 
+  /**
+   * Resets state to its initial value.
+   * Triggers watchers only if the current value differs from the initial value.
+   *
+   * @example
+   * const count = new State(0)
+   *
+   * new Watch(() => console.log(count.value)) // logs: 0
+   *
+   * count.value = 5 // logs: 5
+   *
+   * count.reset() // logs: 0
+   */
   reset () {
     this.value = this.init
   }

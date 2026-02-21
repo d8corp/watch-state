@@ -106,4 +106,95 @@ describe('State', () => {
       expect(log).toEqual([1, 0])
     })
   })
+
+  describe('reset method', () => {
+    test('resets to initial value', () => {
+      const state = new State(5)
+
+      state.value = 10
+      expect(state.value).toBe(10)
+
+      state.reset()
+      expect(state.value).toBe(5)
+    })
+
+    test('resets to initial undefined', () => {
+      const state = new State<string | undefined>()
+
+      state.value = 'foo'
+      expect(state.value).toBe('foo')
+
+      state.reset()
+      expect(state.value).toBeUndefined()
+    })
+
+    test('notifies watchers on reset', () => {
+      const state = new State(0)
+      const log: number[] = []
+
+      new Watch(() => {
+        log.push(state.value)
+      })
+
+      expect(log).toEqual([0])
+
+      state.value = 5
+      expect(log).toEqual([0, 5])
+
+      state.reset()
+      expect(log).toEqual([0, 5, 0])
+    })
+
+    test('does not notify watchers if already at initial value', () => {
+      const state = new State(0)
+      const log: number[] = []
+
+      new Watch(() => {
+        log.push(state.value)
+      })
+
+      expect(log).toEqual([0])
+
+      state.reset()
+      expect(log).toEqual([0])
+    })
+
+    test('init field remains unchanged after reset', () => {
+      const state = new State(10)
+
+      state.value = 20
+      state.reset()
+
+      expect(state.init === state.value).toBe(true)
+    })
+
+    test('multiple resets work correctly', () => {
+      const state = new State(1)
+      const log: number[] = []
+
+      new Watch(() => {
+        log.push(state.value)
+      })
+
+      state.value = 2
+      state.reset()
+      state.value = 3
+      state.reset()
+
+      expect(log).toEqual([1, 2, 1, 3, 1])
+      expect(state.init).toBe(1)
+    })
+
+    test('reset with object value', () => {
+      const initial = { count: 0 }
+      const state = new State(initial)
+
+      state.value = { count: 5 }
+      expect(state.value.count).toBe(5)
+
+      state.reset()
+      expect(state.value).toBe(initial)
+      expect(state.value.count).toBe(0)
+    })
+  })
 })

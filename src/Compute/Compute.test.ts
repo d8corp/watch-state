@@ -336,4 +336,123 @@ describe('Compute', () => {
     expect(fn).toHaveBeenCalledTimes(2)
     expect(fn1).toHaveBeenCalledTimes(1)
   })
+
+  describe('update argument', () => {
+    it('receives false on first run', () => {
+      let firstUpdateValue: boolean | undefined
+      let callCount = 0
+
+      const compute = new Compute((update) => {
+        callCount++
+        firstUpdateValue = update
+      })
+
+      new Watch(() => compute.value)
+
+      expect(callCount).toBe(1)
+      expect(firstUpdateValue).toBe(false)
+    })
+
+    it('receives true on subsequent updates', () => {
+      const state = new State(0)
+      const updateValues: boolean[] = []
+
+      new Watch(() => {
+        const compute = new Compute((update) => {
+          updateValues.push(update)
+
+          return state.value
+        })
+
+        return compute.value
+      })
+
+      expect(updateValues).toEqual([false])
+
+      state.value = 1
+      expect(updateValues).toEqual([false, true, false]) // TODO: Check if we can do [false, false]
+
+      state.value = 2
+      expect(updateValues).toEqual([false, true, false, true, false]) // TODO: Check if we can do [false, false, false]
+    })
+
+    it('works with forceUpdate', () => {
+      const updateValues: boolean[] = []
+
+      const compute = new Compute((update) => {
+        updateValues.push(update)
+      })
+
+      // First access triggers initial computation with update=false
+      new Watch(() => compute.value)
+      expect(updateValues).toEqual([false])
+
+      // forceUpdate triggers re-computation with update=true
+      compute.forceUpdate()
+      expect(updateValues).toEqual([false, true])
+
+      // Another forceUpdate
+      compute.forceUpdate()
+      expect(updateValues).toEqual([false, true, true])
+    })
+
+    it('distinguishes first run from updates in nested Compute', () => {
+      const state = new State(0)
+      const outerUpdates: boolean[] = []
+      const innerUpdates: boolean[] = []
+
+      const outerCompute = new Compute((update) => {
+        outerUpdates.push(update)
+
+        const innerCompute = new Compute((innerUpdate) => {
+          innerUpdates.push(innerUpdate)
+
+          return state.value * 2
+        })
+
+        new Watch(() => innerCompute.value)
+
+        return state.value * 2
+      })
+
+      new Watch(() => outerCompute.value)
+
+      expect(outerUpdates).toEqual([false])
+      expect(innerUpdates).toEqual([false])
+
+      state.value = 1
+
+      expect(outerUpdates).toEqual([false, true])
+      expect(innerUpdates).toEqual([false, true, false]) // TODO: Check if we can do [false, false]
+    })
+
+    it('can be used to skip initialization logic', () => {
+      const state = new State(0)
+      let initCount = 0
+      let updateCount = 0
+
+      const compute = new Compute((update) => {
+        if (!update) {
+          initCount++
+        } else {
+          updateCount++
+        }
+
+        return state.value
+      })
+
+      new Watch(() => compute.value)
+
+      expect(initCount).toBe(1)
+      expect(updateCount).toBe(0)
+
+      state.value = 1
+      expect(initCount).toBe(1)
+      expect(updateCount).toBe(1)
+
+      state.value = 2
+      expect(initCount).toBe(1)
+      expect(updateCount).toBe(2)
+    })
+  })
 })

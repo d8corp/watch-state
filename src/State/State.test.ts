@@ -1,6 +1,29 @@
 import { createEvent, State, Watch } from '..'
 
 describe('State', () => {
+  describe('raw value', () => {
+    test('syncs with value and initial', () => {
+      const state = new State<number>(0)
+
+      // raw should mirror initial value at construction
+      expect(state.raw).toBe(0)
+      expect(state.initial).toBe(0)
+      expect(state.initial === state.raw).toBe(true)
+
+      // changing value should also update raw
+      state.value = 5
+      expect(state.value).toBe(5)
+      expect(state.raw).toBe(5)
+      expect(state.initial === state.raw).toBe(false)
+
+      // after reset, raw should reflect initial again
+      state.reset()
+      expect(state.value).toBe(0)
+      expect(state.raw).toBe(0)
+      expect(state.initial === state.raw).toBe(true)
+    })
+  })
+
   describe('constructor', () => {
     test('empty constructor without error', () => {
       expect(() => new State<undefined>()).not.toThrow()

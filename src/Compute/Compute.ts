@@ -121,7 +121,8 @@ export class Compute<V = unknown> extends Observable<V> implements Observer {
   /** Tracks if the computation has run at least once. */
   updated = false
 
-  rawValue: V = undefined as V
+  // @ts-expect-error This is intentional — accessing destroyed observers is rare and shouldn't require undefined checks in normal code.
+  raw: V
 
   /**
    * Indicates if observer has been destroyed.
@@ -181,10 +182,11 @@ export class Compute<V = unknown> extends Observable<V> implements Observer {
       this.invalid = false
 
       watchWithScope(this, () => {
-        const newValue = this.watcher(this.updated ? this.updated = true : false)
+        const newValue = this.watcher(this.updated)
+        this.updated = true
 
-        if (newValue !== this.rawValue) {
-          this.rawValue = newValue
+        if (newValue !== this.raw) {
+          this.raw = newValue
           queueWatchers(this.observers)
         }
       })
@@ -209,7 +211,7 @@ export class Compute<V = unknown> extends Observable<V> implements Observer {
       this.forceUpdate()
     }
 
-    return this.destroyed ? this.rawValue : super.value
+    return this.destroyed ? this.raw : super.value
   }
 
   /** Stop observation and remove all dependencies. */

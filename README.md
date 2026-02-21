@@ -437,13 +437,13 @@ log.update() // logs: [1]
 ### Raw value
 ###### [🏠︎](#index) / [State](#state) / Raw value [↑](#force-update-of-state) [↓](#initial-value)
 
-`rawValue` returns the current value but **doesn't subscribe** to changes — unlike `value`.
+ `raw` returns the current value but does not subscribe to changes — unlike `value`.
 
 ```ts
 const foo = new State(0)
 const bar = new State(0)
 
-new Watch(() => console.log(foo.value, bar.rawValue))
+ new Watch(() => console.log(foo.value, bar.raw))
 // logs: 0, 0
 
 foo.value++ // logs: 1, 0
@@ -455,7 +455,7 @@ foo.value++ // logs: 2, 1
 ###### [🏠︎](#index) / [State](#state) / Initial value [↑](#raw-value) [↓](#reset-value)
 
 `initial` stores the initial value passed to the constructor.
-Useful for checking if the state has been modified by comparing `state.initial === state.rawValue`.
+ Useful for checking if the state has been modified by comparing `state.initial === state.raw`.
 
 ```ts
 const count = new State(0)
@@ -463,10 +463,10 @@ const count = new State(0)
 console.log(count.initial) // 0
 
 count.value = 5
-console.log(count.initial === count.rawValue) // false
+ console.log(count.initial === count.raw) // false
 
 count.reset()
-console.log(count.initial === count.rawValue) // true
+ console.log(count.initial === count.raw) // true
 ```
 
 ### Reset value

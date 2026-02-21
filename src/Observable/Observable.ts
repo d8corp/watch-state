@@ -14,7 +14,17 @@ export abstract class Observable<V> {
   readonly observers = new Set<Observer>()
 
   /** Raw value. No auto-subscription on direct access (unlike `value`). */
-  abstract rawValue: V
+  abstract raw: V
+
+  /** @deprecated Use raw field */
+  get rawValue () {
+    return this.raw
+  }
+
+  /** @deprecated Use raw field */
+  set rawValue (raw: V) {
+    this.raw = raw
+  }
 
   /**
    * Current value with automatic subscription.
@@ -35,7 +45,7 @@ export abstract class Observable<V> {
       })
     }
 
-    return this.rawValue
+    return this.raw
   }
 
   /** Must be implemented by subclasses to notify watchers */

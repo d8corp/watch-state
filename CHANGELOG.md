@@ -4,6 +4,9 @@
 
 - Improve types
 - Add `State.reset`
+- Add `State.initial`
+- Deprecate `State.rawValue`, use `State.raw`
+- Fix `update` argument of `Compute`
 
 ### v3.5.2 [![20.02.2026](https://img.shields.io/date/1771593510)](https://github.com/d8corp/watch-state/tree/v3.5.2)
 

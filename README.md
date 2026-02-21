@@ -103,10 +103,10 @@ Was born during working on [@innet/dom](https://www.npmjs.com/package/@innet/dom
 <sup>**[ [Install](#install) ]**</sup>  
 <sup>**[ [Usage](#usage) ]** [Simple example](#simple-example) • [Example Vanilla JS](#example-vanilla-js) • [Example React](#example-react) • [Example @innet/dom](#example-innetdom)</sup>  
 <sup>**[ [Watch](#watch) ]** [Update argument](#update-argument) • [Force update of Watch](#force-update-of-watch) • [Destroy Watch](#destroy-watch) • [Deep/Nested watchers](#deepnested-watchers)</sup>  
-<sup>**[ [State](#state) ]** [Get or Set value](#get-or-set-value) • [Force update of State](#force-update-of-state) • [Raw value](#raw-value) • [State.set (experimental)](#stateset-experimental)</sup>  
+<sup>**[ [State](#state) ]** [Get or Set value](#get-or-set-value) • [Force update of State](#force-update-of-state) • [Raw value](#raw-value) • [Initial value](#initial-value) • [Reset value](#reset-value) • [State.set (experimental)](#stateset-experimental)</sup>  
 <sup>**[ [Compute](#compute) ]** [Lazy computation](#lazy-computation) • [Force update of Compute](#force-update-of-compute) • [Destroy Compute](#destroy-compute)</sup>  
 <sup>**[ [Utils](#utils) ]** [onDestroy](#ondestroy) • [callEvent](#callevent) • [createEvent](#createevent) • [unwatch](#unwatch)</sup>  
-<sup>**[ [Typescript](#typescript) ]**</sup>  
+<sup>**[ [Typescript](#typescript) ]** [State type inference](#state-type-inference) • [Compute type inference](#compute-type-inference)</sup>  
 <sup>**[ [Performance](#performance) ]**</sup>
 
 ## Install
@@ -396,7 +396,7 @@ state.value++
 ## State
 ###### [🏠︎](#index) / State [↑](#watch) [↓](#compute)
 
-<sup>[Get or Set value](#get-or-set-value) • [Force update of State](#force-update-of-state) • [Raw value](#raw-value) • [State.set (experimental)](#stateset-experimental)</sup>
+<sup>[Get or Set value](#get-or-set-value) • [Force update of State](#force-update-of-state) • [Raw value](#raw-value) • [Initial value](#initial-value) • [Reset value](#reset-value) • [State.set (experimental)](#stateset-experimental)</sup>
 
 **Reactive primitive** that automatically notifies all subscribed watchers when `.value` changes.
 
@@ -435,7 +435,7 @@ log.update() // logs: [1]
 ```
 
 ### Raw value
-###### [🏠︎](#index) / [State](#state) / Raw value [↑](#force-update-of-state) [↓](#stateset-experimental)
+###### [🏠︎](#index) / [State](#state) / Raw value [↑](#force-update-of-state) [↓](#initial-value)
 
 `rawValue` returns the current value but **doesn't subscribe** to changes — unlike `value`.
 
@@ -451,8 +451,48 @@ bar.value++ // no logs
 foo.value++ // logs: 2, 1
 ```
 
+### Initial value
+###### [🏠︎](#index) / [State](#state) / Initial value [↑](#raw-value) [↓](#reset-value)
+
+`init` stores the initial value passed to the constructor.
+Useful for checking if the state has been modified by comparing `state.init === state.rawValue`.
+
+```ts
+const count = new State(0)
+
+console.log(count.init) // 0
+
+count.value = 5
+console.log(count.init === count.rawValue) // false
+
+count.reset()
+console.log(count.init === count.rawValue) // true
+```
+
+### Reset value
+###### [🏠︎](#index) / [State](#state) / Reset value [↑](#initial-value) [↓](#stateset-experimental)
+
+`reset()` restores the state to its initial value.
+Triggers watchers only if the current value differs from the initial value.
+
+```ts
+const count = new State(0)
+
+new Watch(() => console.log(count.value))
+// logs: 0
+
+count.value = 5
+// logs: 5
+
+count.reset()
+// logs: 0
+
+count.reset()
+// no logs (value already 0)
+```
+
 ### State.set (experimental)
-###### [🏠︎](#index) / [State](#state) / State.set [↑](#raw-value)
+###### [🏠︎](#index) / [State](#state) / State.set [↑](#reset-value)
 
 `State.set` mirrors the behavior of the value setter but returns `void`.
 It is useful as a shorthand in arrow functions: `() => state.set(nextValue)` instead of `() => { state.value = nextValue }`.
@@ -706,18 +746,72 @@ console.log(count.value) // logs: 2
 ## Typescript
 ###### [🏠︎](#index) / Typescript [↑](#utils) [↓](#performance)
 
-Generic of `State`
-```typescript
-const key = new State<string | number>()
+### State type inference
+###### [🏠︎](#index) / [Typescript](#typescript) / State type inference [↓](#compute-type-inference)
 
-key.value = false
-// error, you can use only string or number
-```
-Generic of `Compute`
+**Type inference from initial value:**  
+Type is automatically inferred from the initial value passed to the constructor — no generic needed.
 ```typescript
-new Compute<string>(() => false)
-// error, target of `Compute` should return string
+const count = new State(0) // State<number>
+
+count.value = 'str' // error: number expected
 ```
+
+**Without initial value:**  
+When using a generic without an initial value, `init` is `undefined`, which may conflict with strict types.
+
+```typescript
+const value = new State<string>()
+// value.init is undefined (not string)
+
+// To allow undefined in type:
+const maybe = new State<string | undefined>()
+```
+
+**State as a type annotation:**  
+Without a generic, `State` defaults to `State<unknown>`, which accepts any value type.
+
+```typescript
+const foo: State = new State(0)
+
+foo.value = 'str' // ok (unknown allows any)
+foo.value = true  // ok
+
+// Specify generic for type safety:
+const bar: State<number> = new State(0)
+
+bar.value = 'str' // error
+```
+
+### Compute type inference
+###### [🏠︎](#index) / [Typescript](#typescript) / Compute type inference [↑](#state-type-inference)
+
+**Type inferred from function return:**  
+Type is automatically inferred from the function's return value — no generic needed.
+```typescript
+const fullName = new Compute(() => `${firstName.value} ${lastName.value}`)
+// Compute<string> — no generic needed
+
+const length = new Compute(() => items.value.length)
+// Compute<number>
+```
+
+**Explicit generic (usually not needed):**  
+Explicit generics are rarely needed since types are inferred. Use only when you want to enforce a specific type.
+```typescript
+new Compute<string>(() => false) // error: boolean not assignable to string
+```
+
+**Destroyed Compute and undefined:**  
+`Compute.value` is typed as the function return type, but if you access `.value` after `destroy()` (before any computation ran), it returns `undefined`.
+```typescript
+const computed = new Compute(() => expensiveCalculation())
+
+computed.destroy()
+console.log(computed.value) // undefined (but typed as return type)
+```
+
+This is intentional — accessing destroyed observers is rare and shouldn't require `undefined` checks in normal code.
 
 ## Performance
 ###### [🏠︎](#index) / Performance [↑](#typescript)

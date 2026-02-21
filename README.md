@@ -204,7 +204,7 @@ Simple reactive state without build tools or framework dependencies.
 ### Example React
 ###### [🏠︎](#index) / [Usage](#usage) / Example React [↑](#example-vanilla-js) [↓](#example-innetdom)
 
-[@watch-state/react](https://www.npmjs.com/package/@watch-state/react) provides `useObservable()` hook that automatically subscribes React components to state changes and re-renders only when needed.
+[@watch-state/react](https://www.npmjs.com/package/@watch-state/react) provides hooks that automatically subscribe React components to state changes and re-renders only when needed.
 
 ```tsx
 import { State } from 'watch-state'
@@ -223,12 +223,10 @@ export function CountButton () {
 }
 ```
 
-### Example @innet/dom
+### Example Innet
 ###### [🏠︎](#index) / [Usage](#usage) / Example @innet/dom [↑](#example-react)
 
-**Zero-runtime reactivity with [@innet/dom](https://www.npmjs.com/package/@innet/dom):**
-
-`@innet/dom` automatically watches accessed states and **updates only changed DOM content** — **no full re-renders**.
+[@innet/dom](https://www.npmjs.com/package/@innet/dom) automatically watches accessed states and **updates only changed DOM content** — **no full re-renders**.
 
 ```tsx
 import { State } from 'watch-state'
@@ -243,13 +241,6 @@ export function CountButton () {
   return <button onClick={increase}>{count}</button>
 }
 ```
-
-Key benefits:
-
-- No Watch or useWatch needed — framework handles reactivity
-- Only button content updates, no re-renders of component/DOM tree
-- Direct state access {count} auto-triggers minimal updates
-- Works with any JSX/TSX without extra setup
 
 ## Watch
 ###### [🏠︎](#index) / Watch [↑](#usage) [↓](#state)

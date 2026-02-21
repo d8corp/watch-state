@@ -1,4 +1,5 @@
 import { createEvent as createEffectorEvent, createStore as createEffectorStore } from 'effector'
+// @ts-expect-error Mazzard does not support TypeScript
 import mazzard from 'mazzard'
 import { action, autorun, computed, configure, observable, reaction } from 'mobx'
 import { atom, computed as nanoComputed } from 'nanostores'
@@ -18,7 +19,7 @@ perfocode('speed.test', () => {
   describe('watch-state vs mobx', () => {
     describe('empty create', () => {
       describe('state', () => {
-        test('watch-state', () => new State())
+        test('watch-state', () => new State<undefined>())
         test('nanostores', () => atom())
         test('mobx', () => observable.box())
       })
@@ -141,7 +142,7 @@ perfocode('speed.test', () => {
     const disposer = autorun(() => MXState.get())
 
     // redux
-    function reducer (state, action) {
+    function reducer (state: any, action: any) {
       if (action.type === 'INCREMENT') {
         return { ...state, count: state.count + 1 }
       }
@@ -162,9 +163,9 @@ perfocode('speed.test', () => {
     const MAWatch = mazzard(() => MAState.value)
 
     // storeon
-    const count = store => {
+    const count = (store: any) => {
       store.on('@init', () => ({ count: 0 }))
-      store.on('inc', ({ count }) => ({ count: count + 1 }))
+      store.on('inc', ({ count }: any) => ({ count: count + 1 }))
     }
 
     const SStore = createStoreon<any>([count])
@@ -220,7 +221,7 @@ perfocode('speed.test', () => {
     }
 
     test('watch-state', () => {
-      const log = []
+      const log: number[] = []
       const state = new State(COUNT)
       const watcher = new Watch(() => log.push(state.value))
 
@@ -231,7 +232,7 @@ perfocode('speed.test', () => {
     })
 
     test('mobx', () => {
-      const log = []
+      const log: number[] = []
       const state = observable.box(COUNT)
       const disposer = autorun(() => log.push(state.get()))
 
@@ -244,9 +245,9 @@ perfocode('speed.test', () => {
     })
 
     test('redux', () => {
-      const log = []
+      const log: number[] = []
 
-      function reducer (state, action) {
+      function reducer (state: any, action: any) {
         if (action.type === 'DECREMENT') {
           return { ...state, count: state.count - 1 }
         }
@@ -267,7 +268,7 @@ perfocode('speed.test', () => {
     })
 
     test('mazzard', () => {
-      const log = []
+      const log: number[] = []
       const store = mazzard({ value: COUNT })
       const stop = mazzard(() => log.push(store.value))
 
@@ -278,7 +279,7 @@ perfocode('speed.test', () => {
     })
 
     test('effector', () => {
-      const log = []
+      const log: number[] = []
       const decrement = createEffectorEvent()
       const counter = createEffectorStore(COUNT).on(decrement, state => state - 1)
 
@@ -297,9 +298,9 @@ perfocode('speed.test', () => {
     test('storeon', () => {
       const log = []
 
-      const count = store => {
+      const count = (store: any) => {
         store.on('@init', () => ({ count: COUNT }))
-        store.on('dec', ({ count }) => ({ count: count - 1 }))
+        store.on('dec', ({ count }: any) => ({ count: count - 1 }))
       }
 
       const store = createStoreon<any>([count])
@@ -385,7 +386,7 @@ perfocode('speed.test', () => {
     test('redux', () => {
       const logs: number[][] = counters.map(() => [])
 
-      function reducer (state, action) {
+      function reducer (state: any, action: any) {
         if (action.type === 'DECREMENT') {
           const key = `count${action.payload}`
 
@@ -473,9 +474,9 @@ perfocode('speed.test', () => {
     test('storeon', () => {
       const logs: number[][] = counters.map(() => [])
 
-      const modules = counters.map((_, index) => store => {
+      const modules = counters.map((_, index) => (store: any) => {
         store.on('@init', () => ({ [`count${index}`]: COUNT }))
-        store.on(`dec${index}`, store => ({ [`count${index}`]: store[`count${index}`] - 1 }))
+        store.on(`dec${index}`, (store: any) => ({ [`count${index}`]: store[`count${index}`] - 1 }))
       })
 
       const store = createStoreon<any>(modules)

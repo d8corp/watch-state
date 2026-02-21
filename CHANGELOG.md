@@ -7,6 +7,7 @@
 - Add `State.initial`
 - Deprecate `State.rawValue`, use `State.raw`
 - Fix `update` argument of `Compute`
+- Fix `INNETJS_JSX_PACKAGE_VERSION` bug
 
 ### v3.5.2 [![20.02.2026](https://img.shields.io/date/1771593510)](https://github.com/d8corp/watch-state/tree/v3.5.2)
 

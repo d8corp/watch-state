@@ -20,7 +20,6 @@
     "strictNullChecks": true
   },
   "include": [
-    "src",
-    "speed.test.ts"
+    "src"
   ]
 }

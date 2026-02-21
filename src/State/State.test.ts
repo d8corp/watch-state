@@ -159,13 +159,13 @@ describe('State', () => {
       expect(log).toEqual([0])
     })
 
-    test('init field remains unchanged after reset', () => {
+    test('initial field remains unchanged after reset', () => {
       const state = new State(10)
 
       state.value = 20
       state.reset()
 
-      expect(state.init === state.value).toBe(true)
+      expect(state.initial === state.value).toBe(true)
     })
 
     test('multiple resets work correctly', () => {
@@ -182,7 +182,7 @@ describe('State', () => {
       state.reset()
 
       expect(log).toEqual([1, 2, 1, 3, 1])
-      expect(state.init).toBe(1)
+      expect(state.initial).toBe(1)
     })
 
     test('reset with object value', () => {

@@ -454,19 +454,19 @@ foo.value++ // logs: 2, 1
 ### Initial value
 ###### [🏠︎](#index) / [State](#state) / Initial value [↑](#raw-value) [↓](#reset-value)
 
-`init` stores the initial value passed to the constructor.
-Useful for checking if the state has been modified by comparing `state.init === state.rawValue`.
+`initial` stores the initial value passed to the constructor.
+Useful for checking if the state has been modified by comparing `state.initial === state.rawValue`.
 
 ```ts
 const count = new State(0)
 
-console.log(count.init) // 0
+console.log(count.initial) // 0
 
 count.value = 5
-console.log(count.init === count.rawValue) // false
+console.log(count.initial === count.rawValue) // false
 
 count.reset()
-console.log(count.init === count.rawValue) // true
+console.log(count.initial === count.rawValue) // true
 ```
 
 ### Reset value
@@ -758,11 +758,11 @@ count.value = 'str' // error: number expected
 ```
 
 **Without initial value:**  
-When using a generic without an initial value, `init` is `undefined`, which may conflict with strict types.
+When using a generic without an initial value, `initial` is `undefined`, which may conflict with strict types.
 
 ```typescript
 const value = new State<string>()
-// value.init is undefined (not string)
+// value.initial is undefined (not string)
 
 // To allow undefined in type:
 const maybe = new State<string | undefined>()

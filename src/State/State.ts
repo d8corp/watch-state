@@ -31,14 +31,14 @@ export class State<V = never | unknown> extends Observable<V extends never ? unk
    * @example
    * const count = new State(0)
    *
-   * const isChanged = count.init === count.rawValue
+   * const isChanged = count.initial === count.rawValue
    */
-  readonly init: V extends never ? unknown : V
+  readonly initial: V extends never ? unknown : V
 
   constructor (...args: V extends never | undefined ? [V?] : [V])
-  constructor (init?: any) {
+  constructor (initial?: any) {
     super()
-    this.rawValue = this.init = init
+    this.rawValue = this.initial = initial
   }
 
   /**
@@ -88,7 +88,7 @@ export class State<V = never | unknown> extends Observable<V extends never ? unk
    * count.reset() // logs: 0
    */
   reset () {
-    this.value = this.init
+    this.value = this.initial
   }
 
   /**

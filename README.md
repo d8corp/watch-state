@@ -112,7 +112,7 @@ Was born during working on [@innet/dom](https://www.npmjs.com/package/@innet/dom
 |:-------:|:------:|:------:|:-----:|
 | 87+     | 90+    | 9+     | 62+   |
 
-*You can transpile it supporting old browsers, but the performance decreases.*
+*You can transpile the code to support browsers older than listed above, but performance will decrease.*
 
 ## Index
 

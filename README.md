@@ -588,6 +588,8 @@ count.value++
 
 You can immediately execute a reactive effect with `callEvent`.
 
+`callEvent` batches all state updates inside the callback and triggers watchers only once at the end.
+
 ```ts
 const a = new State(0)
 const b = new State(0)
@@ -628,7 +630,10 @@ console.log(prev)
 ### createEvent
 ###### [🏠︎](#index) / [Utils](#utils) / createEvent [↑](#callevent) [↓](#unwatch)
 
-You can create event function with `createEvent`
+You can create a reusable event function with `createEvent`.
+
+Like `callEvent`, it batches state updates and triggers watchers only once after execution.
+
 ```typescript
 import { State, createEvent } from 'watch-state'
 

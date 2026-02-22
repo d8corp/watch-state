@@ -500,11 +500,6 @@ surname.value = 'Quux' // surname[0] = "Q"
 // logs: 'Foo Q'
 ```
 
-**Benefits:**
-- **Zero overhead** for unused computed values
-- **Automatic dependency tracking** — no manual subscriptions
-- **Cached result** — same `.value` reads return cached value
-
 ### Force update of Compute
 ###### [🏠︎](#index) / [Compute](#compute) / Force update of Compute [↑](#lazy-computation) [↓](#destroy-compute)
 

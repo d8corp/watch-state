@@ -345,7 +345,7 @@ state.value++
 
 <sup>[Get or Set value](#get-or-set-value) • [Force update of State](#force-update-of-state) • [Raw value](#raw-value) • [Initial value](#initial-value) • [Reset value](#reset-value) • [State.set (experimental)](#stateset-experimental)</sup>
 
-**Reactive primitive** that automatically notifies all subscribed watchers when `.value` changes.
+**Reactive primitive** that automatically notifies all subscribers when `.value` changes.
 
 ### Get or Set value
 ###### [🏠︎](#index) / [State](#state) / Get or Set value [↓](#force-update-of-state)

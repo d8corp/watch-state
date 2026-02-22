@@ -68,7 +68,7 @@
   <a href="https://github.com/d8corp/watch-state/blob/master/LICENSE" target="_blank">
     <img src="https://img.shields.io/npm/l/watch-state" alt="watch-state license">
   </a>
-  <a href="https://changelogs.xyz/watch-state" target="_blank">
+  <a href="https://github.com/d8corp/watch-state/blob/master/CHANGELOG.md" target="_blank">
     <img src="https://img.shields.io/badge/Changelog-⋮-brightgreen" alt="watch-state changelog">
   </a>
   <a href="https://d8corp.github.io/watch-state/coverage/lcov-report" target="_blank">

@@ -9,6 +9,7 @@
 - Add `Reaction` type
 - Deprecate `State.rawValue`, use `State.raw`
 - Deprecate `update` argument and `Watcher`, use `Reaction`
+- Deprecate `childrenObservers`, use `children`
 - Fix `update` argument of `Compute`
 - Fix `INNETJS_JSX_PACKAGE_VERSION` bug
 

@@ -350,9 +350,7 @@ state.value++
 ### Get or Set value
 ###### [🏠︎](#index) / [State](#state) / Get or Set value [↓](#force-update-of-state)
 
-**Access or mutate the state value.**
-
-Reading `.value` inside `Observer` **auto-subscribes** to changes. Writing `.value` **triggers all watchers**.
+Reading `.value` inside reaction **auto-subscribes** to changes. Writing `.value` **triggers all reactions**.
 
 ```ts
 const count = new State(0)
@@ -366,7 +364,7 @@ count.value++ // triggers: logs 1
 ### Force update of State
 ###### [🏠︎](#index) / [State](#state) / Force update of State [↑](#get-or-set-value) [↓](#raw-value)
 
-You can run watchers of a state with `update` method.
+You can run reactions of a state with `update` method.
 
 ```ts
 // Create state
@@ -375,10 +373,12 @@ const log = new State([])
 // Subscribe to changes
 new Watch(() => console.log(log.value)) // logs: []
 
+// Modify the array
 log.value.push(1) // no logs
+log.value.push(2) // no logs
 
 // Update value
-log.update() // logs: [1]
+log.update() // logs: [1, 2]
 ```
 
 ### Raw value

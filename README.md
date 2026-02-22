@@ -503,13 +503,7 @@ surname.value = 'Quux' // surname[0] = "Q"
 ### Force update of Compute
 ###### [🏠︎](#index) / [Compute](#compute) / Force update of Compute [↑](#lazy-computation) [↓](#destroy-compute)
 
-**Call `.update()` to manually trigger recomputation** — forces reaction execution **even when no dependencies changed**.
-
-**Perfect for:**
-- **Array mutations** (`push`, `pop`, `splice`)
-- **Object mutations** (adding properties)
-- **External data refresh**
-- **Debugging** stale values
+You can run a reaction of a compute with `update` method.
 
 ```ts
 const items = new State([])
@@ -526,15 +520,9 @@ new Watch(() => console.log('Watcher sees:', itemCount.value))
 items.value.push('apple')
 // Array reference SAME → NO recompute!
 
-console.log('Direct length:', items.value.length)
-// logs: 1
-
-console.log(itemCount.value)
-// logs: 0
-
-itemCount.update()  // FORCES recompute
+itemCount.update()
 // logs: Recomputing length...
-// logs: Watcher sees: 1 
+// logs: Watcher sees: 1
 ```
 
 ### Destroy Compute

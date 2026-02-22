@@ -470,8 +470,8 @@ count.reset()
 
 <sup>[Lazy computation](#lazy-computation) • [Force update of Compute](#force-update-of-compute) • [Destroy Compute](#destroy-compute)</sup>
 
-**Derived reactive state** that automatically recomputes when its dependencies change.  
-**Lazy execution** — only computes when `.value` is accessed.
+`Compute` accepts a **reaction** as its first argument and represents a reactive value returned by the reaction.
+It creates a **derived state** that automatically tracks dependencies and caches the result.
 
 ### Lazy computation
 ###### [🏠︎](#index) / [Compute](#compute) / Lazy computation [↓](#force-update-of-compute)

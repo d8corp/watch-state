@@ -348,12 +348,12 @@ state.value++
 ## State
 ###### [🏠︎](#index) / State [↑](#watch) [↓](#compute)
 
-<sup>[Get or Set value](#get-or-set-value) • [Force update of State](#force-update-of-state) • [Raw value](#raw-value) • [Initial value](#initial-value) • [Reset value](#reset-value) • [State.set (experimental)](#stateset-experimental)</sup>
+<sup>[Get or Set value](#get-or-set-value) • [State.set](#stateset) • [Force update of State](#force-update-of-state) • [Raw value](#raw-value) • [Initial value](#initial-value) • [Reset value](#reset-value)</sup>
 
 **Reactive primitive** that holds a value and automatically notifies all subscribers when it changes.
 
 ### Get or Set value
-###### [🏠︎](#index) / [State](#state) / Get or Set value [↓](#force-update-of-state)
+###### [🏠︎](#index) / [State](#state) / Get or Set value [↓](#stateset)
 
 Reading `.value` inside reaction **auto-subscribes** to changes. Writing `.value` **triggers all reactions**.
 
@@ -366,8 +366,27 @@ new Watch(() => console.log(count.value))
 count.value++ // triggers: logs 1
 ```
 
+### State.set
+###### [🏠︎](#index) / [State](#state) / State.set [↑](#get-or-set-value) [↓](#force-update-of-state)
+
+`State.set` mirrors the behavior of the value setter but returns `void`.
+It is useful as a shorthand in arrow functions: `() => state.set(nextValue)` instead of `() => { state.value = nextValue }`.
+
+Note: `state.set` cannot be used as a standalone function; `const set = state.set` is not supported.
+
+```ts
+const count = new State(0)
+
+// Subscribing
+new Watch(() => console.log(count.value))
+// logs: 0
+
+count.set(1)
+// logs: 1
+```
+
 ### Force update of State
-###### [🏠︎](#index) / [State](#state) / Force update of State [↑](#get-or-set-value) [↓](#raw-value)
+###### [🏠︎](#index) / [State](#state) / Force update of State [↑](#stateset) [↓](#raw-value)
 
 You can run reactions of a state with `update` method.
 
@@ -425,7 +444,7 @@ console.log(count.initial === count.raw)
 ```
 
 ### Reset value
-###### [🏠︎](#index) / [State](#state) / Reset value [↑](#initial-value) [↓](#stateset-experimental)
+###### [🏠︎](#index) / [State](#state) / Reset value [↑](#initial-value)
 
 `reset()` restores the state to its initial value.
 Triggers watchers only if the current value differs from the initial value.
@@ -444,25 +463,6 @@ count.reset()
 
 count.reset()
 // no logs (value already 0)
-```
-
-### State.set (experimental)
-###### [🏠︎](#index) / [State](#state) / State.set [↑](#reset-value)
-
-`State.set` mirrors the behavior of the value setter but returns `void`.
-It is useful as a shorthand in arrow functions: `() => state.set(nextValue)` instead of `() => { state.value = nextValue }`.
-
-Note: `state.set` cannot be used as a standalone function; `const set = state.set` is not supported.
-
-```ts
-const count = new State(0)
-
-// Subscribing
-new Watch(() => console.log(count.value))
-// logs: 0
-
-count.set(1)
-// logs: 1
 ```
 
 ## Compute

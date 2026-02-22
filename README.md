@@ -373,7 +373,7 @@ You can run reactions of a state with `update` method.
 
 ```ts
 // Create state
-const log = new State([])
+const log = new State<number[]>([])
 
 // Subscribe to changes
 new Watch(() => console.log(log.value)) // logs: []

@@ -73,7 +73,17 @@
 
 `watch-state` is a **lightweight, high-performance reactive state engine** designed to power UI frameworks — **or replace them.**
 
-It provides **memory-safe reactivity** without Proxy, without magic, and without framework lock-in.
+- **Fast** — One of the fastest reactive libraries ([see benchmarks](#performance))
+- **Light** — Less than 1 KB minzip
+- **Zero dependency** — No external packages required
+- **Code splitting by design** — Decentralized state architecture, each page loads only the states it uses
+- **Auto-subscription** — Dependencies tracked automatically, no manual subscriptions
+- **Dynamic subscriptions** — Conditional watchers auto-subscribe/unsubscribe based on reactive conditions
+- **Type-safe** — Full TypeScript support with type inference
+- **Memory-safe** — Automatic cleanup on destroy
+- **Lazy computation** — Compute executes only when accessed
+- **No Proxy** — Supports old browsers (Firefox 45+, Safari 9+)
+- **Framework-agnostic** — Business logic lives outside components, reusable across any framework or vanilla JS
 
 Use it as the core state layer in your own framework, embed it in React components, or build a full UI — **no JSX, no virtual DOM, no framework required**.
 

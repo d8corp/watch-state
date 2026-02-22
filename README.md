@@ -75,7 +75,7 @@
 
 - **Fast** — One of the fastest reactive libraries ([see benchmarks](#performance))
 - **Light** — Less than 1 KB minzip
-- **Zero dependency** — No external packages required
+- **Zero-dependency** — No external packages required
 - **Code splitting by design** — Decentralized state architecture, each page loads only the states it uses
 - **Auto-subscription** — Dependencies tracked automatically, no manual subscriptions
 - **Dynamic subscriptions** — Conditional watchers auto-subscribe/unsubscribe based on reactive conditions

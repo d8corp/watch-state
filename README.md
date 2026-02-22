@@ -273,7 +273,7 @@ count.value = 1 // triggers reaction
 ### Force update of Watch
 ###### [🏠︎](#index) / [Watch](#watch) / Force update of Watch [↓](#destroy-watch)
 
-You can run a watcher even when it's states are not updated.
+You can run a reaction even when its states are not updated.
 
 ```typescript
 const count = new State(0)

@@ -1,5 +1,5 @@
 import { bindObserver, destroyWatchers, watchWithScope } from '../helpers'
-import type { Destructor, Observer, Selector, Watcher } from '../types'
+import type { Destructor, Observer, Reaction, Watcher } from '../types'
 
 /**
  * Watcher class for reactive state tracking.
@@ -35,10 +35,16 @@ export class Watch implements Observer {
     return this.childrenObservers
   }
 
-  constructor (watcher: Selector<void>, freeParent?: boolean, freeUpdate?: boolean)
-  /** @deprecated `update` argument is deprecated, use `Selector` */
-  constructor (watcher: Watcher<void>, freeParent?: boolean, freeUpdate?: boolean)
-  constructor (readonly watcher: Watcher<void> | Selector<void>, freeParent?: boolean, freeUpdate?: boolean) {
+  // TODO: remove in major release
+  /** @deprecated Use `reaction` */
+  get watcher () {
+    return this.reaction
+  }
+
+  constructor (reaction: Reaction<void>, freeParent?: boolean, freeUpdate?: boolean)
+  /** @deprecated `update` argument is deprecated, use `Reaction` */
+  constructor (reaction: Watcher<void>, freeParent?: boolean, freeUpdate?: boolean)
+  constructor (readonly reaction: Watcher<void> | Reaction<void>, freeParent?: boolean, freeUpdate?: boolean) {
     if (!freeParent) {
       bindObserver(this)
     }
@@ -57,7 +63,7 @@ export class Watch implements Observer {
   update () {
     if (!this.destroyed) {
       watchWithScope(this, () => {
-        this.watcher(this.updated) // TODO: remove `this.updated` in major release
+        this.reaction(this.updated) // TODO: remove `this.updated` in major release
         this.updated = true
       })
     }

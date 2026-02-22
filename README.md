@@ -249,8 +249,8 @@ export function CountButton () {
 
 **Reactive effect that automatically tracks and reacts to state changes.**
 
-`Watch` executes a callback when any accessed `State.value` changes.
-Accessing `.value` **inside the callback auto-subscribes** to that state — no manual registration needed.
+`Watch` executes a reaction when any accessed `State.value` changes.
+Accessing `.value` **inside the reaction auto-subscribes** to that state — no manual registration needed.
 
 ```ts
 // Create state
@@ -259,7 +259,7 @@ const count = new State(0)
 // Create watcher that logs the state changes
 new Watch(() => console.log(count.value)) // auto-subscribes to count
 
-count.value = 1 // triggers watcher callback
+count.value = 1 // triggers reaction
 ```
 
 ### Force update of Watch
@@ -306,7 +306,7 @@ count.value++
 
 **Create conditional and nested reactive effects.**
 
-Each `Watch` **independently tracks only states accessed within its callback**.
+Each `Watch` **independently tracks only states accessed within its reaction**.
 Nested watchers created inside parent watchers form a **dependency tree** with separate reactivity.
 
 ```javascript
@@ -462,7 +462,7 @@ count.set(1) // triggers: log: 1
 ###### [🏠︎](#index) / [Compute](#compute) / Lazy computation [↓](#force-update-of-compute)
 
 `Compute` doesn't execute immediately — waits for `.value` access.  
-Dependencies (`State.value` reads inside callback) auto-subscribe like `Watch`.
+Dependencies (`State.value` reads inside reaction) auto-subscribe like `Watch`.
 
 ```javascript
 const name = new State('Foo')
@@ -493,7 +493,7 @@ surname.value = 'Quux' // surname[0] = "Q"
 ### Force update of Compute
 ###### [🏠︎](#index) / [Compute](#compute) / Force update of Compute [↑](#lazy-computation) [↓](#destroy-compute)
 
-**Call `.update()` to manually trigger recomputation** — forces callback execution **even when no dependencies changed**.
+**Call `.update()` to manually trigger recomputation** — forces reaction execution **even when no dependencies changed**.
 
 **Perfect for:**
 - **Array mutations** (`push`, `pop`, `splice`)
@@ -527,7 +527,7 @@ itemCount.update()  // ✅ FORCES recompute
 
 Call `.destroy()` to completely stop reactivity — unsubscribes from all dependency states, clears cached value, and prevents any future recomputations.
 
-Triggers `onDestroy` callbacks registered inside `Compute` callback:
+Triggers `onDestroy` callbacks registered inside `Compute` reaction:
 
 ```ts
 const user = new State({ name: 'Alice', age: 30 })

@@ -5,8 +5,10 @@
 - Improve types
 - Add `State.reset`
 - Add `State.initial`
+- Add `State.raw`
+- Add `Reaction` type
 - Deprecate `State.rawValue`, use `State.raw`
-- Deprecate `update` argument and `Watcher`
+- Deprecate `update` argument and `Watcher`, use `Reaction`
 - Fix `update` argument of `Compute`
 - Fix `INNETJS_JSX_PACKAGE_VERSION` bug
 

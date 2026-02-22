@@ -45,11 +45,12 @@ export interface Scope {
   eventDeep: number
 }
 
-/** @deprecated `update` argument is deprecated, use `Selector` */
+/** @deprecated `update` argument is deprecated, use `Reaction` */
 export type Watcher<T> = (update: boolean) => T
 
 /**
- * A function that selects or derives a value from the accessed state.
- * @template T The type of the selected value
+ * A reactive function that tracks dependencies and can to derives a value.
+ * Used in `Watch` for side effects and in `Compute` for memoized values.
+ * @template T The type of the derived value
  */
-export type Selector<T> = () => T
+export type Reaction<T> = () => T

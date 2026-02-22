@@ -64,7 +64,6 @@ export class State<V = never | unknown> extends Observable<V extends never ? unk
   }
 
   /**
-   * @experimental
    * Sets the state value. Identical to the `value` setter but returns `void`.
    * Useful as a shorthand in arrow functions: `() => state.set(value)` instead of `() => { state.value = value }`
    *

@@ -7,7 +7,7 @@ export interface Observer {
    * Child observers created within this observer's scope.
    * Used for hierarchical cleanup.
    */
-  childrenObservers: Set<Observer>
+  children: Set<Observer>
 
   /** Cleanup functions to run on destroy (e.g., unsubscribes). */
   destructors: Set<Destructor>
@@ -26,6 +26,10 @@ export interface Observer {
    * Prevents accidental use after cleanup.
    */
   destroyed: boolean
+
+  // TODO: remove in major release
+  /** @deprecated Use `children` */
+  childrenObservers: Set<Observer>
 
   // TODO: remove in major release
   /** @deprecated Use `childrenObservers` */

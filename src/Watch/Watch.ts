@@ -27,12 +27,18 @@ export class Watch implements Observer {
   readonly destructors = new Set<Destructor>()
 
   /** Child observers created within this watcher's scope */
-  readonly childrenObservers = new Set<Observer>()
+  readonly children = new Set<Observer>()
+
+  // TODO: remove in major release
+  /** @deprecated Use `children` */
+  get childrenObservers () {
+    return this.children
+  }
 
   // TODO: remove in major release
   /** @deprecated Use `childrenObservers` */
   get childWatchers () {
-    return this.childrenObservers
+    return this.children
   }
 
   // TODO: remove in major release

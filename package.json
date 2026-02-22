@@ -81,7 +81,7 @@
       "import": {
         "./release/index.es6.js": "*"
       },
-      "limit": "1.09 kB"
+      "limit": "1095 B"
     },
     {
       "name": "Core",
@@ -89,7 +89,7 @@
       "import": {
         "./release/index.es6.js": "{ Watch, State, Compute, createEvent }"
       },
-      "limit": "881 B"
+      "limit": "878 B"
     }
   ]
 }

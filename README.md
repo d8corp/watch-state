@@ -257,9 +257,7 @@ export function CountButton () {
 
 <sup>[Force update of Watch](#force-update-of-watch) • [Destroy Watch](#destroy-watch) • [Deep/Nested watchers](#deepnested-watchers)</sup>
 
-**Reactive effect that automatically tracks and reacts to state changes.**
-
-`Watch` executes a reaction when any accessed `State.value` changes.
+`Watch` accepts a **reaction** as its first argument and executes it when any accessed `State.value` changes.
 Accessing `.value` **inside the reaction auto-subscribes** to that state — no manual registration needed.
 
 ```ts

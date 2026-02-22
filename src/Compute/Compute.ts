@@ -4,7 +4,7 @@ import { clearWatcher } from '../helpers/clearWatcher'
 import { destroyWatchers } from '../helpers/destroyWatchers'
 import { watchWithScope } from '../helpers/watchWithScope'
 import { Observable } from '../Observable'
-import type { Destructor, Observer, Watcher } from '../types'
+import type { Destructor, Observer, Selector, Watcher } from '../types'
 import { shiftSet } from '../utils/shiftSet'
 
 /* queue */
@@ -146,11 +146,11 @@ export class Compute<V = unknown> extends Observable<V> implements Observer {
     return this.childrenObservers
   }
 
-  readonly watcher: Watcher<V>
-
-  constructor (watcher: Watcher<V>, freeParent?: boolean, fireImmediately?: boolean) {
+  constructor (watcher: Selector<V>, freeParent?: boolean, fireImmediately?: boolean)
+  /** @deprecated `update` argument is deprecated, use `Selector` */
+  constructor (watcher: Watcher<V>, freeParent?: boolean, fireImmediately?: boolean)
+  constructor (readonly watcher: Watcher<V> | Selector<V>, freeParent?: boolean, fireImmediately?: boolean) {
     super()
-    this.watcher = watcher
 
     if (!freeParent) {
       bindObserver(this)
@@ -182,7 +182,7 @@ export class Compute<V = unknown> extends Observable<V> implements Observer {
       this.invalid = false
 
       watchWithScope(this, () => {
-        const newValue = this.watcher(this.updated)
+        const newValue = this.watcher(this.updated) // TODO: remove `this.updated` in major release
         this.updated = true
 
         if (newValue !== this.raw) {

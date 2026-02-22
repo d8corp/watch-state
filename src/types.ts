@@ -18,6 +18,9 @@ export interface Observer {
   /** Force re-run of the observer's logic. */
   update: () => void
 
+  /** Tracks if the computation has run at least once. */
+  updated: boolean
+
   /**
    * Indicates if observer has been destroyed.
    * Prevents accidental use after cleanup.
@@ -42,5 +45,11 @@ export interface Scope {
   eventDeep: number
 }
 
-/** Watcher callback signature. First call: `update=false`, updates: `update=true`. */
+/** @deprecated `update` argument is deprecated, use `Selector` */
 export type Watcher<T> = (update: boolean) => T
+
+/**
+ * A function that selects or derives a value from the accessed state.
+ * @template T The type of the selected value
+ */
+export type Selector<T> = () => T

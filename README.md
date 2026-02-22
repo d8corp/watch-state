@@ -101,8 +101,8 @@ Was born during working on [@innet/dom](https://www.npmjs.com/package/@innet/dom
 ## Index
 
 <sup>**[ [Install](#install) ]**</sup>  
-<sup>**[ [Usage](#usage) ]** [Simple example](#simple-example) • [Example Vanilla JS](#example-vanilla-js) • [Example React](#example-react) • [Example @innet/dom](#example-innetdom)</sup>  
-<sup>**[ [Watch](#watch) ]** [Update argument](#update-argument) • [Force update of Watch](#force-update-of-watch) • [Destroy Watch](#destroy-watch) • [Deep/Nested watchers](#deepnested-watchers)</sup>  
+<sup>**[ [Usage](#usage) ]** [Simple example](#simple-example) • [Example Vanilla JS](#example-vanilla-js) • [Example React](#example-react) • [Example @innet/dom](#example-innet)</sup>  
+<sup>**[ [Watch](#watch) ]** [Force update of Watch](#force-update-of-watch) • [Destroy Watch](#destroy-watch) • [Deep/Nested watchers](#deepnested-watchers)</sup>  
 <sup>**[ [State](#state) ]** [Get or Set value](#get-or-set-value) • [Force update of State](#force-update-of-state) • [Raw value](#raw-value) • [Initial value](#initial-value) • [Reset value](#reset-value) • [State.set (experimental)](#stateset-experimental)</sup>  
 <sup>**[ [Compute](#compute) ]** [Lazy computation](#lazy-computation) • [Force update of Compute](#force-update-of-compute) • [Destroy Compute](#destroy-compute)</sup>  
 <sup>**[ [Utils](#utils) ]** [onDestroy](#ondestroy) • [callEvent](#callevent) • [createEvent](#createevent) • [unwatch](#unwatch)</sup>  
@@ -132,7 +132,7 @@ html
 ## Usage
 ###### [🏠︎](#index) / Usage [↑](#install) [↓](#watch)
 
-<sup>[Simple example](#simple-example) • [Example Vanilla JS](#example-vanilla-js) • [Example React](#example-react) • [Example @innet/dom](#example-innetdom)</sup>
+<sup>[Simple example](#simple-example) • [Example Vanilla JS](#example-vanilla-js) • [Example React](#example-react) • [Example Innet](#example-innet)</sup>
 
 The library is based on the core concepts of `Observable` (something that can be observed) and `Observer` (something that can observe). On top of these concepts, the core classes `State`, `Compute`, and `Watch` are built according to the following scheme:
 
@@ -202,7 +202,7 @@ Simple reactive state without build tools or framework dependencies.
 ```
 
 ### Example React
-###### [🏠︎](#index) / [Usage](#usage) / Example React [↑](#example-vanilla-js) [↓](#example-innetdom)
+###### [🏠︎](#index) / [Usage](#usage) / Example React [↑](#example-vanilla-js) [↓](#example-innet)
 
 [@watch-state/react](https://www.npmjs.com/package/@watch-state/react) provides hooks that automatically subscribe React components to state changes and re-renders only when needed.
 
@@ -224,7 +224,7 @@ export function CountButton () {
 ```
 
 ### Example Innet
-###### [🏠︎](#index) / [Usage](#usage) / Example @innet/dom [↑](#example-react)
+###### [🏠︎](#index) / [Usage](#usage) / Example Innet [↑](#example-react)
 
 [@innet/dom](https://www.npmjs.com/package/@innet/dom) automatically watches accessed states and **updates only changed DOM content** — **no full re-renders**.
 
@@ -245,7 +245,7 @@ export function CountButton () {
 ## Watch
 ###### [🏠︎](#index) / Watch [↑](#usage) [↓](#state)
 
-<sup>[Update argument](#update-argument) • [Force update of Watch](#force-update-of-watch) • [Destroy Watch](#destroy-watch) • [Deep/Nested watchers](#deepnested-watchers)</sup>
+<sup>[Force update of Watch](#force-update-of-watch) • [Destroy Watch](#destroy-watch) • [Deep/Nested watchers](#deepnested-watchers)</sup>
 
 **Reactive effect that automatically tracks and reacts to state changes.**
 
@@ -262,58 +262,8 @@ new Watch(() => console.log(count.value)) // auto-subscribes to count
 count.value = 1 // triggers watcher callback
 ```
 
-### Update argument
-###### [🏠︎](#index) / [Watch](#watch) / Update argument [↓](#force-update-of-watch)
-
-**Distinguish initial run from updates using `update` parameter.**
-
-`update` is `false` on **first execution** (initial subscription), `true` on **subsequent re-runs** when states change.
-
-```javascript
-const count = new State(0)
-
-new Watch(update => {
-  console.log(update, count.value)
-})
-// console.log(false, 0)
-
-count.value++
-// console.log(true, 1)
-
-count.value++
-// console.log(true, 2)
-```
-
-**Watch state once using `update` flag and auto-destroy:**
-
-```typescript jsx
-const count = new State(0)
-
-new Watch(update => {
-  
-  if (!update) {
-
-    // Watch this value
-    count.value
-
-  } else {
-
-    // React on changes
-    console.log('The value was changed')
-
-  }
-
-})
-
-count.value++
-// console.log('The value was changed')
-
-count.value++
-// nothing happens
-```
-
 ### Force update of Watch
-###### [🏠︎](#index) / [Watch](#watch) / Force update of Watch [↑](#update-argument) [↓](#destroy-watch)
+###### [🏠︎](#index) / [Watch](#watch) / Force update of Watch [↓](#destroy-watch)
 
 You can run a watcher even when it's states are not updated.
 

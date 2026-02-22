@@ -342,7 +342,7 @@ describe('Compute', () => {
       let firstUpdateValue: boolean | undefined
       let callCount = 0
 
-      const compute = new Compute((update) => {
+      const compute = new Compute((update: boolean) => {
         callCount++
         firstUpdateValue = update
       })
@@ -358,7 +358,7 @@ describe('Compute', () => {
       const updateValues: boolean[] = []
 
       new Watch(() => {
-        const compute = new Compute((update) => {
+        const compute = new Compute((update: boolean) => {
           updateValues.push(update)
 
           return state.value
@@ -379,7 +379,7 @@ describe('Compute', () => {
     it('works with forceUpdate', () => {
       const updateValues: boolean[] = []
 
-      const compute = new Compute((update) => {
+      const compute = new Compute((update: boolean) => {
         updateValues.push(update)
       })
 
@@ -401,10 +401,10 @@ describe('Compute', () => {
       const outerUpdates: boolean[] = []
       const innerUpdates: boolean[] = []
 
-      const outerCompute = new Compute((update) => {
+      const outerCompute = new Compute((update: boolean) => {
         outerUpdates.push(update)
 
-        const innerCompute = new Compute((innerUpdate) => {
+        const innerCompute = new Compute((innerUpdate: boolean) => {
           innerUpdates.push(innerUpdate)
 
           return state.value * 2
@@ -431,7 +431,7 @@ describe('Compute', () => {
       let initCount = 0
       let updateCount = 0
 
-      const compute = new Compute((update) => {
+      const compute = new Compute((update: boolean) => {
         if (!update) {
           initCount++
         } else {

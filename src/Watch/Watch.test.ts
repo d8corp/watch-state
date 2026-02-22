@@ -92,7 +92,7 @@ describe('Watch', () => {
     test('update', () => {
       let updated: boolean | undefined
 
-      const watcher = new Watch(update => {
+      const watcher = new Watch((update: boolean) => {
         updated = update
       })
 

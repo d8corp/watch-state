@@ -6,6 +6,7 @@
 - Add `State.reset`
 - Add `State.initial`
 - Deprecate `State.rawValue`, use `State.raw`
+- Deprecate `update` argument and `Watcher`
 - Fix `update` argument of `Compute`
 - Fix `INNETJS_JSX_PACKAGE_VERSION` bug
 

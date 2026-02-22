@@ -168,13 +168,13 @@ import { Watch, State } from 'watch-state'
 const count = new State(0)
 
 new Watch(() => console.log(count.value))
-// console.log(0)
+// logs: 0
 
 count.value++
-// console.log(1)
+// logs: 1
 
 count.value++
-// console.log(2)
+// logs: 2
 ```
 
 ### Example Vanilla JS
@@ -283,10 +283,10 @@ const count = new State(0)
 const watcher = new Watch(() => {
   console.log(count.value)
 })
-// console.log(0)
+// logs: 0
 
 watcher.update()
-// console.log(0)
+// logs: 0
 ```
 
 ### Destroy Watch
@@ -300,10 +300,10 @@ const count = new State(0)
 const watcher = new Watch(() => {
   console.log(count.value)
 })
-// console.log(0)
+// logs: 0
 
 count.value++
-// console.log(1)
+// logs: 1
 
 watcher.destroy()
 
@@ -411,13 +411,16 @@ foo.value++ // logs: 2, 1
 ```ts
 const count = new State(0)
 
-console.log(count.initial) // 0
+console.log(count.initial)
+// logs: 0
 
 count.value = 5
- console.log(count.initial === count.raw) // false
+console.log(count.initial === count.raw)
+// logs: false
 
 count.reset()
- console.log(count.initial === count.raw) // true
+console.log(count.initial === count.raw)
+// logs: true
 ```
 
 ### Reset value
@@ -455,9 +458,10 @@ const count = new State(0)
 
 // Subscribing
 new Watch(() => console.log(count.value))
-// log: 0
+// logs: 0
 
-count.set(1) // triggers: log: 1
+count.set(1)
+// logs: 1
 ```
 
 ## Compute
@@ -515,21 +519,26 @@ surname.value = 'Quux' // surname[0] = "Q"
 const items = new State([])
 
 const itemCount = new Compute(() => {
-  console.log('🔄 Recomputing length...')
+  console.log('Recomputing length...')
   return items.value.length
 })
 
 new Watch(() => console.log('Watcher sees:', itemCount.value))
-// 🔄 Recomputing length...
-// Watcher sees: 0
+// logs: Recomputing length...
+// logs: Watcher sees: 0
 
-items.value.push('apple')  // ❌ Array reference SAME → NO recompute!
-console.log('Direct length:', items.value.length) // 1
-console.log(itemCount.value) // STALE: 0 ❌
+items.value.push('apple')
+// Array reference SAME → NO recompute!
 
-itemCount.update()  // ✅ FORCES recompute
-// 🔄 Recomputing length...
-// Watcher sees: 1 ✅
+console.log('Direct length:', items.value.length)
+// logs: 1
+
+console.log(itemCount.value)
+// logs: 0
+
+itemCount.update()  // FORCES recompute
+// logs: Recomputing length...
+// logs: Watcher sees: 1 
 ```
 
 ### Destroy Compute
@@ -664,13 +673,13 @@ const increase = createEvent(() => {
 })
 
 new Watch(() => console.log(count.value))
-// console.log(0)
+// logs: 0
 
 increase()
-// console.log(1)
+// logs: 1
 
 increase()
-// console.log(2)
+// logs: 2
 ```
 
 ### unwatch

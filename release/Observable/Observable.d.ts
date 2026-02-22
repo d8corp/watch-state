@@ -11,7 +11,11 @@ export declare abstract class Observable<V> {
     /** Set of registered observers */
     readonly observers: Set<Observer>;
     /** Raw value. No auto-subscription on direct access (unlike `value`). */
-    rawValue: V;
+    abstract raw: V;
+    /** @deprecated Use raw field */
+    get rawValue(): V;
+    /** @deprecated Use raw field */
+    set rawValue(raw: V);
     /**
      * Current value with automatic subscription.
      *

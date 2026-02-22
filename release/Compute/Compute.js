@@ -106,12 +106,23 @@ function invalidateCompute(observer) {
  */
 class Compute extends Observable.Observable {
     // TODO: remove in major release
+    /** @deprecated Use `children` */
+    get childrenObservers() {
+        return this.children;
+    }
+    // TODO: remove in major release
     /** @deprecated Use `childrenObservers` */
     get childWatchers() {
-        return this.childrenObservers;
+        return this.children;
     }
-    constructor(watcher, freeParent, fireImmediately) {
+    // TODO: remove in major release
+    /** @deprecated Use `reaction` */
+    get watcher() {
+        return this.reaction;
+    }
+    constructor(reaction, freeParent, fireImmediately) {
         super();
+        this.reaction = reaction;
         /** Indicates if computed value is stale and needs recalculation. */
         this.invalid = true;
         /** Tracks if the computation has run at least once. */
@@ -127,8 +138,7 @@ class Compute extends Observable.Observable {
         /** Cleanup functions to run on destroy (e.g., unsubscribes). */
         this.destructors = new Set();
         /** Child watchers created within this watcher's scope */
-        this.childrenObservers = new Set();
-        this.watcher = watcher;
+        this.children = new Set();
         if (!freeParent) {
             bindObserver.bindObserver(this);
         }
@@ -152,9 +162,10 @@ class Compute extends Observable.Observable {
         if (!this.destroyed) {
             this.invalid = false;
             watchWithScope.watchWithScope(this, () => {
-                const newValue = this.watcher(this.updated ? this.updated = true : false);
-                if (newValue !== this.rawValue) {
-                    this.rawValue = newValue;
+                const newValue = this.reaction(this.updated); // TODO: remove `this.updated` in major release
+                this.updated = true;
+                if (newValue !== this.raw) {
+                    this.raw = newValue;
                     queueWatchers(this.observers);
                 }
             });
@@ -177,7 +188,7 @@ class Compute extends Observable.Observable {
         if (this.invalid) {
             this.forceUpdate();
         }
-        return this.destroyed ? this.rawValue : super.value;
+        return this.destroyed ? this.raw : super.value;
     }
     /** Stop observation and remove all dependencies. */
     destroy() {

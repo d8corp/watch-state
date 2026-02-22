@@ -24,7 +24,7 @@ import { queueWatchers } from '../Compute/Compute.es6.js';
 class State extends Observable {
     constructor(initial) {
         super();
-        this.rawValue = initial;
+        this.raw = this.initial = initial;
     }
     /**
      * Current state value. Updates watchers only on actual changes (strict `!==`).
@@ -41,13 +41,12 @@ class State extends Observable {
         return super.value;
     }
     set value(value) {
-        if (this.rawValue !== value) {
-            this.rawValue = value;
+        if (this.raw !== value) {
+            this.raw = value;
             this.update();
         }
     }
     /**
-     * @experimental
      * Sets the state value. Identical to the `value` setter but returns `void`.
      * Useful as a shorthand in arrow functions: `() => state.set(value)` instead of `() => { state.value = value }`
      *
@@ -55,6 +54,22 @@ class State extends Observable {
      */
     set(value) {
         this.value = value;
+    }
+    /**
+     * Resets state to its initial value.
+     * Triggers watchers only if the current value differs from the initial value.
+     *
+     * @example
+     * const count = new State(0)
+     *
+     * new Watch(() => console.log(count.value)) // logs: 0
+     *
+     * count.value = 5 // logs: 5
+     *
+     * count.reset() // logs: 0
+     */
+    reset() {
+        this.value = this.initial;
     }
     /**
      * Force triggers all watchers even if value didn't change.

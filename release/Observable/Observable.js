@@ -17,6 +17,14 @@ class Observable {
         /** Set of registered observers */
         this.observers = new Set();
     }
+    /** @deprecated Use raw field */
+    get rawValue() {
+        return this.raw;
+    }
+    /** @deprecated Use raw field */
+    set rawValue(raw) {
+        this.raw = raw;
+    }
     /**
      * Current value with automatic subscription.
      *
@@ -33,7 +41,7 @@ class Observable {
                 this.observers.delete(activeWatcher);
             });
         }
-        return this.rawValue;
+        return this.raw;
     }
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "watch-state",
-  "version": "3.5.2",
+  "version": "3.6.0",
   "description": "CANT inc. state management system.",
   "author": "Mikhail Lysikov <d8corp@mail.ru>",
   "license": "MIT",
@@ -36,7 +36,7 @@
     "test:jest": "jest",
     "test:coverage": "jest --coverage",
     "test:size": "size-limit",
-    "speed": "innetjs run speed.test.ts",
+    "speed": "innetjs run speed.test.ts -c tsconfig.speed.json",
     "release": "innetjs release -p -m",
     "patch": "innetjs patch",
     "minor": "innetjs minor",
@@ -51,7 +51,7 @@
       "import": {
         "./release/index.es6.js": "*"
       },
-      "limit": "1.07 kB"
+      "limit": "1095 B"
     },
     {
       "name": "Core",
@@ -59,7 +59,7 @@
       "import": {
         "./release/index.es6.js": "{ Watch, State, Compute, createEvent }"
       },
-      "limit": "850 B"
+      "limit": "878 B"
     }
   ]
 }

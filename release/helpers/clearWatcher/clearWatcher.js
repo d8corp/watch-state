@@ -13,7 +13,7 @@ function clearWatcher(watcher) {
     if (skipLoop)
         return;
     while ((currentWatcher = clearStack.shift())) {
-        currentWatcher.childrenObservers.forEach(destroyWatchers.destroyWatchers);
+        currentWatcher.children.forEach(destroyWatchers.destroyWatchers);
         for (const destructor of currentWatcher.destructors) {
             currentWatcher.destructors.delete(destructor);
             destructor();

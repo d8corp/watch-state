@@ -1,6 +1,8 @@
 # Changelog
 
-## v3.5
+## v3.6
+
+### v3.6.0 [![23.02.2026](https://img.shields.io/date/1771798270)](https://github.com/d8corp/watch-state/tree/v3.6.0)
 
 - Improve types
 - Add `State.reset`
@@ -12,6 +14,8 @@
 - Deprecate `childrenObservers`, use `children`
 - Fix `update` argument of `Compute`
 - Fix `INNETJS_JSX_PACKAGE_VERSION` bug
+
+## v3.5
 
 ### v3.5.2 [![20.02.2026](https://img.shields.io/date/1771593510)](https://github.com/d8corp/watch-state/tree/v3.5.2)
 

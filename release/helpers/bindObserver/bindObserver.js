@@ -7,9 +7,9 @@ var constants = require('../../constants.js');
 function bindObserver(observer) {
     const { activeWatcher } = constants.scope;
     if (activeWatcher) {
-        activeWatcher.childrenObservers.add(observer);
+        activeWatcher.children.add(observer);
         activeWatcher.destructors.add(() => {
-            activeWatcher.childrenObservers.delete(observer);
+            activeWatcher.children.delete(observer);
         });
     }
 }

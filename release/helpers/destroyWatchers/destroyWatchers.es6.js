@@ -6,7 +6,7 @@ function destroyWatchers(observer) {
     if (skipLoop)
         return;
     while ((currentWatcher = destroyStack.shift())) {
-        currentWatcher.childrenObservers.forEach(observer => {
+        currentWatcher.children.forEach(observer => {
             destroyStack.push(observer);
         });
         for (const destructor of currentWatcher.destructors) {

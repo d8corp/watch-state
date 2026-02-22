@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import type { Destructor, Observer, Watcher } from '../types';
+import type { Destructor, Observer, Reaction, Watcher } from '../types';
 export declare function forceQueueWatchers(): void;
 export declare function queueWatchers(observers: Set<Observer>): void;
 export declare function invalidateCompute(observer: Observer): void;
@@ -41,10 +41,12 @@ export declare function invalidateCompute(observer: Observer): void;
  * // Triggers part of chain: fullName → name
  */
 export declare class Compute<V = unknown> extends Observable<V> implements Observer {
+    readonly reaction: Watcher<V> | Reaction<V>;
     /** Indicates if computed value is stale and needs recalculation. */
     invalid: boolean;
     /** Tracks if the computation has run at least once. */
     updated: boolean;
+    raw: V;
     /**
      * Indicates if observer has been destroyed.
      * Prevents accidental use after cleanup.
@@ -55,11 +57,16 @@ export declare class Compute<V = unknown> extends Observable<V> implements Obser
     /** Cleanup functions to run on destroy (e.g., unsubscribes). */
     readonly destructors: Set<Destructor>;
     /** Child watchers created within this watcher's scope */
-    readonly childrenObservers: Set<Observer>;
+    readonly children: Set<Observer>;
+    /** @deprecated Use `children` */
+    get childrenObservers(): Set<Observer>;
     /** @deprecated Use `childrenObservers` */
     get childWatchers(): Set<Observer>;
-    readonly watcher: Watcher<V>;
-    constructor(watcher: Watcher<V>, freeParent?: boolean, fireImmediately?: boolean);
+    /** @deprecated Use `reaction` */
+    get watcher(): Watcher<V> | Reaction<V>;
+    constructor(reaction: Reaction<V>, freeParent?: boolean, fireImmediately?: boolean);
+    /** @deprecated `update` argument is deprecated, use `Reaction` */
+    constructor(reaction: Watcher<V>, freeParent?: boolean, fireImmediately?: boolean);
     /** Mark computation as invalid and trigger propagation to parent observers. */
     update(): void;
     forceUpdate(): void;

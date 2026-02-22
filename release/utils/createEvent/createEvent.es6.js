@@ -67,6 +67,7 @@ function createEvent(callback) {
     return function (...args) {
         const result = unwatch(() => {
             scope.eventDeep++;
+            // @ts-expect-error this
             const result = callback.apply(this, args);
             scope.eventDeep--;
             return result;

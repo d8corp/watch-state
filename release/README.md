@@ -30,7 +30,7 @@
       <br>
       <b>Light</b>
       <br>
-      Less than 1 KB minzip
+      Less than 1 KB gzip
     </span></td>
     <td align="center"><span>
       <a href="https://d8corp.github.io/watch-state/coverage/lcov-report" target="_blank">
@@ -53,8 +53,14 @@
   <a href="https://www.npmtrends.com/watch-state" target="_blank">
     <img src="https://img.shields.io/npm/dm/watch-state.svg" alt="watch-state downloads">
   </a>
+  <a href="https://github.com/d8corp/watch-state/tree/master/release" target="_blank">
+    <img src="https://packagephobia.com/badge?p=watch-state" alt="watch-state install size">
+  </a>
+  <a href="https://cdn.jsdelivr.net/npm/watch-state" target="_blank">
+    <img src="https://img.badgesize.io/https:/cdn.jsdelivr.net/npm/watch-state?compression=gzip" alt="watch-state gzip size">
+  </a>
   <a href="https://www.typescriptlang.org" target="_blank">
-    <img src="https://img.shields.io/npm/types/watch-state" alt="TypeSctipt">
+    <img src="https://img.shields.io/npm/types/watch-state" alt="TypeScript">
   </a>
   <a href="https://packagequality.com/#?package=watch-state" target="_blank">
     <img src="https://packagequality.com/shield/watch-state.svg" alt="watch-state quality">
@@ -62,7 +68,7 @@
   <a href="https://github.com/d8corp/watch-state/blob/master/LICENSE" target="_blank">
     <img src="https://img.shields.io/npm/l/watch-state" alt="watch-state license">
   </a>
-  <a href="https://changelogs.xyz/watch-state" target="_blank">
+  <a href="https://github.com/d8corp/watch-state/blob/master/CHANGELOG.md" target="_blank">
     <img src="https://img.shields.io/badge/Changelog-⋮-brightgreen" alt="watch-state changelog">
   </a>
   <a href="https://d8corp.github.io/watch-state/coverage/lcov-report" target="_blank">
@@ -73,16 +79,26 @@
 
 `watch-state` is a **lightweight, high-performance reactive state engine** designed to power UI frameworks — **or replace them.**
 
-It provides **memory-safe reactivity** without Proxy, without magic, and without framework lock-in.
+- **Fast** — One of the fastest reactive libraries ([see benchmarks](#performance))
+- **Light** — Less than 1 KB minzip
+- **Zero-dependency** — No external packages required
+- **Code splitting by design** — Decentralized state architecture, each page loads only the states it uses
+- **Auto-subscription** — Dependencies tracked automatically, no manual subscriptions
+- **Dynamic subscriptions** — Conditional watchers auto-subscribe/unsubscribe based on reactive conditions
+- **Type-safe** — Full TypeScript support with type inference
+- **Memory-safe** — Automatic cleanup on destroy
+- **Lazy computation** — Compute executes only when accessed
+- **No Proxy** — Supports old browsers (Firefox 45+, Safari 9+)
+- **Framework-agnostic** — Business logic lives outside components, reusable across any framework or vanilla JS
 
 Use it as the core state layer in your own framework, embed it in React components, or build a full UI — **no JSX, no virtual DOM, no framework required**.
 
-Was born during working on [@innet/dom](https://www.npmjs.com/package/@innet/dom).
+Born while working on [@innet/dom](https://www.npmjs.com/package/@innet/dom).
 
 [![stars](https://img.shields.io/github/stars/d8corp/watch-state?style=social)](https://github.com/d8corp/watch-state/stargazers)
 [![watchers](https://img.shields.io/github/watchers/d8corp/watch-state?style=social)](https://github.com/d8corp/watch-state/watchers)
 
-## Browser supports
+## Browser Support
 
 ### Desktop
 
@@ -96,17 +112,17 @@ Was born during working on [@innet/dom](https://www.npmjs.com/package/@innet/dom
 |:-------:|:------:|:------:|:-----:|
 | 87+     | 90+    | 9+     | 62+   |
 
-*You can transpile it supporting old browsers, but the performance decreases.*
+*You can transpile the code to support browsers older than listed above, but performance will decrease.*
 
 ## Index
 
 <sup>**[ [Install](#install) ]**</sup>  
-<sup>**[ [Usage](#usage) ]** [Simple example](#simple-example) • [Example Vanilla JS](#example-vanilla-js) • [Example React](#example-react) • [Example @innet/dom](#example-innetdom)</sup>  
-<sup>**[ [Watch](#watch) ]** [Update argument](#update-argument) • [Force update of Watch](#force-update-of-watch) • [Destroy Watch](#destroy-watch) • [Deep/Nested watchers](#deepnested-watchers)</sup>  
-<sup>**[ [State](#state) ]** [Get or Set value](#get-or-set-value) • [Force update of State](#force-update-of-state) • [Raw value](#raw-value) • [State.set (experimental)](#stateset-experimental)</sup>  
+<sup>**[ [Usage](#usage) ]** [Simple example](#simple-example) • [Example Vanilla JS](#example-vanilla-js) • [Example React](#example-react) • [Example Innet](#example-innet)</sup>  
+<sup>**[ [Watch](#watch) ]** [Force update of Watch](#force-update-of-watch) • [Destroy Watch](#destroy-watch) • [Deep/Nested Watchers](#deepnested-watchers)</sup>  
+<sup>**[ [State](#state) ]** [Get or Set value](#get-or-set-value) • [State.set](#stateset) • [Force update of State](#force-update-of-state) • [Raw value](#raw-value) • [Initial value](#initial-value) • [Reset value](#reset-value)</sup>  
 <sup>**[ [Compute](#compute) ]** [Lazy computation](#lazy-computation) • [Force update of Compute](#force-update-of-compute) • [Destroy Compute](#destroy-compute)</sup>  
 <sup>**[ [Utils](#utils) ]** [onDestroy](#ondestroy) • [callEvent](#callevent) • [createEvent](#createevent) • [unwatch](#unwatch)</sup>  
-<sup>**[ [Typescript](#typescript) ]**</sup>  
+<sup>**[ [Typescript](#typescript) ]** [State type inference](#state-type-inference) • [Compute type inference](#compute-type-inference)</sup>  
 <sup>**[ [Performance](#performance) ]**</sup>
 
 ## Install
@@ -132,7 +148,7 @@ html
 ## Usage
 ###### [🏠︎](#index) / Usage [↑](#install) [↓](#watch)
 
-<sup>[Simple example](#simple-example) • [Example Vanilla JS](#example-vanilla-js) • [Example React](#example-react) • [Example @innet/dom](#example-innetdom)</sup>
+<sup>[Simple example](#simple-example) • [Example Vanilla JS](#example-vanilla-js) • [Example React](#example-react) • [Example Innet](#example-innet)</sup>
 
 The library is based on the core concepts of `Observable` (something that can be observed) and `Observer` (something that can observe). On top of these concepts, the core classes `State`, `Compute`, and `Watch` are built according to the following scheme:
 
@@ -158,13 +174,13 @@ import { Watch, State } from 'watch-state'
 const count = new State(0)
 
 new Watch(() => console.log(count.value))
-// console.log(0)
+// logs: 0
 
 count.value++
-// console.log(1)
+// logs: 1
 
 count.value++
-// console.log(2)
+// logs: 2
 ```
 
 ### Example Vanilla JS
@@ -202,9 +218,9 @@ Simple reactive state without build tools or framework dependencies.
 ```
 
 ### Example React
-###### [🏠︎](#index) / [Usage](#usage) / Example React [↑](#example-vanilla-js) [↓](#example-innetdom)
+###### [🏠︎](#index) / [Usage](#usage) / Example React [↑](#example-vanilla-js) [↓](#example-innet)
 
-[@watch-state/react](https://www.npmjs.com/package/@watch-state/react) provides `useObservable()` hook that automatically subscribes React components to state changes and re-renders only when needed.
+[@watch-state/react](https://www.npmjs.com/package/@watch-state/react) provides hooks that automatically subscribe React components to state changes and re-renders only when needed.
 
 ```tsx
 import { State } from 'watch-state'
@@ -223,12 +239,10 @@ export function CountButton () {
 }
 ```
 
-### Example @innet/dom
-###### [🏠︎](#index) / [Usage](#usage) / Example @innet/dom [↑](#example-react)
+### Example Innet
+###### [🏠︎](#index) / [Usage](#usage) / Example Innet [↑](#example-react)
 
-**Zero-runtime reactivity with [@innet/dom](https://www.npmjs.com/package/@innet/dom):**
-
-`@innet/dom` automatically watches accessed states and **updates only changed DOM content** — **no full re-renders**.
+[@innet/dom](https://www.npmjs.com/package/@innet/dom) automatically watches accessed states and **updates only changed DOM content** — **no full re-renders**.
 
 ```tsx
 import { State } from 'watch-state'
@@ -244,87 +258,33 @@ export function CountButton () {
 }
 ```
 
-Key benefits:
-
-- No Watch or useWatch needed — framework handles reactivity
-- Only button content updates, no re-renders of component/DOM tree
-- Direct state access {count} auto-triggers minimal updates
-- Works with any JSX/TSX without extra setup
-
 ## Watch
 ###### [🏠︎](#index) / Watch [↑](#usage) [↓](#state)
 
-<sup>[Update argument](#update-argument) • [Force update of Watch](#force-update-of-watch) • [Destroy Watch](#destroy-watch) • [Deep/Nested watchers](#deepnested-watchers)</sup>
+<sup>[Force update of Watch](#force-update-of-watch) • [Destroy Watch](#destroy-watch) • [Deep/Nested watchers](#deepnested-watchers)</sup>
 
-**Reactive effect that automatically tracks and reacts to state changes.**
-
-`Watch` executes a callback when any accessed `State.value` changes.
-Accessing `.value` **inside the callback auto-subscribes** to that state — no manual registration needed.
+`Watch` accepts a **reaction** as its first argument and executes it when any accessed state changes.
+State accessed inside a reaction is **auto-subscribed** — no manual registration needed.
 
 ```ts
-// Create state
-const count = new State(0)
+const state = new State(0)
 
-// Create watcher that logs the state changes
-new Watch(() => console.log(count.value)) // auto-subscribes to count
+const reaction = () => {
+ console.log(state.value)
+ // auto-subscribes to state
+}
 
-count.value = 1 // triggers watcher callback
-```
+new Watch(reaction)
+// logs: 0
 
-### Update argument
-###### [🏠︎](#index) / [Watch](#watch) / Update argument [↓](#force-update-of-watch)
-
-**Distinguish initial run from updates using `update` parameter.**
-
-`update` is `false` on **first execution** (initial subscription), `true` on **subsequent re-runs** when states change.
-
-```javascript
-const count = new State(0)
-
-new Watch(update => {
-  console.log(update, count.value)
-})
-// console.log(false, 0)
-
-count.value++
-// console.log(true, 1)
-
-count.value++
-// console.log(true, 2)
-```
-
-**Watch state once using `update` flag and auto-destroy:**
-
-```typescript jsx
-const count = new State(0)
-
-new Watch(update => {
-  
-  if (!update) {
-
-    // Watch this value
-    count.value
-
-  } else {
-
-    // React on changes
-    console.log('The value was changed')
-
-  }
-
-})
-
-count.value++
-// console.log('The value was changed')
-
-count.value++
-// nothing happens
+state.value = 1 // triggers reaction
+// logs: 1
 ```
 
 ### Force update of Watch
-###### [🏠︎](#index) / [Watch](#watch) / Force update of Watch [↑](#update-argument) [↓](#destroy-watch)
+###### [🏠︎](#index) / [Watch](#watch) / Force update of Watch [↓](#destroy-watch)
 
-You can run a watcher even when it's states are not updated.
+You can run a reaction even when its states are not updated.
 
 ```typescript
 const count = new State(0)
@@ -332,10 +292,10 @@ const count = new State(0)
 const watcher = new Watch(() => {
   console.log(count.value)
 })
-// console.log(0)
+// logs: 0
 
 watcher.update()
-// console.log(0)
+// logs: 0
 ```
 
 ### Destroy Watch
@@ -349,10 +309,10 @@ const count = new State(0)
 const watcher = new Watch(() => {
   console.log(count.value)
 })
-// console.log(0)
+// logs: 0
 
 count.value++
-// console.log(1)
+// logs: 1
 
 watcher.destroy()
 
@@ -360,12 +320,10 @@ count.value++
 // nothing happens
 ```
 
-### Deep/Nested watchers
-###### [🏠︎](#index) / [Watch](#watch) / Deep/Nested watchers [↑](#destroy-watch)
+### Deep/Nested Watchers
+###### [🏠︎](#index) / [Watch](#watch) / Deep/Nested Watchers [↑](#destroy-watch)
 
-**Create conditional and nested reactive effects.**
-
-Each `Watch` **independently tracks only states accessed within its callback**.
+Each `Watch` **independently tracks only states accessed within its reaction**.
 Nested watchers created inside parent watchers form a **dependency tree** with separate reactivity.
 
 ```javascript
@@ -396,16 +354,14 @@ state.value++
 ## State
 ###### [🏠︎](#index) / State [↑](#watch) [↓](#compute)
 
-<sup>[Get or Set value](#get-or-set-value) • [Force update of State](#force-update-of-state) • [Raw value](#raw-value) • [State.set (experimental)](#stateset-experimental)</sup>
+<sup>[Get or Set value](#get-or-set-value) • [State.set](#stateset) • [Force update of State](#force-update-of-state) • [Raw value](#raw-value) • [Initial value](#initial-value) • [Reset value](#reset-value)</sup>
 
-**Reactive primitive** that automatically notifies all subscribed watchers when `.value` changes.
+**Reactive primitive** that holds a value and automatically notifies all subscribers when it changes.
 
 ### Get or Set value
-###### [🏠︎](#index) / [State](#state) / Get or Set value [↓](#force-update-of-state)
+###### [🏠︎](#index) / [State](#state) / Get or Set value [↓](#stateset)
 
-**Access or mutate the state value.**
-
-Reading `.value` inside `Observer` **auto-subscribes** to changes. Writing `.value` **triggers all watchers**.
+Reading `.value` inside reaction **auto-subscribes** to changes. Writing `.value` **triggers all reactions**.
 
 ```ts
 const count = new State(0)
@@ -416,43 +372,8 @@ new Watch(() => console.log(count.value))
 count.value++ // triggers: logs 1
 ```
 
-### Force update of State
-###### [🏠︎](#index) / [State](#state) / Force update of State [↑](#get-or-set-value) [↓](#raw-value)
-
-You can run watchers of a state with `update` method.
-
-```ts
-// Create state
-const log = new State([])
-
-// Subscribe to changes
-new Watch(() => console.log(log.value)) // logs: []
-
-log.value.push(1) // no logs
-
-// Update value
-log.update() // logs: [1]
-```
-
-### Raw value
-###### [🏠︎](#index) / [State](#state) / Raw value [↑](#force-update-of-state) [↓](#stateset-experimental)
-
-`rawValue` returns the current value but **doesn't subscribe** to changes — unlike `value`.
-
-```ts
-const foo = new State(0)
-const bar = new State(0)
-
-new Watch(() => console.log(foo.value, bar.rawValue))
-// logs: 0, 0
-
-foo.value++ // logs: 1, 0
-bar.value++ // no logs
-foo.value++ // logs: 2, 1
-```
-
-### State.set (experimental)
-###### [🏠︎](#index) / [State](#state) / State.set [↑](#raw-value)
+### State.set
+###### [🏠︎](#index) / [State](#state) / State.set [↑](#get-or-set-value) [↓](#force-update-of-state)
 
 `State.set` mirrors the behavior of the value setter but returns `void`.
 It is useful as a shorthand in arrow functions: `() => state.set(nextValue)` instead of `() => { state.value = nextValue }`.
@@ -464,9 +385,90 @@ const count = new State(0)
 
 // Subscribing
 new Watch(() => console.log(count.value))
-// log: 0
+// logs: 0
 
-count.set(1) // triggers: log: 1
+count.set(1)
+// logs: 1
+```
+
+### Force update of State
+###### [🏠︎](#index) / [State](#state) / Force update of State [↑](#stateset) [↓](#raw-value)
+
+You can run reactions of a state with `update` method.
+
+```ts
+// Create state
+const log = new State<number[]>([])
+
+// Subscribe to changes
+new Watch(() => console.log(log.value)) // logs: []
+
+// Modify the array
+log.value.push(1) // no logs
+log.value.push(2) // no logs
+
+// Update value
+log.update() // logs: [1, 2]
+```
+
+### Raw value
+###### [🏠︎](#index) / [State](#state) / Raw value [↑](#force-update-of-state) [↓](#initial-value)
+
+ `raw` returns the current value but does not subscribe to changes — unlike `value`.
+
+```ts
+const foo = new State(0)
+const bar = new State(0)
+
+ new Watch(() => console.log(foo.value, bar.raw))
+// logs: 0, 0
+
+foo.value++ // logs: 1, 0
+bar.value++ // no logs
+foo.value++ // logs: 2, 1
+```
+
+### Initial value
+###### [🏠︎](#index) / [State](#state) / Initial value [↑](#raw-value) [↓](#reset-value)
+
+`initial` stores the initial value passed to the constructor.
+ Useful for checking if the state has been modified by comparing `state.initial === state.raw`.
+
+```ts
+const count = new State(0)
+
+console.log(count.initial)
+// logs: 0
+
+count.value = 5
+console.log(count.initial === count.raw)
+// logs: false
+
+count.reset()
+console.log(count.initial === count.raw)
+// logs: true
+```
+
+### Reset value
+###### [🏠︎](#index) / [State](#state) / Reset value [↑](#initial-value)
+
+`reset()` restores the state to its initial value.
+Triggers watchers only if the current value differs from the initial value.
+
+```ts
+const count = new State(0)
+
+new Watch(() => console.log(count.value))
+// logs: 0
+
+count.value = 5
+// logs: 5
+
+count.reset()
+// logs: 0
+
+count.reset()
+// no logs (value already 0)
 ```
 
 ## Compute
@@ -474,14 +476,14 @@ count.set(1) // triggers: log: 1
 
 <sup>[Lazy computation](#lazy-computation) • [Force update of Compute](#force-update-of-compute) • [Destroy Compute](#destroy-compute)</sup>
 
-**Derived reactive state** that automatically recomputes when its dependencies change.  
-**Lazy execution** — only computes when `.value` is accessed.
+`Compute` accepts a **reaction** as its first argument and represents a reactive value returned by the reaction.
+It creates a **derived state** that automatically tracks dependencies and caches the result.
 
 ### Lazy computation
 ###### [🏠︎](#index) / [Compute](#compute) / Lazy computation [↓](#force-update-of-compute)
 
 `Compute` doesn't execute immediately — waits for `.value` access.  
-Dependencies (`State.value` reads inside callback) auto-subscribe like `Watch`.
+Dependencies (`State.value` reads inside reaction) auto-subscribe like `Watch`.
 
 ```javascript
 const name = new State('Foo')
@@ -504,60 +506,41 @@ surname.value = 'Quux' // surname[0] = "Q"
 // logs: 'Foo Q'
 ```
 
-**Benefits:**
-- **Zero overhead** for unused computed values
-- **Automatic dependency tracking** — no manual subscriptions
-- **Cached result** — same `.value` reads return cached value
-
 ### Force update of Compute
 ###### [🏠︎](#index) / [Compute](#compute) / Force update of Compute [↑](#lazy-computation) [↓](#destroy-compute)
 
-**Call `.update()` to manually trigger recomputation** — forces callback execution **even when no dependencies changed**.
-
-**Perfect for:**
-- **Array mutations** (`push`, `pop`, `splice`)
-- **Object mutations** (adding properties)
-- **External data refresh**
-- **Debugging** stale values
+You can run a reaction of a compute with `update` method.
 
 ```ts
 const items = new State([])
 
 const itemCount = new Compute(() => {
-  console.log('🔄 Recomputing length...')
+  console.log('Recomputing length...')
   return items.value.length
 })
 
 new Watch(() => console.log('Watcher sees:', itemCount.value))
-// 🔄 Recomputing length...
-// Watcher sees: 0
+// logs: Recomputing length...
+// logs: Watcher sees: 0
 
-items.value.push('apple')  // ❌ Array reference SAME → NO recompute!
-console.log('Direct length:', items.value.length) // 1
-console.log(itemCount.value) // STALE: 0 ❌
+items.value.push('apple')
+// Array reference SAME → NO recompute!
 
-itemCount.update()  // ✅ FORCES recompute
-// 🔄 Recomputing length...
-// Watcher sees: 1 ✅
+itemCount.update()
+// logs: Recomputing length...
+// logs: Watcher sees: 1
 ```
 
 ### Destroy Compute
 ###### [🏠︎](#index) / [Compute](#compute) / Destroy Compute [↑](#force-update-of-compute)
 
-Call `.destroy()` to completely stop reactivity — unsubscribes from all dependency states, clears cached value, and prevents any future recomputations.
-
-Triggers `onDestroy` callbacks registered inside `Compute` callback:
+You can stop watching by `destroy` method of `Compute`.
 
 ```ts
 const user = new State({ name: 'Alice', age: 30 })
 
 const userName = new Compute(() => {
   console.log('Computing')
-
-  onDestroy(() => {
-    console.log('Cleanup')
-  })
-
   return user.value.name.toUpperCase()
 })
 
@@ -566,12 +549,10 @@ new Watch(() => console.log(userName.value))
 // logs: ALICE
 
 user.value = { name: 'Mike', age: 32 }
-// logs: Cleanup
 // logs: Computing
 // logs: MIKE
 
 userName.destroy()
-// logs: Cleanup
 
 user.value = { name: 'Bob', age: 31 }
 // nothing happens — fully disconnected!
@@ -611,23 +592,16 @@ count.value++
 ### callEvent
 ###### [🏠︎](#index) / [Utils](#utils) / callEvent [↑](#ondestroy) [↓](#createevent)
 
-**Immediately executes reactive effect** (unlike [createEvent](#createevent)).
+You can immediately execute a reactive effect with `callEvent`.
 
-Both `callEvent` and `createEvent`:
-- **Ignores** automatic state subscriptions (`unwatch`)
-- **Batches** state updates and **flushes queue** at the end
-- Perfect for **side effects** and **mutations**
-
-**Key differences:**
-- `callEvent(fn)` → **executes NOW** and returns result
-- `createEvent(fn)` → **returns reusable function**
+`callEvent` batches all state updates inside the callback and triggers watchers only once at the end.
 
 ```ts
 const a = new State(0)
 const b = new State(0)
 
 new Watch(() => {
-  console.log(a.value, b.value)
+ console.log(a.value, b.value)
 })
 // logs: 0, 0
 
@@ -638,14 +612,13 @@ b.value = 1
 // logs: 1, 1
 
 callEvent(() => {
-  a.value = 2
-  b.value = 2
+ a.value = 2
+ b.value = 2
 })
-// logs: 1, 1
+// logs: 2, 2
 ```
 
-`callEvent` executes your callback and returns exactly what your callback
-returns — TypeScript infers the correct type automatically.
+`callEvent` returns exactly what your callback returns — TypeScript infers the correct type automatically.
 
 ```ts
 const count = new State(0)
@@ -663,31 +636,30 @@ console.log(prev)
 ### createEvent
 ###### [🏠︎](#index) / [Utils](#utils) / createEvent [↑](#callevent) [↓](#unwatch)
 
-You can create event function with `createEvent`
+You can create a reusable event function with `createEvent`.
+
+Like `callEvent`, it batches state updates and triggers watchers only once after execution.
+
 ```typescript
 import { State, createEvent } from 'watch-state'
 
 const count = new State(0)
-const increase = createEvent(() => {
-  console.log(count.value++)
-})
+const increase = createEvent(() => count.value++)
 
 new Watch(() => console.log(count.value))
-// console.log(0)
+// logs: 0
 
 increase()
-// console.log(1)
+// logs: 1
 
 increase()
-// console.log(2)
+// logs: 2
 ```
 
 ### unwatch
 ###### [🏠︎](#index) / [Utils](#utils) / unwatch [↑](#createevent)
 
-**Disables automatic state subscriptions** by wrapping value access in `unwatch`.
-
-**Unlike `callEvent`/`createEvent`**, `unwatch` does **NOT batch updates**.
+You can disable automatic state subscriptions with `unwatch`.
 
 ```ts
 import { State, Watch, unwatch } from 'watch-state'
@@ -696,28 +668,85 @@ const count = new State(0)
 
 new Watch(() => {
   console.log(unwatch(() => count.value++))
-})                       // logs: 0
+})
+// logs: 0
 
-count.value++            // logs: 1
+count.value++
+// logs: 1
 
-console.log(count.value) // logs: 2
+console.log(count.value)
+// logs: 2
 ```
 
 ## Typescript
 ###### [🏠︎](#index) / Typescript [↑](#utils) [↓](#performance)
 
-Generic of `State`
-```typescript
-const key = new State<string | number>()
+### State type inference
+###### [🏠︎](#index) / [Typescript](#typescript) / State type inference [↓](#compute-type-inference)
 
-key.value = false
-// error, you can use only string or number
-```
-Generic of `Compute`
+**Type inference from initial value:**  
+Type is automatically inferred from the initial value passed to the constructor — no generic needed.
 ```typescript
-new Compute<string>(() => false)
-// error, target of `Compute` should return string
+const count = new State(0) // State<number>
+
+count.value = 'str' // error: number expected
 ```
+
+**Without initial value:**  
+When using a generic without an initial value, `initial` is `undefined`, which may conflict with strict types.
+
+```typescript
+const value = new State<string>()
+// value.initial is undefined (not string)
+
+// To allow undefined in type:
+const maybe = new State<string | undefined>()
+```
+
+**State as a type annotation:**  
+Without a generic, `State` defaults to `State<unknown>`, which accepts any value type.
+
+```typescript
+const foo: State = new State(0)
+
+foo.value = 'str' // ok (unknown allows any)
+foo.value = true  // ok
+
+// Specify generic for type safety:
+const bar: State<number> = new State(0)
+
+bar.value = 'str' // error
+```
+
+### Compute type inference
+###### [🏠︎](#index) / [Typescript](#typescript) / Compute type inference [↑](#state-type-inference)
+
+**Type inferred from function return:**  
+Type is automatically inferred from the function's return value — no generic needed.
+```typescript
+const fullName = new Compute(() => `${firstName.value} ${lastName.value}`)
+// Compute<string> — no generic needed
+
+const length = new Compute(() => items.value.length)
+// Compute<number>
+```
+
+**Explicit generic (usually not needed):**  
+Explicit generics are rarely needed since types are inferred. Use only when you want to enforce a specific type.
+```typescript
+new Compute<string>(() => false) // error: boolean not assignable to string
+```
+
+**Destroyed Compute and undefined:**  
+`Compute.value` is typed as the function return type, but if you access `.value` after `destroy()` (before any computation ran), it returns `undefined`.
+```typescript
+const computed = new Compute(() => expensiveCalculation())
+
+computed.destroy()
+console.log(computed.value) // undefined (but typed as return type)
+```
+
+This is intentional — accessing destroyed observers is rare and shouldn't require `undefined` checks in normal code.
 
 ## Performance
 ###### [🏠︎](#index) / Performance [↑](#typescript)

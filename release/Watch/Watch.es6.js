@@ -1,7 +1,7 @@
 import '../helpers/index.es6.js';
 import { bindObserver } from '../helpers/bindObserver/bindObserver.es6.js';
-import { watchWithScope } from '../helpers/watchWithScope/watchWithScope.es6.js';
 import { destroyWatchers } from '../helpers/destroyWatchers/destroyWatchers.es6.js';
+import { watchWithScope } from '../helpers/watchWithScope/watchWithScope.es6.js';
 
 /**
  * Watcher class for reactive state tracking.
@@ -20,25 +20,35 @@ import { destroyWatchers } from '../helpers/destroyWatchers/destroyWatchers.es6.
  */
 class Watch {
     // TODO: remove in major release
+    /** @deprecated Use `children` */
+    get childrenObservers() {
+        return this.children;
+    }
+    // TODO: remove in major release
     /** @deprecated Use `childrenObservers` */
     get childWatchers() {
-        return this.childrenObservers;
+        return this.children;
     }
-    constructor(watcher, freeParent, freeUpdate) {
-        this.watcher = watcher;
+    // TODO: remove in major release
+    /** @deprecated Use `reaction` */
+    get watcher() {
+        return this.reaction;
+    }
+    constructor(reaction, freeParent, freeUpdate) {
+        this.reaction = reaction;
         /** Whether the watcher has been destroyed */
         this.destroyed = false;
+        /** Tracks if the computation has run at least once. */
+        this.updated = false;
         /** Cleanup functions to run when watcher is destroyed */
         this.destructors = new Set();
         /** Child observers created within this watcher's scope */
-        this.childrenObservers = new Set();
+        this.children = new Set();
         if (!freeParent) {
             bindObserver(this);
         }
         if (!freeUpdate) {
-            watchWithScope(this, () => {
-                watcher(false);
-            });
+            this.update();
         }
     }
     /** Destroy watcher and cleanup all dependencies */
@@ -49,7 +59,8 @@ class Watch {
     update() {
         if (!this.destroyed) {
             watchWithScope(this, () => {
-                this.watcher(true);
+                this.reaction(this.updated); // TODO: remove `this.updated` in major release
+                this.updated = true;
             });
         }
     }

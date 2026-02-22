@@ -17,8 +17,21 @@ import { Observable } from '../Observable';
  * // Update value
  * count.value++ // logs: 1
  */
-export declare class State<V = unknown> extends Observable<V> {
-    constructor(initial?: V);
+export declare class State<V = never | unknown> extends Observable<V extends never ? unknown : V> {
+    /** Current value. No auto-subscription on direct access (unlike `value`). */
+    raw: V extends never ? unknown : V;
+    /**
+     * Initial state value set during construction.
+     * Used by `reset()` to restore state to its original value.
+     * Allows checking if the state has been modified.
+     *
+     * @example
+     * const count = new State(0)
+     *
+   * const isChanged = count.initial === count.raw
+     */
+    readonly initial: V extends never ? unknown : V;
+    constructor(...args: V extends never | undefined ? [V?] : [V]);
     /**
      * Current state value. Updates watchers only on actual changes (strict `!==`).
      * Using `value` inside a `Watch` callback automatically subscribes to changes.
@@ -30,16 +43,29 @@ export declare class State<V = unknown> extends Observable<V> {
      * count.value = 1 // triggers watchers
      * count.value = 1 // no trigger
      */
-    get value(): V;
-    set value(value: V);
+    get value(): V extends never ? unknown : V;
+    set value(value: V extends never ? unknown : V);
     /**
-     * @experimental
      * Sets the state value. Identical to the `value` setter but returns `void`.
      * Useful as a shorthand in arrow functions: `() => state.set(value)` instead of `() => { state.value = value }`
      *
      * `state.set` cannot be used as a standalone function: `const set = state.set`
      */
-    set(value: V): void;
+    set(value: V extends never ? unknown : V): void;
+    /**
+     * Resets state to its initial value.
+     * Triggers watchers only if the current value differs from the initial value.
+     *
+     * @example
+     * const count = new State(0)
+     *
+     * new Watch(() => console.log(count.value)) // logs: 0
+     *
+     * count.value = 5 // logs: 5
+     *
+     * count.reset() // logs: 0
+     */
+    reset(): void;
     /**
      * Force triggers all watchers even if value didn't change.
      *

@@ -53,11 +53,11 @@
   <a href="https://www.npmtrends.com/watch-state" target="_blank">
     <img src="https://img.shields.io/npm/dm/watch-state.svg" alt="watch-state downloads">
   </a>
+  <a href="https://github.com/d8corp/watch-state/tree/master/release" target="_blank">
+    <img src="https://packagephobia.com/badge?p=watch-state" alt="watch-state install size">
+  </a>
   <a href="https://cdn.jsdelivr.net/npm/watch-state" target="_blank">
     <img src="https://img.badgesize.io/https:/cdn.jsdelivr.net/npm/watch-state?compression=gzip" alt="watch-state minzip size">
-  </a>
-  <a href="https://www.npmtrends.com/watch-state" target="_blank">
-    <img src="https://packagephobia.com/badge?p=watch-state" alt="watch-state install size">
   </a>
   <a href="https://www.typescriptlang.org" target="_blank">
     <img src="https://img.shields.io/npm/types/watch-state" alt="TypeSctipt">

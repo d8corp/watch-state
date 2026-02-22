@@ -272,7 +272,7 @@ new Watch(reaction)
 // logs: 0
 
 state.value = 1 // triggers reaction
-// logs: 0
+// logs: 1
 ```
 
 ### Force update of Watch

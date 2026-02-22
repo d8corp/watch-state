@@ -312,8 +312,6 @@ count.value++
 ### Deep/Nested watchers
 ###### [🏠︎](#index) / [Watch](#watch) / Deep/Nested watchers [↑](#destroy-watch)
 
-**Create conditional and nested reactive effects.**
-
 Each `Watch` **independently tracks only states accessed within its reaction**.
 Nested watchers created inside parent watchers form a **dependency tree** with separate reactivity.
 

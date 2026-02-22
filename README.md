@@ -638,9 +638,7 @@ Like `callEvent`, it batches state updates and triggers watchers only once after
 import { State, createEvent } from 'watch-state'
 
 const count = new State(0)
-const increase = createEvent(() => {
-  console.log(count.value++)
-})
+const increase = createEvent(() => count.value++)
 
 new Watch(() => console.log(count.value))
 // logs: 0

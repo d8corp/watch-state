@@ -528,20 +528,13 @@ itemCount.update()
 ### Destroy Compute
 ###### [🏠︎](#index) / [Compute](#compute) / Destroy Compute [↑](#force-update-of-compute)
 
-Call `.destroy()` to completely stop reactivity — unsubscribes from all dependency states, clears cached value, and prevents any future recomputations.
-
-Triggers `onDestroy` callbacks registered inside `Compute` reaction:
+You can stop watching by `destroy` method of `Compute`.
 
 ```ts
 const user = new State({ name: 'Alice', age: 30 })
 
 const userName = new Compute(() => {
   console.log('Computing')
-
-  onDestroy(() => {
-    console.log('Cleanup')
-  })
-
   return user.value.name.toUpperCase()
 })
 
@@ -550,12 +543,10 @@ new Watch(() => console.log(userName.value))
 // logs: ALICE
 
 user.value = { name: 'Mike', age: 32 }
-// logs: Cleanup
 // logs: Computing
 // logs: MIKE
 
 userName.destroy()
-// logs: Cleanup
 
 user.value = { name: 'Bob', age: 31 }
 // nothing happens — fully disconnected!

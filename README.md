@@ -261,13 +261,18 @@ export function CountButton () {
 State accessed inside a reaction is **auto-subscribed** — no manual registration needed.
 
 ```ts
-// Create state
-const count = new State(0)
+const state = new State(0)
 
-// Create watcher that logs the state changes
-new Watch(() => console.log(count.value)) // auto-subscribes to count
+const reaction = () => {
+ console.log(state.value)
+ // auto-subscribes to state
+}
 
-count.value = 1 // triggers reaction
+new Watch(reaction)
+// logs: 0
+
+state.value = 1 // triggers reaction
+// logs: 0
 ```
 
 ### Force update of Watch

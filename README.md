@@ -30,7 +30,7 @@
       <br>
       <b>Light</b>
       <br>
-      Less than 1 KB minzip
+      Less than 1 KB gzip
     </span></td>
     <td align="center"><span>
       <a href="https://d8corp.github.io/watch-state/coverage/lcov-report" target="_blank">
@@ -57,10 +57,10 @@
     <img src="https://packagephobia.com/badge?p=watch-state" alt="watch-state install size">
   </a>
   <a href="https://cdn.jsdelivr.net/npm/watch-state" target="_blank">
-    <img src="https://img.badgesize.io/https:/cdn.jsdelivr.net/npm/watch-state?compression=gzip" alt="watch-state minzip size">
+    <img src="https://img.badgesize.io/https:/cdn.jsdelivr.net/npm/watch-state?compression=gzip" alt="watch-state gzip size">
   </a>
   <a href="https://www.typescriptlang.org" target="_blank">
-    <img src="https://img.shields.io/npm/types/watch-state" alt="TypeSctipt">
+    <img src="https://img.shields.io/npm/types/watch-state" alt="TypeScript">
   </a>
   <a href="https://packagequality.com/#?package=watch-state" target="_blank">
     <img src="https://packagequality.com/shield/watch-state.svg" alt="watch-state quality">
@@ -93,12 +93,12 @@
 
 Use it as the core state layer in your own framework, embed it in React components, or build a full UI — **no JSX, no virtual DOM, no framework required**.
 
-Was born during working on [@innet/dom](https://www.npmjs.com/package/@innet/dom).
+Born while working on [@innet/dom](https://www.npmjs.com/package/@innet/dom).
 
 [![stars](https://img.shields.io/github/stars/d8corp/watch-state?style=social)](https://github.com/d8corp/watch-state/stargazers)
 [![watchers](https://img.shields.io/github/watchers/d8corp/watch-state?style=social)](https://github.com/d8corp/watch-state/watchers)
 
-## Browser supports
+## Browser Support
 
 ### Desktop
 
@@ -118,7 +118,7 @@ Was born during working on [@innet/dom](https://www.npmjs.com/package/@innet/dom
 
 <sup>**[ [Install](#install) ]**</sup>  
 <sup>**[ [Usage](#usage) ]** [Simple example](#simple-example) • [Example Vanilla JS](#example-vanilla-js) • [Example React](#example-react) • [Example Innet](#example-innet)</sup>  
-<sup>**[ [Watch](#watch) ]** [Force update of Watch](#force-update-of-watch) • [Destroy Watch](#destroy-watch) • [Deep/Nested watchers](#deepnested-watchers)</sup>  
+<sup>**[ [Watch](#watch) ]** [Force update of Watch](#force-update-of-watch) • [Destroy Watch](#destroy-watch) • [Deep/Nested Watchers](#deepnested-watchers)</sup>  
 <sup>**[ [State](#state) ]** [Get or Set value](#get-or-set-value) • [State.set](#stateset) • [Force update of State](#force-update-of-state) • [Raw value](#raw-value) • [Initial value](#initial-value) • [Reset value](#reset-value)</sup>  
 <sup>**[ [Compute](#compute) ]** [Lazy computation](#lazy-computation) • [Force update of Compute](#force-update-of-compute) • [Destroy Compute](#destroy-compute)</sup>  
 <sup>**[ [Utils](#utils) ]** [onDestroy](#ondestroy) • [callEvent](#callevent) • [createEvent](#createevent) • [unwatch](#unwatch)</sup>  
@@ -320,8 +320,8 @@ count.value++
 // nothing happens
 ```
 
-### Deep/Nested watchers
-###### [🏠︎](#index) / [Watch](#watch) / Deep/Nested watchers [↑](#destroy-watch)
+### Deep/Nested Watchers
+###### [🏠︎](#index) / [Watch](#watch) / Deep/Nested Watchers [↑](#destroy-watch)
 
 Each `Watch` **independently tracks only states accessed within its reaction**.
 Nested watchers created inside parent watchers form a **dependency tree** with separate reactivity.

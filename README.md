@@ -586,23 +586,14 @@ count.value++
 ### callEvent
 ###### [🏠︎](#index) / [Utils](#utils) / callEvent [↑](#ondestroy) [↓](#createevent)
 
-**Immediately executes reactive effect** (unlike [createEvent](#createevent)).
-
-Both `callEvent` and `createEvent`:
-- **Ignores** automatic state subscriptions (`unwatch`)
-- **Batches** state updates and **flushes queue** at the end
-- Perfect for **side effects** and **mutations**
-
-**Key differences:**
-- `callEvent(fn)` → **executes NOW** and returns result
-- `createEvent(fn)` → **returns reusable function**
+You can immediately execute a reactive effect with `callEvent`.
 
 ```ts
 const a = new State(0)
 const b = new State(0)
 
 new Watch(() => {
-  console.log(a.value, b.value)
+ console.log(a.value, b.value)
 })
 // logs: 0, 0
 
@@ -613,14 +604,13 @@ b.value = 1
 // logs: 1, 1
 
 callEvent(() => {
-  a.value = 2
-  b.value = 2
+ a.value = 2
+ b.value = 2
 })
-// logs: 1, 1
+// logs: 2, 2
 ```
 
-`callEvent` executes your callback and returns exactly what your callback
-returns — TypeScript infers the correct type automatically.
+`callEvent` returns exactly what your callback returns — TypeScript infers the correct type automatically.
 
 ```ts
 const count = new State(0)
@@ -660,9 +650,7 @@ increase()
 ### unwatch
 ###### [🏠︎](#index) / [Utils](#utils) / unwatch [↑](#createevent)
 
-**Disables automatic state subscriptions** by wrapping value access in `unwatch`.
-
-**Unlike `callEvent`/`createEvent`**, `unwatch` does **NOT batch updates**.
+You can disable automatic state subscriptions with `unwatch`.
 
 ```ts
 import { State, Watch, unwatch } from 'watch-state'
@@ -671,11 +659,14 @@ const count = new State(0)
 
 new Watch(() => {
   console.log(unwatch(() => count.value++))
-})                       // logs: 0
+})
+// logs: 0
 
-count.value++            // logs: 1
+count.value++
+// logs: 1
 
-console.log(count.value) // logs: 2
+console.log(count.value)
+// logs: 2
 ```
 
 ## Typescript

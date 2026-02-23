@@ -35,7 +35,7 @@ export class State<T = unknown> extends Observable<T> {
    */
   readonly initial: T
 
-  constructor (...args: T extends undefined ? [T?] : [T])
+  constructor (...args: undefined extends T ? [T?] : [T])
   constructor (initial?: any) {
     super()
     this.raw = this.initial = initial

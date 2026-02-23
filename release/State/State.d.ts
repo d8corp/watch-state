@@ -31,7 +31,7 @@ export declare class State<T = unknown> extends Observable<T> {
    * const isChanged = count.initial === count.raw
      */
     readonly initial: T;
-    constructor(...args: T extends undefined ? [T?] : [T]);
+    constructor(...args: undefined extends T ? [T?] : [T]);
     /**
      * Current state value. Updates watchers only on actual changes (strict `!==`).
      * Using `value` inside a `Watch` callback automatically subscribes to changes.

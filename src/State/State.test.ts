@@ -3,7 +3,7 @@ import { createEvent, State, Watch } from '..'
 describe('State', () => {
   describe('raw value', () => {
     test('syncs with value and initial', () => {
-      const state = new State<number>(0)
+      const state = new State(0)
 
       // raw should mirror initial value at construction
       expect(state.raw).toBe(0)
@@ -26,7 +26,7 @@ describe('State', () => {
 
   describe('constructor', () => {
     test('empty constructor without error', () => {
-      expect(() => new State<undefined>()).not.toThrow()
+      expect(() => new State()).not.toThrow()
     })
 
     test('regular constructor without error', () => {
@@ -43,7 +43,7 @@ describe('State', () => {
     })
 
     test('instance of State', () => {
-      expect(new State<undefined>()).toBeInstanceOf(State)
+      expect(new State()).toBeInstanceOf(State)
     })
   })
 

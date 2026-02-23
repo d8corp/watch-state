@@ -19,9 +19,9 @@ import { Observable } from '../Observable'
  * // Update value
  * count.value++ // logs: 1
  */
-export class State<V = never | unknown> extends Observable<V extends never ? unknown : V> {
+export class State<T = unknown> extends Observable<T> {
   /** Current value. No auto-subscription on direct access (unlike `value`). */
-  raw: V extends never ? unknown : V
+  raw: T
 
   /**
    * Initial state value set during construction.
@@ -33,9 +33,9 @@ export class State<V = never | unknown> extends Observable<V extends never ? unk
    *
  * const isChanged = count.initial === count.raw
    */
-  readonly initial: V extends never ? unknown : V
+  readonly initial: T
 
-  constructor (...args: V extends never | undefined ? [V?] : [V])
+  constructor (...args: T extends undefined ? [T?] : [T])
   constructor (initial?: any) {
     super()
     this.raw = this.initial = initial
@@ -56,7 +56,7 @@ export class State<V = never | unknown> extends Observable<V extends never ? unk
     return super.value
   }
 
-  set value (value: V extends never ? unknown : V) {
+  set value (value: T) {
     if (this.raw !== value) {
       this.raw = value
       this.update()
@@ -69,7 +69,7 @@ export class State<V = never | unknown> extends Observable<V extends never ? unk
    *
    * `state.set` cannot be used as a standalone function: `const set = state.set`
    */
-  set (value: V extends never ? unknown : V) {
+  set (value: T) {
     this.value = value
   }
 

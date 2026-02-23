@@ -17,9 +17,9 @@ import { Observable } from '../Observable';
  * // Update value
  * count.value++ // logs: 1
  */
-export declare class State<V = never | unknown> extends Observable<V extends never ? unknown : V> {
+export declare class State<T = unknown> extends Observable<T> {
     /** Current value. No auto-subscription on direct access (unlike `value`). */
-    raw: V extends never ? unknown : V;
+    raw: T;
     /**
      * Initial state value set during construction.
      * Used by `reset()` to restore state to its original value.
@@ -30,8 +30,8 @@ export declare class State<V = never | unknown> extends Observable<V extends nev
      *
    * const isChanged = count.initial === count.raw
      */
-    readonly initial: V extends never ? unknown : V;
-    constructor(...args: V extends never | undefined ? [V?] : [V]);
+    readonly initial: T;
+    constructor(...args: T extends undefined ? [T?] : [T]);
     /**
      * Current state value. Updates watchers only on actual changes (strict `!==`).
      * Using `value` inside a `Watch` callback automatically subscribes to changes.
@@ -43,15 +43,15 @@ export declare class State<V = never | unknown> extends Observable<V extends nev
      * count.value = 1 // triggers watchers
      * count.value = 1 // no trigger
      */
-    get value(): V extends never ? unknown : V;
-    set value(value: V extends never ? unknown : V);
+    get value(): T;
+    set value(value: T);
     /**
      * Sets the state value. Identical to the `value` setter but returns `void`.
      * Useful as a shorthand in arrow functions: `() => state.set(value)` instead of `() => { state.value = value }`
      *
      * `state.set` cannot be used as a standalone function: `const set = state.set`
      */
-    set(value: V extends never ? unknown : V): void;
+    set(value: T): void;
     /**
      * Resets state to its initial value.
      * Triggers watchers only if the current value differs from the initial value.

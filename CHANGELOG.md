@@ -2,6 +2,10 @@
 
 ## v3.6
 
+### v3.6.1 [![23.02.2026](https://img.shields.io/date/1771835250)](https://github.com/d8corp/watch-state/tree/v3.6.1)
+
+- Improve types
+
 ### v3.6.0 [![23.02.2026](https://img.shields.io/date/1771798270)](https://github.com/d8corp/watch-state/tree/v3.6.0)
 
 - Improve types

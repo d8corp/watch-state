@@ -1,4 +1,4 @@
-import { createEvent, State, Watch } from '..'
+import { State, Watch } from '..'
 
 describe('State', () => {
   describe('raw value', () => {
@@ -101,22 +101,21 @@ describe('State', () => {
   })
 
   describe('loop', () => {
-    test('custom loop', () => {
+    test('change in reaction with raw', () => {
       const count = new State(0)
       const log: number[] = []
 
       new Watch(() => {
         if (count.value < 3) {
-          createEvent(() => {
-            log.push(count.value++)
-          })()
+          log.push(count.raw)
+          count.set(count.raw + 1)
         }
       })
 
       expect(log).toEqual([0, 1, 2])
     })
 
-    test('custom inverse loop', () => {
+    test('change in reaction without unwatch', () => {
       const count = new State(0)
       const log: number[] = []
 
@@ -126,7 +125,7 @@ describe('State', () => {
         }
       })
 
-      expect(log).toEqual([1, 0])
+      expect(log).toEqual([0, 1])
     })
   })
 

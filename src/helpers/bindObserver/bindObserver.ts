@@ -1,14 +1,9 @@
-import { scope } from '../../constants'
 import type { Observer } from '../../types'
 
-export function bindObserver (observer: Observer) {
-  const { activeWatcher } = scope
+export function bindObserver (parent: Observer, observer: Observer) {
+  parent.children.add(observer)
 
-  if (activeWatcher) {
-    activeWatcher.children.add(observer)
-
-    activeWatcher.destructors.add(() => {
-      activeWatcher.children.delete(observer)
-    })
-  }
+  parent.destructors.add(() => {
+    parent.children.delete(observer)
+  })
 }

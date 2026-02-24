@@ -1,81 +1,8 @@
-import { scope } from '../constants'
-import { bindObserver } from '../helpers/bindObserver'
-import { clearWatcher } from '../helpers/clearWatcher'
 import { destroyWatchers } from '../helpers/destroyWatchers'
 import { watchWithScope } from '../helpers/watchWithScope'
+import { useBindObserver } from '../hooks'
 import { Observable } from '../Observable'
-import type { Destructor, Observer, Reaction, Watcher } from '../types'
-import { shiftSet } from '../utils/shiftSet'
-
-/* queue */
-
-let currentCompute: Compute
-let currentObserver: Observer
-let forcedQueue: boolean
-
-const computeStack = new Set<Compute>()
-const observersStack = new Set<Observer>()
-
-export function forceQueueWatchers () {
-  if (forcedQueue) return
-  forcedQueue = true
-
-  while ((currentCompute = shiftSet(computeStack)) || (currentObserver = shiftSet(observersStack))) {
-    if (currentCompute) {
-      currentCompute.invalid = true
-      continue
-    }
-
-    clearWatcher(currentObserver)
-
-    currentObserver.update()
-  }
-
-  forcedQueue = false
-}
-
-export function queueWatchers (observers: Set<Observer>) {
-  const useLoop = !scope.eventDeep && !observersStack.size && !computeStack.size
-  const oldObserversStack = [...observersStack]
-
-  observersStack.clear()
-
-  observers.forEach(watcher => {
-    observersStack.add(watcher)
-
-    if (watcher instanceof Compute) {
-      computeStack.add(watcher)
-    }
-  })
-
-  oldObserversStack.forEach(observer => observersStack.add(observer))
-
-  if (useLoop) {
-    forceQueueWatchers()
-  }
-}
-
-/* invalidateCompute */
-
-const invalidateStack: Observer[] = []
-let currentInvalidateObserver: Observer | undefined
-
-export function invalidateCompute (observer: Observer) {
-  const skipLoop = invalidateStack.length
-  invalidateStack.push(observer)
-
-  if (skipLoop) return
-
-  while ((currentInvalidateObserver = invalidateStack.shift())) {
-    if (currentInvalidateObserver instanceof Compute) {
-      invalidateStack.push(...currentInvalidateObserver.observers)
-
-      currentInvalidateObserver.invalid = true
-    }
-  }
-}
-
-/* Compute */
+import type { Destructor, Observer, Reaction } from '../types'
 
 /**
  * Cached reactive computation with memoization.
@@ -130,79 +57,56 @@ export class Compute<V = unknown> extends Observable<V> implements Observer {
    */
   destroyed = false
 
-  // TODO: remove in major release
-  /** @deprecated Use `observer instanceof Compute` */
-  isCache = true
-
   /** Cleanup functions to run on destroy (e.g., unsubscribes). */
   readonly destructors = new Set<Destructor>()
 
   /** Child watchers created within this watcher's scope */
   readonly children = new Set<Observer>()
 
-  // TODO: remove in major release
-  /** @deprecated Use `children` */
-  get childrenObservers () {
-    return this.children
-  }
-
-  // TODO: remove in major release
-  /** @deprecated Use `childrenObservers` */
-  get childWatchers () {
-    return this.children
-  }
-
-  // TODO: remove in major release
-  /** @deprecated Use `reaction` */
-  get watcher () {
-    return this.reaction
-  }
-
-  constructor (reaction: Reaction<V>, freeParent?: boolean, fireImmediately?: boolean)
-  /** @deprecated `update` argument is deprecated, use `Reaction` */
-  constructor (reaction: Watcher<V>, freeParent?: boolean, fireImmediately?: boolean)
-  constructor (readonly reaction: Watcher<V> | Reaction<V>, freeParent?: boolean, fireImmediately?: boolean) {
+  constructor (readonly reaction: Reaction<V>, freeParent?: boolean, fireImmediately?: boolean) {
     super()
 
     if (!freeParent) {
-      bindObserver(this)
+      useBindObserver(this)
     }
 
     if (fireImmediately) {
-      this.forceUpdate()
+      this.calculate()
     }
+  }
+
+  init () {
+    if (!this.destroyed) return
+
+    this.destroyed = false
+
+    if (!this.reactions.size) return
+
+    const prev = this.raw
+    this.calculate()
+
+    if (prev !== this.raw) {
+      super.update()
+    }
+  }
+
+  calculate () {
+    if (!this.invalid) return
+
+    this.destroy()
+
+    watchWithScope(this, () => {
+      this.destroyed = false
+      this.raw = this.reaction()
+      this.updated = true
+      this.invalid = false
+    })
   }
 
   /** Mark computation as invalid and trigger propagation to parent observers. */
   update () {
-    invalidateCompute(this)
-
-    const parents = [...this.observers]
-    let parent: Observer | undefined
-
-    while ((parent = parents.pop())) {
-      if (!(parent instanceof Compute)) {
-        return this.forceUpdate()
-      }
-
-      parents.push(...parent.observers)
-    }
-  }
-
-  forceUpdate () {
-    if (!this.destroyed) {
-      this.invalid = false
-
-      watchWithScope(this, () => {
-        const newValue = this.reaction(this.updated) // TODO: remove `this.updated` in major release
-        this.updated = true
-
-        if (newValue !== this.raw) {
-          this.raw = newValue
-          queueWatchers(this.observers)
-        }
-      })
-    }
+    this.destroy()
+    this.init()
   }
 
   /**
@@ -219,15 +123,16 @@ export class Compute<V = unknown> extends Observable<V> implements Observer {
    * count.value++ // Count: 1
    */
   get value () {
-    if (this.invalid) {
-      this.forceUpdate()
-    }
+    this.calculate()
 
-    return this.destroyed ? this.raw : super.value
+    return super.value
   }
 
   /** Stop observation and remove all dependencies. */
   destroy () {
+    if (this.destroyed) return
+
+    this.invalid = true
     destroyWatchers(this)
   }
 }

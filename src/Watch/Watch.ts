@@ -1,5 +1,7 @@
-import { bindObserver, destroyWatchers, watchWithScope } from '../helpers'
-import type { Destructor, Observer, Reaction, Watcher } from '../types'
+import { destroyWatchers, watchWithScope } from '../helpers'
+import { queueReaction } from '../helpers/queueReaction'
+import { useBindObserver } from '../hooks'
+import type { Destructor, Observer, Reaction } from '../types'
 
 /**
  * Watcher class for reactive state tracking.
@@ -18,7 +20,7 @@ import type { Destructor, Observer, Reaction, Watcher } from '../types'
  */
 export class Watch implements Observer {
   /** Whether the watcher has been destroyed */
-  destroyed = false
+  destroyed = true
 
   /** Tracks if the computation has run at least once. */
   updated = false
@@ -29,49 +31,40 @@ export class Watch implements Observer {
   /** Child observers created within this watcher's scope */
   readonly children = new Set<Observer>()
 
-  // TODO: remove in major release
-  /** @deprecated Use `children` */
-  get childrenObservers () {
-    return this.children
-  }
-
-  // TODO: remove in major release
-  /** @deprecated Use `childrenObservers` */
-  get childWatchers () {
-    return this.children
-  }
-
-  // TODO: remove in major release
-  /** @deprecated Use `reaction` */
-  get watcher () {
-    return this.reaction
-  }
-
-  constructor (reaction: Reaction<void>, freeParent?: boolean, freeUpdate?: boolean)
-  /** @deprecated `update` argument is deprecated, use `Reaction` */
-  constructor (reaction: Watcher<void>, freeParent?: boolean, freeUpdate?: boolean)
-  constructor (readonly reaction: Watcher<void> | Reaction<void>, freeParent?: boolean, freeUpdate?: boolean) {
+  constructor (readonly reaction: Reaction<void>, freeParent?: boolean, freeUpdate?: boolean) {
     if (!freeParent) {
-      bindObserver(this)
+      useBindObserver(this)
     }
 
     if (!freeUpdate) {
-      this.update()
+      this.init()
     }
   }
 
   /** Destroy watcher and cleanup all dependencies */
   destroy () {
+    if (this.destroyed) return
+
     destroyWatchers(this)
+  }
+
+  init () {
+    if (!this.destroyed) return
+
+    this.destroyed = false
+
+    queueReaction(() => {
+      watchWithScope(this, () => {
+        this.reaction()
+        this.updated = true
+      })
+    })
   }
 
   /** Force watcher update regardless of state changes */
   update () {
-    if (!this.destroyed) {
-      watchWithScope(this, () => {
-        this.reaction(this.updated) // TODO: remove `this.updated` in major release
-        this.updated = true
-      })
-    }
+    if (this.destroyed) return
+    this.destroy()
+    this.init()
   }
 }

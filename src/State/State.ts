@@ -1,4 +1,3 @@
-import { queueWatchers } from '../Compute'
 import { Observable } from '../Observable'
 
 /**
@@ -88,24 +87,5 @@ export class State<T = unknown> extends Observable<T> {
    */
   reset () {
     this.value = this.initial
-  }
-
-  /**
-   * Force triggers all watchers even if value didn't change.
-   *
-   * @example
-   * // Create state
-   * const log = new State([])
-   *
-   * // Subscribe to changes
-   * new Watch(() => console.log(log.value)) // logs: []
-   *
-   * log.value.push(1) // no logs
-   *
-   * // Update value
-   * count.update() // logs: [1]
-   */
-  update () {
-    queueWatchers(this.observers)
   }
 }

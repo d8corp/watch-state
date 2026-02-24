@@ -15,8 +15,10 @@ export interface Observer {
   /** Stop observation and remove all dependencies. */
   destroy: () => void
 
+  init: () => void
+
   /** Force re-run of the observer's logic. */
-  update: () => void
+  update: Reaction<void>
 
   /** Tracks if the computation has run at least once. */
   updated: boolean
@@ -27,34 +29,18 @@ export interface Observer {
    */
   destroyed: boolean
 
-  // TODO: remove in major release
-  /** @deprecated Use `children` */
-  childrenObservers: Set<Observer>
-
-  // TODO: remove in major release
-  /** @deprecated Use `childrenObservers` */
-  childWatchers: Set<Observer>
-
-  // TODO: remove in major release
-  /** @deprecated Use `observer instanceof Compute` */
-  isCache?: boolean
+  reaction: Reaction<void>
 }
 
 /** Global singleton tracking active watcher and event depth */
 export interface Scope {
   /** Currently executing watcher (for auto-subscription) */
   activeWatcher?: Observer
-
-  /** Current nesting depth of events */
-  eventDeep: number
 }
-
-/** @deprecated `update` argument is deprecated, use `Reaction` */
-export type Watcher<T> = (update: boolean) => T
 
 /**
  * A reactive function that tracks dependencies and can to derives a value.
  * Used in `Watch` for side effects and in `Compute` for memoized values.
  * @template T The type of the derived value
  */
-export type Reaction<T> = () => T
+export type Reaction<T = unknown> = () => T

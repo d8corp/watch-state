@@ -1,4 +1,4 @@
-import { Compute, createEvent, State, Watch } from '.'
+import { batch, Compute, State, Watch } from '.'
 
 describe('cases', () => {
   test('simple', () => {
@@ -249,7 +249,7 @@ describe('cases', () => {
 
       expect(cache.value).toBe(1)
 
-      createEvent(() => {
+      batch(() => {
         state.value = 2
         expect(cache.value).toBe(2)
       })

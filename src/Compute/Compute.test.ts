@@ -17,6 +17,59 @@ describe('Compute', () => {
     })
   })
 
+  describe('without watcher', () => {
+    it('returns right value', () => {
+      const state = new State(true)
+      const test = new Compute(() => state.value)
+
+      expect(test.value).toBe(true)
+
+      state.value = false
+
+      expect(test.value).toBe(false)
+    })
+
+    it('does not compute with no changes', () => {
+      const state = new State(true)
+      const log: boolean[] = []
+
+      const test = new Compute(() => {
+        const value = state.value
+        log.push(state.value)
+
+        return value
+      })
+
+      expect(log).toEqual([])
+      expect(test.value).toBe(true)
+      expect(log).toEqual([true])
+      expect(test.value).toBe(true)
+      expect(log).toEqual([true])
+    })
+
+    it('computes on assess to value', () => {
+      const state = new State(true)
+      const log: boolean[] = []
+
+      const test = new Compute(() => {
+        const value = state.value
+        log.push(state.value)
+
+        return value
+      })
+
+      expect(log).toEqual([])
+      expect(test.value).toBe(true)
+      expect(log).toEqual([true])
+
+      state.value = false
+
+      expect(log).toEqual([true])
+      expect(test.value).toBe(false)
+      expect(log).toEqual([true, false])
+    })
+  })
+
   describe('fields', () => {
     describe('value', () => {
       let test = 0
@@ -88,6 +141,23 @@ describe('Compute', () => {
         expect(compute.value).toBe(1)
         expect(test).toBe(2)
       })
+
+      it('updates with watcher', () => {
+        const log: number[] = []
+        let i = 0
+        const count = new State(0)
+        const compute = new Compute(() => count.value + i++)
+
+        new Watch(() => log.push(compute.value))
+
+        expect(log).toEqual([0])
+
+        compute.update()
+        expect(log).toEqual([0, 1])
+
+        compute.update()
+        expect(log).toEqual([0, 1, 2])
+      })
     })
   })
 
@@ -108,15 +178,15 @@ describe('Compute', () => {
     expect(watcherTest).toBe(compute1)
 
     compute1?.update()
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    compute1?.value
+
+    compute1?.get()
     expect(test1).toBe(1)
     expect(test2).toBe(2)
     expect(watcherTest).toBe(compute1)
 
     compute2.update()
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    compute2.value
+
+    compute2.get()
     expect(test1).toBe(2)
     expect(test2).toBe(3)
     expect(watcherTest).not.toBe(compute1)
@@ -132,6 +202,60 @@ describe('Compute', () => {
     state.value = 1
 
     expect(compute2.value).toBe(1)
+  })
+
+  test('deep lazy computation', () => {
+    let log = 0
+    const state = new State(0)
+
+    const compute1 = new Compute(() => {
+      log++
+
+      return state.value
+    })
+
+    const compute2 = new Compute(() => {
+      log++
+
+      return compute1.value
+    })
+
+    expect(log).toBe(0)
+
+    state.value = 1
+
+    expect(log).toBe(0)
+
+    expect(compute2.value).toBe(1)
+    expect(log).toBe(2)
+  })
+
+  test('deep lazy computation double subscribe', () => {
+    let log = 0
+    const state = new State(0)
+
+    const compute1 = new Compute(() => {
+      log++
+
+      return state.value
+    })
+
+    const compute2 = new Compute(() => {
+      log++
+
+      state.get()
+
+      return compute1.value
+    })
+
+    expect(log).toBe(0)
+
+    state.value = 1
+
+    expect(log).toBe(0)
+
+    expect(compute2.value).toBe(1)
+    expect(log).toBe(2)
   })
 
   test('fullName', () => {
@@ -218,17 +342,6 @@ describe('Compute', () => {
     expect(log).toEqual([2])
   })
 
-  test('without watcher', () => {
-    const state = new State(true)
-    const test = new Compute(() => state.value)
-
-    expect(test.value).toBe(true)
-
-    state.value = false
-
-    expect(test.value).toBe(false)
-  })
-
   test('without state', () => {
     let state = 1
     const test = new Compute(() => state)
@@ -252,12 +365,31 @@ describe('Compute', () => {
 
     const log: number[][] = []
 
+    const watcher = new Watch(() => log.push([compute.value, state.value]))
+
+    expect(log).toEqual([[0, 0]])
+
+    state.value = 2
+
+    expect(log.length).toBe(2)
+    expect(log).toEqual([[0, 0], [4, 2]])
+
+    watcher.destroy()
+  })
+
+  test('watch dependency order', () => {
+    const state = new State(0)
+    const compute = new Compute(() => state.value * 2)
+
+    const log: number[][] = []
+
     const watcher = new Watch(() => log.push([state.value, compute.value]))
 
     expect(log).toEqual([[0, 0]])
 
     state.value = 2
 
+    expect(log.length).toBe(2)
     expect(log).toEqual([[0, 0], [2, 4]])
 
     watcher.destroy()
@@ -335,124 +467,5 @@ describe('Compute', () => {
 
     expect(fn).toHaveBeenCalledTimes(2)
     expect(fn1).toHaveBeenCalledTimes(1)
-  })
-
-  describe('update argument', () => {
-    it('receives false on first run', () => {
-      let firstUpdateValue: boolean | undefined
-      let callCount = 0
-
-      const compute = new Compute((update: boolean) => {
-        callCount++
-        firstUpdateValue = update
-      })
-
-      new Watch(() => compute.value)
-
-      expect(callCount).toBe(1)
-      expect(firstUpdateValue).toBe(false)
-    })
-
-    it('receives true on subsequent updates', () => {
-      const state = new State(0)
-      const updateValues: boolean[] = []
-
-      new Watch(() => {
-        const compute = new Compute((update: boolean) => {
-          updateValues.push(update)
-
-          return state.value
-        })
-
-        return compute.value
-      })
-
-      expect(updateValues).toEqual([false])
-
-      state.value = 1
-      expect(updateValues).toEqual([false, true, false]) // TODO: Check if we can do [false, false]
-
-      state.value = 2
-      expect(updateValues).toEqual([false, true, false, true, false]) // TODO: Check if we can do [false, false, false]
-    })
-
-    it('works with forceUpdate', () => {
-      const updateValues: boolean[] = []
-
-      const compute = new Compute((update: boolean) => {
-        updateValues.push(update)
-      })
-
-      // First access triggers initial computation with update=false
-      new Watch(() => compute.value)
-      expect(updateValues).toEqual([false])
-
-      // forceUpdate triggers re-computation with update=true
-      compute.forceUpdate()
-      expect(updateValues).toEqual([false, true])
-
-      // Another forceUpdate
-      compute.forceUpdate()
-      expect(updateValues).toEqual([false, true, true])
-    })
-
-    it('distinguishes first run from updates in nested Compute', () => {
-      const state = new State(0)
-      const outerUpdates: boolean[] = []
-      const innerUpdates: boolean[] = []
-
-      const outerCompute = new Compute((update: boolean) => {
-        outerUpdates.push(update)
-
-        const innerCompute = new Compute((innerUpdate: boolean) => {
-          innerUpdates.push(innerUpdate)
-
-          return state.value * 2
-        })
-
-        new Watch(() => innerCompute.value)
-
-        return state.value * 2
-      })
-
-      new Watch(() => outerCompute.value)
-
-      expect(outerUpdates).toEqual([false])
-      expect(innerUpdates).toEqual([false])
-
-      state.value = 1
-
-      expect(outerUpdates).toEqual([false, true])
-      expect(innerUpdates).toEqual([false, true, false]) // TODO: Check if we can do [false, false]
-    })
-
-    it('can be used to skip initialization logic', () => {
-      const state = new State(0)
-      let initCount = 0
-      let updateCount = 0
-
-      const compute = new Compute((update: boolean) => {
-        if (!update) {
-          initCount++
-        } else {
-          updateCount++
-        }
-
-        return state.value
-      })
-
-      new Watch(() => compute.value)
-
-      expect(initCount).toBe(1)
-      expect(updateCount).toBe(0)
-
-      state.value = 1
-      expect(initCount).toBe(1)
-      expect(updateCount).toBe(1)
-
-      state.value = 2
-      expect(initCount).toBe(1)
-      expect(updateCount).toBe(2)
-    })
   })
 })

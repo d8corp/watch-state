@@ -1,24 +1,32 @@
 import { type Observer } from '../../types'
+import { removeFromBatching } from '../../utils'
 
-const destroyStack: Observer[] = []
-let currentWatcher: Observer | undefined
+const stack: Observer[] = []
+let working = false
 
 export function destroyWatchers (observer: Observer) {
-  const skipLoop = Boolean(destroyStack.length)
-  destroyStack.push(observer)
+  if (working) {
+    stack.push(observer)
 
-  if (skipLoop) return
+    return
+  }
 
-  while ((currentWatcher = destroyStack.shift())) {
-    currentWatcher.children.forEach(observer => {
-      destroyStack.push(observer)
+  working = true
+  let currentObserver: Observer | undefined = observer
+
+  do {
+    currentObserver.children.forEach(observer => {
+      stack.push(observer)
     })
 
-    for (const destructor of currentWatcher.destructors) {
-      currentWatcher.destructors.delete(destructor)
+    for (const destructor of currentObserver.destructors) {
+      currentObserver.destructors.delete(destructor)
       destructor()
     }
 
-    currentWatcher.destroyed = true
-  }
+    currentObserver.destroyed = true
+    removeFromBatching(currentObserver)
+  } while ((currentObserver = stack.shift()))
+
+  working = false
 }

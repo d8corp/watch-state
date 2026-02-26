@@ -1,4 +1,4 @@
 export * from './bindObserver'
-export * from './destroyWatchers'
+export * from './destroyObserver'
 export * from './queueReaction'
 export * from './watchWithScope'

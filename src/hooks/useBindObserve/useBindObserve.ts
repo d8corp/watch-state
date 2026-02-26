@@ -3,9 +3,9 @@ import { bindObserver } from '../../helpers'
 import type { Observer } from '../../types'
 
 export function useBindObserver (observer: Observer) {
-  const { activeWatcher } = scope
+  const parentObserver = scope.observer
 
-  if (activeWatcher) {
-    bindObserver(activeWatcher, observer)
+  if (parentObserver) {
+    bindObserver(parentObserver, observer)
   }
 }

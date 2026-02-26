@@ -1,12 +1,12 @@
-import { destroyWatchers } from './destroyWatchers'
+import { destroyObserver } from './destroyObserver'
 
 import { batch, State, Watch } from '../../'
 
-describe('destroyWatchers', () => {
+describe('destroyObserver', () => {
   it('handles watcher with no destructors', () => {
     const watcher = new Watch(() => {})
 
-    expect(() => destroyWatchers(watcher)).not.toThrow()
+    expect(() => destroyObserver(watcher)).not.toThrow()
     expect(watcher.destroyed).toBe(true)
   })
 
@@ -19,7 +19,7 @@ describe('destroyWatchers', () => {
     expect(fn).not.toHaveBeenCalled()
     expect(watcher.destroyed).toBe(false)
 
-    destroyWatchers(watcher)
+    destroyObserver(watcher)
 
     expect(fn).toHaveBeenCalled()
     expect(watcher.destroyed).toBe(true)
@@ -38,7 +38,7 @@ describe('destroyWatchers', () => {
     expect(fn).not.toHaveBeenCalled()
     expect(child!.destroyed).toBe(false)
 
-    destroyWatchers(parent)
+    destroyObserver(parent)
 
     expect(fn).toHaveBeenCalled()
     expect(child!.destroyed).toBe(true)
@@ -52,7 +52,7 @@ describe('destroyWatchers', () => {
     expect(log).toEqual([0])
 
     batch(() => {
-      destroyWatchers(watcher)
+      destroyObserver(watcher)
       state.value++
     })
 
@@ -69,7 +69,7 @@ describe('destroyWatchers', () => {
 
     batch(() => {
       state.value++
-      destroyWatchers(watcher)
+      destroyObserver(watcher)
     })
 
     expect(watcher.destroyed).toBe(true)
@@ -83,7 +83,7 @@ describe('destroyWatchers', () => {
 
     expect(watcher.destructors.size).toBe(1)
 
-    destroyWatchers(watcher)
+    destroyObserver(watcher)
 
     expect(watcher.destructors.size).toBe(0)
   })
@@ -92,12 +92,12 @@ describe('destroyWatchers', () => {
     const watcher = new Watch(() => {})
 
     watcher.destructors.add(() => {
-      destroyWatchers(watcher)
+      destroyObserver(watcher)
     })
 
     expect(watcher.destructors.size).toBe(1)
 
-    destroyWatchers(watcher)
+    destroyObserver(watcher)
 
     expect(watcher.destructors.size).toBe(0)
   })

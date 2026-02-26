@@ -1,10 +1,10 @@
 import { clearNode, createEvent as createEffectorEvent, createStore as createEffectorStore } from 'effector'
 import { atom as jotai, createStore as createJotaiStore } from 'jotai/vanilla'
 // @ts-expect-error Mazzard does not support TypeScript
-import mazzard from 'mazzard'
+import mazzard, { action as mazzardAction } from 'mazzard'
 import { action, autorun, computed, configure, observable, reaction } from 'mobx'
 import { atom, computed as nanoComputed } from 'nanostores'
-import perfocode, { describe, test } from 'perfocode'
+import { describe, perfocode, test } from 'perfocode'
 import { createStore } from 'redux'
 import { createSelector } from 'reselect'
 import { createStoreon } from 'storeon'
@@ -19,7 +19,7 @@ perfocode('speed.test', () => {
   test('max value', () => {})
 
   describe('Initialisation', () => {
-    describe('State creation', () => {
+    describe('Create a State', () => {
       test('watch-state', () => new State(0))
       test('Nano Stores', () => atom(0))
       test('Jotai', () => jotai(0))
@@ -35,7 +35,7 @@ perfocode('speed.test', () => {
       }]))
     })
 
-    describe('Compute creation', () => {
+    describe('Create a Compute', () => {
       const nano = atom()
       const effectorStore = createEffectorStore(null)
 
@@ -52,7 +52,7 @@ perfocode('speed.test', () => {
       ))
     })
 
-    describe('Bound Compute creation', () => {
+    describe('Create bound Compute', () => {
       const wsState = new State(0)
       const jotaiState = jotai(0)
       const mobxState = observable.box(0)
@@ -73,7 +73,7 @@ perfocode('speed.test', () => {
       ))
     })
 
-    describe('Compute creation + destroy', () => {
+    describe('Create a Compute + destroy', () => {
       const wsState = new State(null)
       const effectorStore = createEffectorStore(null)
 
@@ -82,7 +82,7 @@ perfocode('speed.test', () => {
       test('Effector', () => clearNode(effectorStore.map(state => state)))
     })
 
-    describe('subscription', () => {
+    describe('Subscription', () => {
       describe('Create State subscription', () => {
         const wsColor = new State('red')
         const wsColorAuto = new State('red')
@@ -102,14 +102,14 @@ perfocode('speed.test', () => {
           },
         ])
 
-        test('watch-state', () => wsColor.subscribe(() => {}))
+        test('watch-state', () => wsColor.on(() => {}))
         test('watch-state: auto', () => new Watch(() => wsColorAuto.value))
         test('MobX: autorun', () => autorun(() => mobxColor1.get()))
         test('MobX: reaction', () => reaction(() => mobxColor2.get(), () => {}))
         test('Effector', () => effectorStore.watch(() => {}))
         test('Nano Stores', () => nanoColor.subscribe(() => {}))
         test('Jotai', () => jotaiStore.sub(jotaiColor, () => {}))
-        test('Storeon', () => store.on('@changed', () => {}))
+        test('Storeon', () => store.on('setColor', () => {}))
         test('Mazzard', () => mazzard(() => mazzardStore.count))
         test('Redux', () => reduxStore.subscribe(() => {}))
       })
@@ -118,7 +118,6 @@ perfocode('speed.test', () => {
         const wsColor = new State('red')
         const mobxColor1 = observable.box('red')
         const mobxColor2 = observable.box('red')
-        const messageEvent = createEffectorEvent()
         const nanoColor = atom('red')
         const jotaiColor = jotai('red')
         const jotaiStore = createJotaiStore()
@@ -133,22 +132,15 @@ perfocode('speed.test', () => {
           },
         ])
 
-        test('watch-state', () => wsColor.subscribe(() => {})())
+        test('watch-state', () => wsColor.on(() => {})())
         test('watch-state: auto', () => new Watch(() => wsColor.value).destroy())
         test('MobX: autorun', () => autorun(() => mobxColor1.get())())
         test('MobX: reaction', () => reaction(() => mobxColor2.get(), () => {})())
         test('Effector', () => effectorStore.watch(() => {})())
-        test('Effector: ME', () => messageEvent.watch(() => {})())
         test('Nano Stores', () => nanoColor.subscribe(() => {})())
         test('Jotai', () => jotaiStore.sub(jotaiColor, () => {})())
-        test('Storeon', () => store.on('@changed', () => {})())
-
-        test('Mazzard', () => mazzard((stop: () => void) => {
-          stop()
-
-          return mazzardStore.count
-        }))
-
+        test('Storeon', () => store.on('setColor', () => {})())
+        test('Mazzard', () => mazzard(() => mazzardStore.count)())
         test('Redux', () => reduxStore.subscribe(() => {})())
       })
 
@@ -172,7 +164,7 @@ perfocode('speed.test', () => {
 
         const listener = () => {}
 
-        test('watch-state', () => wsColor.subscribe(listener))
+        test('watch-state', () => wsColor.on(listener))
 
         test('watch-state: auto', () => new Watch(() => {
           wsaColor.get()
@@ -182,7 +174,7 @@ perfocode('speed.test', () => {
         test('Effector', () => messageEvent.watch(listener))
         test('Nano Stores', () => nanoColor.subscribe(listener))
         test('Jotai', () => jotaiStore.sub(jotaiColor, listener))
-        test('Storeon', () => store.on('@changed', listener))
+        test('Storeon', () => store.on('setColor', listener))
         test('Redux', () => reduxStore.subscribe(listener))
         test('MobX', () => reaction(() => mobxColor.get(), listener))
 
@@ -214,7 +206,7 @@ perfocode('speed.test', () => {
         const jotaiComputed = jotai(get => get(jotaiColor))
         const mazzardStore = mazzard({ count: 0, get computed () { return this.count } })
 
-        test('watch-state', () => wsComputed.subscribe(() => {}))
+        test('watch-state', () => wsComputed.on(() => {}))
         test('watch-state: auto', () => new Watch(() => wsComputed.value))
         test('MobX: autorun', () => autorun(() => mobxComputed1.get()))
         test('MobX: reaction', () => reaction(() => mobxComputed2.get(), () => {}))
@@ -237,11 +229,6 @@ perfocode('speed.test', () => {
 
         const jotaiStore = createJotaiStore()
 
-        const reduxStore = createStore((state = { color: 'red' }) => state)
-        const selectColor = (state: any) => state.color
-
-        const reduxComputed = createSelector([selectColor], (color) => color)
-
         const wsComputed = new Compute(() => wsColor.value)
         const mobxComputed1 = computed(() => mobxColor.get())
         const mobxComputed2 = computed(() => mobxColor.get())
@@ -250,23 +237,14 @@ perfocode('speed.test', () => {
         const jotaiComputed = jotai(get => get(jotaiColor))
         const mazzardStore = mazzard({ count: 0, get computed () { return this.count } })
 
-        test('watch-state', () => wsComputed.subscribe(() => {})())
+        test('watch-state', () => wsComputed.on(() => {})())
         test('watch-state: auto', () => new Watch(() => wsComputed.value).destroy())
         test('MobX: autorun', () => autorun(() => mobxComputed1.get())())
         test('MobX: reaction', () => reaction(() => mobxComputed2.get(), () => {})())
         test('Effector', () => effectorComputed.subscribe(() => {})())
         test('Nano Stores', () => nsComputed.subscribe(() => {})())
         test('Jotai', () => jotaiStore.sub(jotaiComputed, () => {})())
-
-        test('Mazzard', () => mazzard((stop: () => void) => {
-          stop()
-
-          return mazzardStore.computed
-        }))
-
-        test('Redux (Reselect)', () => reduxStore.subscribe(() => {
-          reduxComputed(reduxStore.getState())
-        })())
+        test('Mazzard', () => mazzard(() => mazzardStore.computed)())
       })
 
       describe('Duplicate Compute subscription', () => {
@@ -292,7 +270,7 @@ perfocode('speed.test', () => {
 
         const listener = () => {}
 
-        test('watch-state', () => wsComputed.subscribe(listener))
+        test('watch-state', () => wsComputed.on(listener))
 
         test('watch-state: auto', () => new Watch(() => {
           wsaComputed.get()
@@ -320,7 +298,7 @@ perfocode('speed.test', () => {
     })
   })
 
-  describe('Working', () => {
+  describe('Updating', () => {
     describe('Update unwatched State', () => {
       const ws = new State(0)
       const nano = atom(0)
@@ -388,16 +366,16 @@ perfocode('speed.test', () => {
 
       const reduxStore = createStore(reducer, { count: 0 })
 
-      new Watch(() => state.value)
-      autorun(() => stateMobx1.get())
-      reaction(() => stateMobx2.get(), () => {})
-      store.watch(() => {})
-      nano.subscribe(() => {})
-      ws.subscribe(() => {})
-      jotaiStore.sub(jotaiAtom, () => {})
-      storeon.on('@changed', () => {})
-      reduxStore.subscribe(() => {})
-      mazzard(() => mazzardStore.count)
+      const watcher = new Watch(() => state.value)
+      const unwatch1 = ws.on(() => {})
+      const unwatch2 = autorun(() => stateMobx1.get())
+      const unwatch3 = reaction(() => stateMobx2.get(), () => {})
+      const unwatch4 = store.watch(() => {})
+      const unwatch5 = nano.subscribe(() => {})
+      const unwatch6 = jotaiStore.sub(jotaiAtom, () => {})
+      const unwatch7 = storeon.on('inc', () => {})
+      const unwatch8 = reduxStore.subscribe(() => {})
+      const unwatch9 = mazzard(() => mazzardStore.count)
 
       test('watch-state', () => ws.value++)
       test('watch-state: auto', () => state.value++)
@@ -409,144 +387,632 @@ perfocode('speed.test', () => {
       test('Storeon', () => storeon.dispatch('inc'))
       test('Redux', () => reduxStore.dispatch({ type: 'inc' }))
       test('Mazzard', () => mazzardStore.count++)
-    })
-
-    describe('Batching', () => {
-      describe('without batching x10', () => {
-        const state1 = new State(0)
-        const state2 = observable.box(0)
-        const watcher1 = new Watch(() => state1.value)
-        const watcher2 = autorun(() => state2.get())
-
-        test('watch-state', () => {
-          for (let i = 0; i < 10; i++) {
-            state1.value++
-          }
-        })
-
-        watcher1.destroy()
-
-        test('mobx', () => {
-          for (let i = 0; i < 10; i++) {
-            state2.set(state2.get() + 1)
-          }
-        })
-
-        watcher2()
-      })
-
-      describe('with batching x10', () => {
-        const state1 = new State(0)
-        const state2 = observable.box(0)
-        const watcher1 = new Watch(() => state1.value)
-        const watcher2 = autorun(() => state2.get())
-
-        const event1 = () => batch(() => {
-          for (let i = 0; i < 10; i++) {
-            state1.value++
-          }
-        })
-
-        const event2 = action(() => {
-          for (let i = 0; i < 10; i++) {
-            state2.set(state2.get() + 1)
-          }
-        })
-
-        test('watch-state', () => {
-          event1()
-        })
-
-        watcher1.destroy()
-
-        test('mobx', () => {
-          event2()
-        })
-
-        watcher2()
-      })
-    })
-
-    describe('update watched value', () => {
-      // watch-state
-      const ws = new State(0)
-      ws.subscribe(() => {})
-
-      // watch-state: auto-subscribe
-      const WSState = new State(0)
-      const watcher = new Watch(() => WSState.value)
-
-      // mobx
-      const MXState = observable.box(0)
-      const disposer = autorun(() => MXState.get())
-
-      // redux
-      function reducer (state: any, action: any) {
-        if (action.type === 'INCREMENT') {
-          return { ...state, count: state.count + 1 }
-        }
-
-        return state
-      }
-
-      const store = createStore(reducer, { count: 0 })
-      const destroy = store.subscribe(() => store.getState().count)
-
-      // effector
-      const increment = createEffectorEvent()
-      const counter = createEffectorStore(0).on(increment, state => state + 1)
-      counter.watch(count => count)
-
-      // mazzard
-      const MAState = mazzard({ value: 0 })
-      const MAWatch = mazzard(() => MAState.value)
-
-      // storeon
-      const count = (store: any) => {
-        store.on('@init', () => ({ count: 0 }))
-        store.on('inc', ({ count }: any) => ({ count: count + 1 }))
-      }
-
-      const SStore = createStoreon<any>([count])
-
-      const SDispatch = SStore.on('inc', ({ count }) => count)
-
-      test('watch-state', () => {
-        ws.value++
-      })
-
-      test('watch-state: auto-subscribe', () => {
-        WSState.value++
-      })
-
-      test('mobx', () => {
-        MXState.set(MXState.get() + 1)
-      })
-
-      test('redux', () => {
-        store.dispatch({ type: 'INCREMENT' })
-      })
-
-      test('effector', () => {
-        increment()
-      })
-
-      test('mazzard', () => {
-        MAState.value++
-      })
-
-      test('storeon', () => {
-        SStore.dispatch('inc')
-      })
 
       watcher.destroy()
-      disposer()
-      destroy()
-      MAWatch()
-      SDispatch()
+      unwatch1()
+      unwatch2()
+      unwatch3()
+      unwatch4()
+      unwatch5()
+      unwatch6()
+      unwatch7()
+      unwatch8()
+      unwatch9()
     })
 
-    describe('counter', () => {
+    describe('Update unwatched Compute', () => {
+      const wsState = new State(0)
+      const mobxState = observable.box(0)
+      const mazzardState = mazzard({ count: 0, get computed () { return this.count } })
+      const nanoState = atom(0)
+      const jotaiAtom = jotai(0)
+      const jotaiStore = createJotaiStore()
+      const incrementEffector = createEffectorEvent()
+      const effectorStore = createEffectorStore(0).on(incrementEffector, s => s + 1)
+
+      const storeon = createStoreon([
+        s => {
+          s.on('@init', () => ({ c: 0 }))
+          s.on('inc', (state: any) => ({ c: state.c + 1 }))
+        },
+      ])
+
+      const reduxStore = createStore((s: number = 0, a) =>
+        a.type === 'inc' ? s + 1 : s,
+      )
+
+      const mazzardEvent = () => {
+        mazzardState.count++
+      }
+
+      const wsAction = () => {
+        wsState.value++
+      }
+
+      const mobxAction = () => {
+        mobxState.set(mobxState.get() + 1)
+      }
+
+      const nanoAction = () => {
+        nanoState.set(nanoState.get() + 1)
+      }
+
+      const jotaiAction = () => {
+        jotaiStore.set(jotaiAtom, c => c + 1)
+      }
+
+      const effectorAction = () => {
+        incrementEffector()
+      }
+
+      const reduxAction = () => {
+        reduxStore.dispatch({ type: 'inc' })
+      }
+
+      const storeonAction = () => {
+        storeon.dispatch('inc')
+      }
+
+      const wsCompute = new Compute(() => wsState.value)
+      computed(() => mobxState.get())
+      nanoComputed(nanoState, value => value)
+      jotai(get => get(jotaiAtom))
+      effectorStore.map(value => value)
+
+      test('watch-state', () => wsAction())
+      test('MobX', () => mobxAction())
+      test('Mazzard', () => mazzardEvent())
+      test('Nano Stores', () => nanoAction())
+      test('Jotai', () => jotaiAction())
+      test('Effector', () => effectorAction())
+      test('Redux (Reselect)', () => reduxAction())
+      test('Storeon', () => storeonAction())
+      wsCompute.destroy()
+    })
+
+    describe('Update watched Compute', () => {
+      const wsState = new State(0)
+      const mobxState = observable.box(0)
+      const mazzardState = mazzard({ count: 0, get computed () { return this.count } })
+      const nanoState = atom(0)
+      const jotaiAtom = jotai(0)
+      const jotaiStore = createJotaiStore()
+      const incrementEffector = createEffectorEvent()
+      const effectorStore = createEffectorStore(0).on(incrementEffector, s => s + 1)
+
+      const storeon = createStoreon([
+        s => {
+          s.on('@init', () => ({ c: 0 }))
+          s.on('inc', (state: any) => ({ c: state.c + 1 }))
+        },
+      ])
+
+      const reduxStore = createStore((s: number = 0, a) =>
+        a.type === 'inc' ? s + 1 : s,
+      )
+
+      const reduxSelector = createSelector(
+        (state) => state.c,
+        (c) => c + 1,
+      )
+
+      const mazzardEvent = () => {
+        mazzardState.count++
+      }
+
+      const wsAction = () => {
+        wsState.value++
+      }
+
+      const mobxAction = () => {
+        mobxState.set(mobxState.get() + 1)
+      }
+
+      const nanoAction = () => {
+        nanoState.set(nanoState.get() + 1)
+      }
+
+      const jotaiAction = () => {
+        jotaiStore.set(jotaiAtom, c => c + 1)
+      }
+
+      const effectorAction = () => {
+        incrementEffector()
+      }
+
+      const reduxAction = () => {
+        reduxStore.dispatch({ type: 'inc' })
+      }
+
+      const storeonAction = () => {
+        storeon.dispatch('inc')
+      }
+
+      const wsCompute = new Compute(() => wsState.value)
+      const mobxCompute = computed(() => mobxState.get())
+      const nanoCompute = nanoComputed(nanoState, value => value)
+      const jotaiCompute = jotai(get => get(jotaiAtom))
+      const effectorCompute = effectorStore.map(value => value)
+
+      const unwatch1 = wsCompute.on(() => {})
+      const unwatch2 = autorun(() => mobxCompute.get())
+      const unwatch3 = mazzard(() => mazzardState.computed)
+      const unwatch4 = nanoCompute.subscribe(() => {})
+      const unwatch5 = jotaiStore.sub(jotaiCompute, () => {})
+      const unwatch6 = effectorCompute.watch(() => {})
+      const unwatch7 = storeon.on('inc', () => {})
+
+      const unwatch8 = reduxStore.subscribe(() => {
+        reduxSelector(reduxStore.getState())
+      })
+
+      test('watch-state', () => wsAction())
+      test('MobX', () => mobxAction())
+      test('Mazzard', () => mazzardEvent())
+      test('Nano Stores', () => nanoAction())
+      test('Jotai', () => jotaiAction())
+      test('Effector', () => effectorAction())
+      test('Redux (Reselect)', () => reduxAction())
+      test('Storeon', () => storeonAction())
+
+      wsCompute.destroy()
+      unwatch1()
+      unwatch2()
+      unwatch3()
+      unwatch4()
+      unwatch5()
+      unwatch6()
+      unwatch7()
+      unwatch8()
+    })
+
+    describe('Update memo Compute', () => {
+      const wsState = new State(0)
+      const mobxState = observable.box(0)
+      const mazzardState = mazzard({ count: 0, get computed () { return this.count } })
+      const nanoState = atom(0)
+      const jotaiAtom = jotai(0)
+      const jotaiStore = createJotaiStore()
+      const incrementEffector = createEffectorEvent()
+      const effectorStore = createEffectorStore(0).on(incrementEffector, s => s + 1)
+
+      const storeon = createStoreon([
+        s => {
+          s.on('@init', () => ({ c: 0 }))
+          s.on('inc', (state: any) => ({ c: state.c + 1 }))
+        },
+      ])
+
+      const reduxStore = createStore((s: number = 0, a) =>
+        a.type === 'inc' ? s + 1 : s,
+      )
+
+      const reduxSelector = createSelector(
+        (state) => state.c,
+        (c) => c > 0,
+      )
+
+      const mazzardEvent = () => {
+        mazzardState.count++
+      }
+
+      const wsAction = () => {
+        wsState.value++
+      }
+
+      const mobxAction = () => {
+        mobxState.set(mobxState.get() + 1)
+      }
+
+      const nanoAction = () => {
+        nanoState.set(nanoState.get() + 1)
+      }
+
+      const jotaiAction = () => {
+        jotaiStore.set(jotaiAtom, c => c + 1)
+      }
+
+      const effectorAction = () => {
+        incrementEffector()
+      }
+
+      const reduxAction = () => {
+        reduxStore.dispatch({ type: 'inc' })
+      }
+
+      const storeonAction = () => {
+        storeon.dispatch('inc')
+      }
+
+      const wsCompute = new Compute(() => wsState.value > 0)
+      const mobxCompute = computed(() => mobxState.get() > 0)
+      const nanoCompute = nanoComputed(nanoState, value => value > 0)
+      const jotaiCompute = jotai(get => get(jotaiAtom) > 0)
+      const effectorCompute = effectorStore.map(value => value > 0)
+
+      const unwatch1 = wsCompute.on(() => {})
+      const unwatch2 = autorun(() => mobxCompute.get())
+      const unwatch3 = mazzard(() => mazzardState.computed)
+      const unwatch4 = nanoCompute.subscribe(() => {})
+      const unwatch5 = jotaiStore.sub(jotaiCompute, () => {})
+      const unwatch6 = effectorCompute.watch(() => {})
+      const unwatch7 = storeon.on('inc', () => {})
+
+      const unwatch8 = reduxStore.subscribe(() => {
+        reduxSelector(reduxStore.getState())
+      })
+
+      test('watch-state', () => wsAction())
+      test('MobX', () => mobxAction())
+      test('Mazzard', () => mazzardEvent())
+      test('Nano Stores', () => nanoAction())
+      test('Jotai', () => jotaiAction())
+      test('Effector', () => effectorAction())
+      test('Redux (Reselect)', () => reduxAction())
+      test('Storeon', () => storeonAction())
+
+      wsCompute.destroy()
+      unwatch1()
+      unwatch2()
+      unwatch3()
+      unwatch4()
+      unwatch5()
+      unwatch6()
+      unwatch7()
+      unwatch8()
+    })
+  })
+
+  describe('Batching', () => {
+    describe('Batching with State', () => {
+      const wsState = new State(0)
+      const mobxState = observable.box(0)
+      const mazzardState = mazzard({ count: 0 })
+      const nanoState = atom(0)
+      const jotaiAtom = jotai(0)
+      const jotaiStore = createJotaiStore()
+      const incrementEffector = createEffectorEvent()
+      const effectorStore = createEffectorStore(0).on(incrementEffector, s => s + 1)
+
+      const reduxStore = createStore((s: number = 0, a) => a.type === 'inc' ? s + 1 : s)
+
+      const storeon = createStoreon([store => {
+        store.on('@init', () => ({ count: 0 }))
+        store.on('inc', (state: any) => ({ count: state.count + 1 }))
+      }])
+
+      const mazzardEvent = mazzardAction(() => {
+        for (let i = 0; i < 10; i++) {
+          mazzardState.count++
+        }
+      })
+
+      const wsAction = () => batch(() => {
+        for (let i = 0; i < 10; i++) {
+          wsState.value++
+        }
+      })
+
+      const mobxAction = action(() => {
+        for (let i = 0; i < 10; i++) {
+          mobxState.set(mobxState.get() + 1)
+        }
+      })
+
+      const nanoAction = () => {
+        for (let i = 0; i < 10; i++) {
+          nanoState.set(nanoState.get() + 1)
+        }
+      }
+
+      const jotaiAction = () => {
+        for (let i = 0; i < 10; i++) {
+          jotaiStore.set(jotaiAtom, c => c + 1)
+        }
+      }
+
+      const effectorAction = () => {
+        for (let i = 0; i < 10; i++) {
+          incrementEffector()
+        }
+      }
+
+      const reduxAction = () => {
+        for (let i = 0; i < 10; i++) {
+          reduxStore.dispatch({ type: 'inc' })
+        }
+      }
+
+      const storeonAction = () => {
+        for (let i = 0; i < 10; i++) storeon.dispatch('inc')
+      }
+
+      const unwatch1 = wsState.on(() => {})
+      const unwatch2 = autorun(() => mobxState.get())
+      const unwatch3 = mazzard(() => mazzardState.count)
+      const unwatch4 = nanoState.subscribe(() => {})
+      const unwatch5 = jotaiStore.sub(jotaiAtom, () => {})
+      const unwatch6 = effectorStore.watch(() => {})
+      const unwatch7 = reduxStore.subscribe(() => {})
+      const unwatch8 = storeon.on('inc', () => {})
+
+      test('watch-state', () => wsAction())
+      test('MobX', () => mobxAction())
+      test('Mazzard', () => mazzardEvent())
+      test('Nano Stores', () => nanoAction())
+      test('Jotai', () => jotaiAction())
+      test('Effector', () => effectorAction())
+      test('Redux', () => reduxAction())
+      test('Storeon', () => storeonAction())
+
+      unwatch1()
+      unwatch2()
+      unwatch3()
+      unwatch4()
+      unwatch5()
+      unwatch6()
+      unwatch7()
+      unwatch8()
+    })
+
+    describe('Batching with unwatched State', () => {
+      const wsState = new State(0)
+      const mobxState = observable.box(0)
+      const mazzardState = mazzard({ count: 0 })
+      const nanoState = atom(0)
+      const jotaiAtom = jotai(0)
+      const jotaiStore = createJotaiStore()
+      const incrementEffector = createEffectorEvent()
+      createEffectorStore(0).on(incrementEffector, s => s + 1)
+
+      const reduxStore = createStore((s: number = 0, a) => a.type === 'inc' ? s + 1 : s)
+
+      const storeon = createStoreon([store => {
+        store.on('@init', () => ({ count: 0 }))
+        store.on('inc', (state: any) => ({ count: state.count + 1 }))
+      }])
+
+      const mazzardEvent = mazzardAction(() => {
+        for (let i = 0; i < 10; i++) {
+          mazzardState.count++
+        }
+      })
+
+      const wsAction = () => batch(() => {
+        for (let i = 0; i < 10; i++) {
+          wsState.value++
+        }
+      })
+
+      const mobxAction = action(() => {
+        for (let i = 0; i < 10; i++) {
+          mobxState.set(mobxState.get() + 1)
+        }
+      })
+
+      const nanoAction = () => {
+        for (let i = 0; i < 10; i++) {
+          nanoState.set(nanoState.get() + 1)
+        }
+      }
+
+      const jotaiAction = () => {
+        for (let i = 0; i < 10; i++) {
+          jotaiStore.set(jotaiAtom, c => c + 1)
+        }
+      }
+
+      const effectorAction = () => {
+        for (let i = 0; i < 10; i++) {
+          incrementEffector()
+        }
+      }
+
+      const reduxAction = () => {
+        for (let i = 0; i < 10; i++) {
+          reduxStore.dispatch({ type: 'inc' })
+        }
+      }
+
+      const storeonAction = () => {
+        for (let i = 0; i < 10; i++) storeon.dispatch('inc')
+      }
+
+      test('watch-state', () => wsAction())
+      test('MobX', () => mobxAction())
+      test('Mazzard', () => mazzardEvent())
+      test('Nano Stores', () => nanoAction())
+      test('Jotai', () => jotaiAction())
+      test('Effector', () => effectorAction())
+      test('Redux', () => reduxAction())
+      test('Storeon', () => storeonAction())
+    })
+
+    describe('Batching with Compute', () => {
+      const wsState = new State(0)
+      const mobxState = observable.box(0)
+      const mazzardState = mazzard({ count: 0, get computed () { return this.count } })
+      const nanoState = atom(0)
+      const jotaiAtom = jotai(0)
+      const jotaiStore = createJotaiStore()
+      const incrementEffector = createEffectorEvent()
+      const effectorStore = createEffectorStore(0).on(incrementEffector, s => s + 1)
+
+      const storeon = createStoreon([
+        s => {
+          s.on('@init', () => ({ c: 0 }))
+          s.on('inc', (state: any) => ({ c: state.c + 1 }))
+        },
+      ])
+
+      const reduxStore = createStore((s: number = 0, a) =>
+        a.type === 'inc' ? s + 1 : s,
+      )
+
+      const reduxSelector = createSelector(
+        (state) => state.c,
+        (c) => c + 1,
+      )
+
+      const mazzardEvent = mazzardAction(() => {
+        for (let i = 0; i < 10; i++) {
+          mazzardState.count++
+        }
+      })
+
+      const wsAction = () => batch(() => {
+        for (let i = 0; i < 10; i++) {
+          wsState.value++
+        }
+      })
+
+      const mobxAction = action(() => {
+        for (let i = 0; i < 10; i++) {
+          mobxState.set(mobxState.get() + 1)
+        }
+      })
+
+      const nanoAction = () => {
+        for (let i = 0; i < 10; i++) {
+          nanoState.set(nanoState.get() + 1)
+        }
+      }
+
+      const jotaiAction = () => {
+        for (let i = 0; i < 10; i++) {
+          jotaiStore.set(jotaiAtom, c => c + 1)
+        }
+      }
+
+      const effectorAction = () => {
+        for (let i = 0; i < 10; i++) {
+          incrementEffector()
+        }
+      }
+
+      const reduxAction = () => {
+        for (let i = 0; i < 10; i++) reduxStore.dispatch({ type: 'inc' })
+      }
+
+      const storeonAction = () => {
+        for (let i = 0; i < 10; i++) storeon.dispatch('inc')
+      }
+
+      const wsCompute = new Compute(() => wsState.value)
+      const mobxCompute = computed(() => mobxState.get())
+      const nanoCompute = nanoComputed(nanoState, value => value)
+      const jotaiCompute = jotai(get => get(jotaiAtom))
+      const effectorCompute = effectorStore.map(value => value)
+
+      const unwatch1 = wsCompute.on(() => {})
+      const unwatch2 = autorun(() => mobxCompute.get())
+      const unwatch3 = mazzard(() => mazzardState.computed)
+      const unwatch4 = nanoCompute.subscribe(() => {})
+      const unwatch5 = jotaiStore.sub(jotaiCompute, () => {})
+      const unwatch6 = effectorCompute.watch(() => {})
+      const unwatch7 = storeon.on('inc', () => {})
+
+      const unwatch8 = reduxStore.subscribe(() => {
+        reduxSelector(reduxStore.getState())
+      })
+
+      test('watch-state', () => wsAction())
+      test('MobX', () => mobxAction())
+      test('Mazzard', () => mazzardEvent())
+      test('Nano Stores', () => nanoAction())
+      test('Jotai', () => jotaiAction())
+      test('Effector', () => effectorAction())
+      test('Redux (Reselect)', () => reduxAction())
+      test('Storeon', () => storeonAction())
+
+      wsCompute.destroy()
+      unwatch1()
+      unwatch2()
+      unwatch3()
+      unwatch4()
+      unwatch5()
+      unwatch6()
+      unwatch7()
+      unwatch8()
+    })
+
+    describe('Batching with unwatched Compute', () => {
+      const wsState = new State(0)
+      const mobxState = observable.box(0)
+      const mazzardState = mazzard({ count: 0, get computed () { return this.count } })
+      const nanoState = atom(0)
+      const jotaiAtom = jotai(0)
+      const jotaiStore = createJotaiStore()
+      const incrementEffector = createEffectorEvent()
+      const effectorStore = createEffectorStore(0).on(incrementEffector, s => s + 1)
+
+      const storeon = createStoreon([
+        s => {
+          s.on('@init', () => ({ c: 0 }))
+          s.on('inc', (state: any) => ({ c: state.c + 1 }))
+        },
+      ])
+
+      const mazzardEvent = mazzardAction(() => {
+        for (let i = 0; i < 10; i++) {
+          mazzardState.count++
+        }
+      })
+
+      const wsAction = () => batch(() => {
+        for (let i = 0; i < 10; i++) {
+          wsState.value++
+        }
+      })
+
+      const mobxAction = action(() => {
+        for (let i = 0; i < 10; i++) {
+          mobxState.set(mobxState.get() + 1)
+        }
+      })
+
+      const nanoAction = () => {
+        for (let i = 0; i < 10; i++) {
+          nanoState.set(nanoState.get() + 1)
+        }
+      }
+
+      const jotaiAction = () => {
+        for (let i = 0; i < 10; i++) {
+          jotaiStore.set(jotaiAtom, c => c + 1)
+        }
+      }
+
+      const effectorAction = () => {
+        for (let i = 0; i < 10; i++) {
+          incrementEffector()
+        }
+      }
+
+      const storeonAction = () => {
+        for (let i = 0; i < 10; i++) storeon.dispatch('inc')
+      }
+
+      const wsCompute = new Compute(() => wsState.value)
+      computed(() => mobxState.get())
+      nanoComputed(nanoState, value => value)
+      jotai(get => get(jotaiAtom))
+      effectorStore.map(value => value)
+
+      test('watch-state', () => wsAction())
+      test('MobX', () => mobxAction())
+      test('Mazzard', () => mazzardEvent())
+      test('Nano Stores', () => nanoAction())
+      test('Jotai', () => jotaiAction())
+      test('Effector', () => effectorAction())
+      test('Storeon', () => storeonAction())
+
+      wsCompute.destroy()
+    })
+  })
+
+  describe('Examples', () => {
+    describe('Counter', () => {
       const COUNT = 1000
 
       const testLog = (log: number[]) => {
@@ -569,16 +1035,17 @@ perfocode('speed.test', () => {
 
         log.push(state.value)
 
-        state.subscribe(() => {
-          log.push(state.value)
+        const unsubscribe = state.on(() => {
+          log.push(state.raw)
         })
 
         while (state.value--) { /* empty */ }
 
         testLog(log)
+        unsubscribe()
       })
 
-      test('watch-state: auto-subscribe', () => {
+      test('watch-state: auto', () => {
         const log: number[] = []
         const state = new State(COUNT)
         const watcher = new Watch(() => log.push(state.value))
@@ -589,7 +1056,7 @@ perfocode('speed.test', () => {
         watcher.destroy()
       })
 
-      test('mobx', () => {
+      test('MobX', () => {
         const log: number[] = []
         const state = observable.box(COUNT)
         const disposer = autorun(() => log.push(state.get()))
@@ -602,7 +1069,7 @@ perfocode('speed.test', () => {
         disposer()
       })
 
-      test('redux', () => {
+      test('Redux', () => {
         const log: number[] = []
 
         function reducer (state: any, action: any) {
@@ -625,7 +1092,7 @@ perfocode('speed.test', () => {
         destroy()
       })
 
-      test('mazzard', () => {
+      test('Mazzard', () => {
         const log: number[] = []
         const store = mazzard({ value: COUNT })
         const stop = mazzard(() => log.push(store.value))
@@ -636,12 +1103,12 @@ perfocode('speed.test', () => {
         stop()
       })
 
-      test('effector', () => {
+      test('Effector', () => {
         const log: number[] = []
         const decrement = createEffectorEvent()
         const counter = createEffectorStore(COUNT).on(decrement, state => state - 1)
 
-        const subscription = counter.watch(state => {
+        const unsubscribe = counter.watch(state => {
           log.push(state)
         })
 
@@ -650,10 +1117,10 @@ perfocode('speed.test', () => {
         }
 
         testLog(log)
-        subscription.unsubscribe()
+        unsubscribe()
       })
 
-      test('storeon', () => {
+      test('Storeon', () => {
         const log = []
 
         const count = (store: any) => {
@@ -665,7 +1132,7 @@ perfocode('speed.test', () => {
 
         log.push(store.get().count)
 
-        const dispatch = store.on('dec', ({ count }) => {
+        const destroy = store.on('dec', ({ count }) => {
           log.push(count)
         })
 
@@ -674,11 +1141,46 @@ perfocode('speed.test', () => {
         }
 
         testLog(log)
-        dispatch()
+        destroy()
+      })
+
+      test('Nano Stores', () => {
+        const log: number[] = []
+        const counter = atom(COUNT)
+
+        const unsubscribe = counter.subscribe(value => {
+          log.push(value)
+        })
+
+        while (counter.get()) {
+          counter.set(counter.get() - 1)
+        }
+
+        testLog(log)
+        unsubscribe()
+      })
+
+      test('Jotai', () => {
+        const log: number[] = []
+        const counterAtom = jotai(COUNT)
+        const store = createJotaiStore()
+
+        log.push(store.get(counterAtom))
+
+        const unsubscribe = store.sub(counterAtom, () => {
+          log.push(store.get(counterAtom))
+        })
+
+        while (store.get(counterAtom)) {
+          store.set(counterAtom, (c) => c - 1)
+        }
+
+        testLog(log)
+        unsubscribe()
       })
     })
 
-    describe('counters', () => {
+    describe('Counters', () => {
       const COUNT = 100
       const COUNTERS_COUNT = 100
 
@@ -698,23 +1200,33 @@ perfocode('speed.test', () => {
         }
       }
 
+      const testLogs = (logs: number[][]) => {
+        if (logs.length !== COUNTERS_COUNT) {
+          throw Error(`test failed: logs.length expected: ${COUNTERS_COUNT}, actual: ${logs.length}`)
+        }
+
+        logs.forEach(testLog)
+      }
+
       test('watch-state', () => {
         const logs: number[][] = counters.map(() => [])
         const states = counters.map(() => new State(COUNT))
 
-        states.forEach((state, i) => {
+        const destructors = states.map((state, i) => {
           logs[i].push(state.value)
-          state.subscribe(() => logs[i].push(state.value))
+
+          return state.on(() => logs[i].push(state.raw))
         })
 
         for (const state of states) {
           while (state.value--) { /* empty */ }
         }
 
-        logs.forEach(testLog)
+        testLogs(logs)
+        destructors.forEach(destroy => destroy())
       })
 
-      test('watch-state: auto-subscribe', () => {
+      test('watch-state: auto', () => {
         const logs: number[][] = counters.map(() => [])
         const states = counters.map(() => new State(COUNT))
         const watchers = states.map((state, i) => new Watch(() => logs[i].push(state.value)))
@@ -723,11 +1235,11 @@ perfocode('speed.test', () => {
           while (state.value--) { /* empty */ }
         }
 
-        logs.forEach(testLog)
+        testLogs(logs)
         watchers.forEach(watcher => watcher.destroy())
       })
 
-      test('nanostores', () => {
+      test('Nano Stores', () => {
         const logs: number[][] = counters.map(() => [])
         const states = counters.map(() => atom(COUNT))
         const watchers = states.map((state, i) => state.subscribe((value) => logs[i].push(value)))
@@ -738,11 +1250,11 @@ perfocode('speed.test', () => {
           }
         }
 
-        logs.forEach(testLog)
+        testLogs(logs)
         watchers.forEach(destroy => destroy())
       })
 
-      test('mobx', () => {
+      test('MobX', () => {
         const logs: number[][] = counters.map(() => [])
         const states = counters.map(() => observable.box(COUNT))
         const disposers = states.map((state, i) => autorun(() => logs[i].push(state.get())))
@@ -753,11 +1265,11 @@ perfocode('speed.test', () => {
           }
         }
 
-        logs.forEach(testLog)
+        testLogs(logs)
         disposers.forEach(disposer => disposer())
       })
 
-      test('redux', () => {
+      test('Redux', () => {
         const logs: number[][] = counters.map(() => [])
 
         function reducer (state: any, action: any) {
@@ -795,12 +1307,11 @@ perfocode('speed.test', () => {
           }
         }
 
-        logs.forEach(testLog)
-
+        testLogs(logs)
         destroy()
       })
 
-      test('mazzard', () => {
+      test('Mazzard', () => {
         const logs: number[][] = counters.map(() => [])
 
         const store = mazzard({
@@ -813,12 +1324,11 @@ perfocode('speed.test', () => {
           while (store.counts[i]--) { /* empty */ }
         }
 
-        logs.forEach(testLog)
-
+        testLogs(logs)
         stops.forEach(stop => stop())
       })
 
-      test('effector', () => {
+      test('Effector', () => {
         const logs: number[][] = counters.map(() => [])
 
         const decrements = counters.map(() => createEffectorEvent())
@@ -838,14 +1348,14 @@ perfocode('speed.test', () => {
           }
         }
 
-        logs.forEach(testLog)
+        testLogs(logs)
 
         subscriptions.forEach(subscription => {
           subscription.unsubscribe()
         })
       })
 
-      test('storeon', () => {
+      test('Storeon', () => {
         const logs: number[][] = counters.map(() => [])
 
         const modules = counters.map((_, index) => (store: any) => {
@@ -869,50 +1379,35 @@ perfocode('speed.test', () => {
           }
         }
 
-        logs.forEach(testLog)
+        testLogs(logs)
 
         dispatches.forEach(dispatch => {
           dispatch()
         })
       })
-    })
 
-    describe('unused computed', () => {
-      const COUNT = 100
-      const COUNTERS_COUNT = 100
+      test('Jotai', () => {
+        const logs: number[][] = counters.map(() => [])
+        const store = createJotaiStore()
+        const atoms = counters.map(() => jotai(COUNT))
 
-      const counters = [...Array(COUNTERS_COUNT)]
+        const unsubscribers = atoms.map((a, i) => {
+          logs[i].push(store.get(a))
 
-      test('watch-state', () => {
-        const states = counters.map(() => new State(COUNT))
-        states.map((state) => new Compute(() => state.value))
+          return store.sub(a, () => {
+            logs[i].push(store.get(a))
+          })
+        })
 
-        for (const state of states) {
-          while (state.value--) { /* empty */ }
-        }
-      })
-
-      test('nanostores', () => {
-        const states = counters.map(() => atom(COUNT))
-        states.map((state) => nanoComputed(state, value => value))
-
-        for (const state of states) {
-          while (state.get()) {
-            state.set(state.get() - 1)
+        for (const a of atoms) {
+          while (store.get(a)) {
+            store.set(a, (c) => c - 1)
           }
         }
-      })
 
-      test('mobx', () => {
-        const states = counters.map(() => observable.box(COUNT))
-        states.map((state) => computed(() => state.get()))
-
-        for (const state of states) {
-          while (state.get()) {
-            state.set(state.get() - 1)
-          }
-        }
+        testLogs(logs)
+        unsubscribers.forEach(unsub => unsub())
       })
     })
   })
-}, 300)
+})

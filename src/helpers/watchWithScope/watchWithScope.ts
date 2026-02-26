@@ -2,8 +2,8 @@ import { scope } from '../../constants'
 import { type Observer } from '../../types'
 
 export function watchWithScope (observer: Observer, target: () => void) {
-  const prevObserver = scope.activeWatcher
-  scope.activeWatcher = observer
+  const prev = scope.observer
+  scope.observer = observer
   target()
-  scope.activeWatcher = prevObserver
+  scope.observer = prev
 }

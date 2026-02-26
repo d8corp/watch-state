@@ -4,7 +4,11 @@ import { removeFromBatching } from '../../utils'
 const stack: Observer[] = []
 let working = false
 
-export function destroyWatchers (observer: Observer) {
+function remove (observer: Observer) {
+  stack.push(observer)
+}
+
+export function destroyObserver (observer: Observer) {
   if (working) {
     stack.push(observer)
 
@@ -15,9 +19,7 @@ export function destroyWatchers (observer: Observer) {
   let currentObserver: Observer | undefined = observer
 
   do {
-    currentObserver.children.forEach(observer => {
-      stack.push(observer)
-    })
+    currentObserver.children.forEach(remove)
 
     for (const destructor of currentObserver.destructors) {
       currentObserver.destructors.delete(destructor)

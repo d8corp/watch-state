@@ -85,5 +85,55 @@ describe('batch', () => {
 
       expect(log).toEqual([[1, -1], [2, -2]])
     })
+
+    it('changes value inside action', () => {
+      const log: number[] = []
+      const count = new State(0)
+
+      new Watch(() => {
+        log.push(count.value)
+      })
+
+      expect(log).toEqual([0])
+
+      batch(() => {
+        count.set(count.raw + 1)
+        count.set(count.raw + 1)
+      })
+
+      expect(log).toEqual([0, 2])
+
+      batch(() => {
+        count.value++
+        count.value++
+      })
+
+      expect(log).toEqual([0, 2, 4])
+    })
+
+    it('calls subscriptions once per a batching', () => {
+      const log: number[] = []
+      const count = new State(0)
+
+      count.on(() => {
+        log.push(count.value)
+      })
+
+      expect(log).toEqual([])
+
+      batch(() => {
+        count.set(count.raw + 1)
+        count.set(count.raw + 1)
+      })
+
+      expect(log).toEqual([2])
+
+      batch(() => {
+        count.value++
+        count.value++
+      })
+
+      expect(log).toEqual([2, 4])
+    })
   })
 })

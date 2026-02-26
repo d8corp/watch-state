@@ -92,6 +92,27 @@ describe('State', () => {
       expect(log).toEqual([0, 1])
     })
 
+    test('updates value and notifies subscribers', () => {
+      const state = new State(0)
+      const log: number[] = []
+
+      state.on(() => {
+        log.push(state.value)
+      })
+
+      expect(log).toEqual([])
+
+      state.set(1)
+
+      expect(state.value).toBe(1)
+      expect(log).toEqual([1])
+
+      state.set(2)
+
+      expect(state.value).toBe(2)
+      expect(log).toEqual([1, 2])
+    })
+
     test('returns void', () => {
       const state = new State('a')
 
@@ -111,6 +132,22 @@ describe('State', () => {
           count.set(count.raw + 1)
         }
       })
+
+      expect(log).toEqual([0, 1, 2])
+    })
+
+    test('change in subscription with raw', () => {
+      const count = new State(0)
+      const log: number[] = []
+
+      count.on(() => {
+        if (count.value < 3) {
+          log.push(count.raw)
+          count.set(count.raw + 1)
+        }
+      })
+
+      count.update()
 
       expect(log).toEqual([0, 1, 2])
     })

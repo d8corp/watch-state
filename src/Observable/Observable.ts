@@ -1,6 +1,6 @@
 import { scope } from '../constants'
-import type { Observer, Reaction } from '../types'
-import { batch } from '../utils'
+import type { Action } from '../types'
+import { batch, batchReaction } from '../utils'
 
 /**
  * Base reactive value **requiring subclasses to implement `update()`** for watcher notifications.
@@ -13,7 +13,7 @@ import { batch } from '../utils'
  */
 export abstract class Observable<T> {
   /** Set of registered observers */
-  readonly reactions = new Set<Reaction<void> | Observer>()
+  readonly reactions = new Set<Action>()
 
   /** Raw value. No auto-subscription on direct access (unlike `value`). */
   abstract raw: T
@@ -27,11 +27,11 @@ export abstract class Observable<T> {
    * new Watch(() => console.log(state.value)) // auto-subscribes
    */
   get value () {
-    const { activeWatcher } = scope
+    const { observer } = scope
 
-    if (activeWatcher) {
-      this.reactions.add(activeWatcher)
-      activeWatcher.destructors.add(() => this.unsubscribe(activeWatcher))
+    if (observer) {
+      this.reactions.add(observer)
+      observer.destructors.add(this.off.bind(this, observer))
     }
 
     return this.raw
@@ -41,13 +41,13 @@ export abstract class Observable<T> {
     return this.value
   }
 
-  subscribe (reaction: Reaction<void> | Observer) {
+  on (reaction: Action) {
     this.reactions.add(reaction)
 
-    return () => this.unsubscribe(reaction)
+    return this.off.bind(this, reaction)
   }
 
-  unsubscribe (reaction: Reaction<void> | Observer) {
+  off (reaction: Action) {
     this.reactions.delete(reaction)
   }
 
@@ -67,8 +67,20 @@ export abstract class Observable<T> {
    * count.update() // logs: [1]
    */
   update () {
-    batch(() => {
-      this.reactions.forEach(batch)
-    })
+    const size = this.reactions.size
+
+    if (!size) return
+
+    if (size === 1) {
+      batchReaction(this.reactions.values().next().value as Action)
+
+      return
+    }
+
+    batch(this._update.bind(this))
+  }
+
+  private _update () {
+    this.reactions.forEach(batchReaction)
   }
 }

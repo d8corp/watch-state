@@ -1,5 +1,4 @@
-import { destroyWatchers } from '../helpers/destroyWatchers'
-import { watchWithScope } from '../helpers/watchWithScope'
+import { destroyObserver, watchWithScope } from '../helpers'
 import { useBindObserver } from '../hooks'
 import { Observable } from '../Observable'
 import type { Destructor, Observer, Reaction } from '../types'
@@ -90,17 +89,19 @@ export class Compute<V = unknown> extends Observable<V> implements Observer {
     }
   }
 
+  private _reaction () {
+    this.destroyed = false
+    this.raw = this.reaction()
+    this.updated = true
+    this.invalid = false
+  }
+
   calculate () {
     if (!this.invalid) return
 
     this.destroy()
 
-    watchWithScope(this, () => {
-      this.destroyed = false
-      this.raw = this.reaction()
-      this.updated = true
-      this.invalid = false
-    })
+    watchWithScope(this, this._reaction.bind(this))
   }
 
   /** Mark computation as invalid and trigger propagation to parent observers. */
@@ -133,6 +134,6 @@ export class Compute<V = unknown> extends Observable<V> implements Observer {
     if (this.destroyed) return
 
     this.invalid = true
-    destroyWatchers(this)
+    destroyObserver(this)
   }
 }

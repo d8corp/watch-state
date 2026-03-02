@@ -57,7 +57,7 @@ export class Compute<V = unknown> extends Observable<V> implements Observer {
   destroyed = false
 
   /** Cleanup functions to run on destroy (e.g., unsubscribes). */
-  readonly destructors = new Set<Destructor>()
+  readonly destructors: Destructor[] = []
 
   /** Child watchers created within this watcher's scope */
   readonly children = new Set<Observer>()

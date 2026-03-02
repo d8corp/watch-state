@@ -31,7 +31,7 @@ export abstract class Observable<T> {
 
     if (observer) {
       this.reactions.add(observer)
-      observer.destructors.add(this.off.bind(this, observer))
+      observer.destructors.push(this.off.bind(this, observer))
     }
 
     return this.raw

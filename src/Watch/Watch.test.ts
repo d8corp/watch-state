@@ -224,7 +224,7 @@ describe('Watch', () => {
     it('has the destructors', () => {
       const watcher = new Watch(() => {})
       expect('destructors' in watcher).toBe(true)
-      expect(watcher.destructors).toBeInstanceOf(Set)
+      expect(watcher.destructors).toBeInstanceOf(Array)
     })
 
     it('adds destructor to parent to remove child on destroy', () => {
@@ -236,31 +236,31 @@ describe('Watch', () => {
       })
 
       expect(log).toEqual([0])
-      expect(watcher.destructors.size).toBe(1)
+      expect(watcher.destructors.length).toBe(1)
       expect(state.reactions.size).toBe(1)
 
       watcher.destroy()
 
       expect(log).toEqual([0])
-      expect(watcher.destructors.size).toBe(0)
+      expect(watcher.destructors.length).toBe(0)
       expect(state.reactions.size).toBe(0)
 
       state.value++
 
       expect(log).toEqual([0])
-      expect(watcher.destructors.size).toBe(0)
+      expect(watcher.destructors.length).toBe(0)
       expect(state.reactions.size).toBe(0)
 
       watcher.init()
 
       expect(log).toEqual([0, 1])
-      expect(watcher.destructors.size).toBe(1)
+      expect(watcher.destructors.length).toBe(1)
       expect(state.reactions.size).toBe(1)
 
       state.value++
 
       expect(log).toEqual([0, 1, 2])
-      expect(watcher.destructors.size).toBe(1)
+      expect(watcher.destructors.length).toBe(1)
       expect(state.reactions.size).toBe(1)
     })
   })

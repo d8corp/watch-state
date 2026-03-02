@@ -19,7 +19,7 @@ export interface Observer {
   children: Set<Observer>
 
   /** Cleanup functions to run on destroy (e.g., unsubscribes). */
-  destructors: Set<Destructor>
+  destructors: Destructor[]
 
   /** Stop observation and remove all dependencies. */
   destroy: Reaction<void>

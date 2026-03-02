@@ -66,23 +66,23 @@ describe('Observable', () => {
     })
   })
 
-  describe('subscribe method', () => {
-    it('has the subscribe method', () => {
+  describe('on method', () => {
+    it('has the on method', () => {
       class NumberState extends Observable<number> {
         raw = 0
       }
       const state = new NumberState()
-      expect('subscribe' in state).toBe(true)
+      expect('on' in state).toBe(true)
     })
   })
 
-  describe('unsubscribe method', () => {
-    it('has the unsubscribe method', () => {
+  describe('off method', () => {
+    it('has the off method', () => {
       class NumberState extends Observable<number> {
         raw = 0
       }
       const state = new NumberState()
-      expect('unsubscribe' in state).toBe(true)
+      expect('off' in state).toBe(true)
     })
   })
 

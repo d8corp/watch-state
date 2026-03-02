@@ -12,7 +12,7 @@ describe('useBindObserver', () => {
       useBindObserver(child)
     })
 
-    child.destructors.add(() => {
+    child.destructors.push(() => {
       log++
     })
 

@@ -14,7 +14,7 @@ describe('destroyObserver', () => {
     const fn = jest.fn()
     const watcher = new Watch(() => {})
 
-    watcher.destructors.add(fn)
+    watcher.destructors.push(fn)
 
     expect(fn).not.toHaveBeenCalled()
     expect(watcher.destroyed).toBe(false)
@@ -33,7 +33,7 @@ describe('destroyObserver', () => {
       child = new Watch(() => {})
     })
 
-    child!.destructors.add(fn)
+    child!.destructors.push(fn)
 
     expect(fn).not.toHaveBeenCalled()
     expect(child!.destroyed).toBe(false)
@@ -79,26 +79,26 @@ describe('destroyObserver', () => {
   it('clears destructors after running', () => {
     const watcher = new Watch(() => {})
 
-    watcher.destructors.add(() => {})
+    watcher.destructors.push(() => {})
 
-    expect(watcher.destructors.size).toBe(1)
+    expect(watcher.destructors.length).toBe(1)
 
     destroyObserver(watcher)
 
-    expect(watcher.destructors.size).toBe(0)
+    expect(watcher.destructors.length).toBe(0)
   })
 
   it('can be called in destructor', () => {
     const watcher = new Watch(() => {})
 
-    watcher.destructors.add(() => {
+    watcher.destructors.push(() => {
       destroyObserver(watcher)
     })
 
-    expect(watcher.destructors.size).toBe(1)
+    expect(watcher.destructors.length).toBe(1)
 
     destroyObserver(watcher)
 
-    expect(watcher.destructors.size).toBe(0)
+    expect(watcher.destructors.length).toBe(0)
   })
 })

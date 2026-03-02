@@ -1,4 +1,4 @@
-import { type Observer } from '../../types'
+import type { Destructor, Observer } from '../../types'
 import { removeFromBatching } from '../../utils'
 
 const stack: Observer[] = []
@@ -21,8 +21,10 @@ export function destroyObserver (observer: Observer) {
   do {
     currentObserver.children.forEach(remove)
 
-    for (const destructor of currentObserver.destructors) {
-      currentObserver.destructors.delete(destructor)
+    let destructor: Destructor | undefined
+
+    // eslint-disable-next-line no-cond-assign
+    while (destructor = currentObserver.destructors.pop()) {
       destructor()
     }
 

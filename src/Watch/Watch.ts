@@ -25,7 +25,7 @@ export class Watch implements Observer {
   updated = false
 
   /** Cleanup functions to run when watcher is destroyed */
-  readonly destructors = new Set<Destructor>()
+  readonly destructors: Destructor[] = []
 
   /** Child observers created within this watcher's scope */
   readonly children = new Set<Observer>()

@@ -20,7 +20,7 @@ perfocode('speed.test', () => {
 
   describe('Initialisation', () => {
     describe('Create a State', () => {
-      test('watch-state', () => new State(0))
+      test('watch-state', () => new State(0), { highlight: true })
       test('Nano Stores', () => atom(0))
       test('Jotai', () => jotai(0))
       test('Jotai: store', () => createJotaiStore())
@@ -39,7 +39,7 @@ perfocode('speed.test', () => {
       const nano = atom()
       const effectorStore = createEffectorStore(null)
 
-      test('watch-state', () => new Compute(() => {}))
+      test('watch-state', () => new Compute(() => {}), { highlight: true })
       test('Nano Stores', () => nanoComputed(nano, () => {}))
       test('Jotai', () => jotai(() => {}))
       test('MobX', () => computed(() => {}))
@@ -60,7 +60,7 @@ perfocode('speed.test', () => {
       const effectorState = createEffectorStore(null)
       const mazzardState = mazzard({ count: 0 })
 
-      test('watch-state', () => new Compute(() => wsState.value))
+      test('watch-state', () => new Compute(() => wsState.value), { highlight: true })
       test('Jotai', () => jotai(get => get(jotaiState)))
       test('MobX', () => computed(() => mobxState.get()))
       test('Nano Stores', () => nanoComputed(nanoState, () => {}))
@@ -77,8 +77,8 @@ perfocode('speed.test', () => {
       const wsState = new State(null)
       const effectorStore = createEffectorStore(null)
 
-      test('watch-state', () => new Compute(() => {}).destroy())
-      test('watch-state: bound', () => new Compute(() => wsState.value).destroy())
+      test('watch-state', () => new Compute(() => {}).destroy(), { highlight: true })
+      test('watch-state: bound', () => new Compute(() => wsState.value).destroy(), { highlight: true })
       test('Effector', () => clearNode(effectorStore.map(state => state)))
     })
 
@@ -102,8 +102,8 @@ perfocode('speed.test', () => {
           },
         ])
 
-        test('watch-state', () => wsColor.on(() => {}))
-        test('watch-state: auto', () => new Watch(() => wsColorAuto.value))
+        test('watch-state', () => wsColor.on(() => {}), { highlight: true })
+        test('watch-state: auto', () => new Watch(() => wsColorAuto.value), { highlight: true })
         test('MobX: autorun', () => autorun(() => mobxColor1.get()))
         test('MobX: reaction', () => reaction(() => mobxColor2.get(), () => {}))
         test('Effector', () => effectorStore.watch(() => {}))
@@ -132,8 +132,8 @@ perfocode('speed.test', () => {
           },
         ])
 
-        test('watch-state', () => wsColor.on(() => {})())
-        test('watch-state: auto', () => new Watch(() => wsColor.value).destroy())
+        test('watch-state', () => wsColor.on(() => {})(), { highlight: true })
+        test('watch-state: auto', () => new Watch(() => wsColor.value).destroy(), { highlight: true })
         test('MobX: autorun', () => autorun(() => mobxColor1.get())())
         test('MobX: reaction', () => reaction(() => mobxColor2.get(), () => {})())
         test('Effector', () => effectorStore.watch(() => {})())
@@ -164,12 +164,12 @@ perfocode('speed.test', () => {
 
         const listener = () => {}
 
-        test('watch-state', () => wsColor.on(listener))
+        test('watch-state', () => wsColor.on(listener), { highlight: true })
 
         test('watch-state: auto', () => new Watch(() => {
           wsaColor.get()
           wsaColor.get()
-        }))
+        }), { highlight: true })
 
         test('Effector', () => messageEvent.watch(listener))
         test('Nano Stores', () => nanoColor.subscribe(listener))
@@ -206,8 +206,8 @@ perfocode('speed.test', () => {
         const jotaiComputed = jotai(get => get(jotaiColor))
         const mazzardStore = mazzard({ count: 0, get computed () { return this.count } })
 
-        test('watch-state', () => wsComputed.on(() => {}))
-        test('watch-state: auto', () => new Watch(() => wsComputed.value))
+        test('watch-state', () => wsComputed.on(() => {}), { highlight: true })
+        test('watch-state: auto', () => new Watch(() => wsComputed.value), { highlight: true })
         test('MobX: autorun', () => autorun(() => mobxComputed1.get()))
         test('MobX: reaction', () => reaction(() => mobxComputed2.get(), () => {}))
         test('Effector', () => effectorComputed.subscribe(() => {}))
@@ -237,8 +237,8 @@ perfocode('speed.test', () => {
         const jotaiComputed = jotai(get => get(jotaiColor))
         const mazzardStore = mazzard({ count: 0, get computed () { return this.count } })
 
-        test('watch-state', () => wsComputed.on(() => {})())
-        test('watch-state: auto', () => new Watch(() => wsComputed.value).destroy())
+        test('watch-state', () => wsComputed.on(() => {})(), { highlight: true })
+        test('watch-state: auto', () => new Watch(() => wsComputed.value).destroy(), { highlight: true })
         test('MobX: autorun', () => autorun(() => mobxComputed1.get())())
         test('MobX: reaction', () => reaction(() => mobxComputed2.get(), () => {})())
         test('Effector', () => effectorComputed.subscribe(() => {})())
@@ -270,12 +270,12 @@ perfocode('speed.test', () => {
 
         const listener = () => {}
 
-        test('watch-state', () => wsComputed.on(listener))
+        test('watch-state', () => wsComputed.on(listener), { highlight: true })
 
         test('watch-state: auto', () => new Watch(() => {
           wsaComputed.get()
           wsaComputed.get()
-        }))
+        }), { highlight: true })
 
         test('MobX', () => reaction(() => mobxComputed.get(), listener))
 
@@ -326,7 +326,7 @@ perfocode('speed.test', () => {
 
       const reduxStore = createStore(reducer, { count: 0 })
 
-      test('watch-state', () => ws.value++)
+      test('watch-state', () => ws.value++, { highlight: true })
       test('MobX', () => stateMobx.set(stateMobx.get() + 1))
       test('Nano Stores', () => nano.set(nano.get() + 1))
       test('Jotai', () => jotaiStore.set(jotaiAtom, (c) => c + 1))
@@ -377,8 +377,8 @@ perfocode('speed.test', () => {
       const unwatch8 = reduxStore.subscribe(() => {})
       const unwatch9 = mazzard(() => mazzardStore.count)
 
-      test('watch-state', () => ws.value++)
-      test('watch-state: auto', () => state.value++)
+      test('watch-state', () => ws.value++, { highlight: true })
+      test('watch-state: auto', () => state.value++, { highlight: true })
       test('MobX: autorun', () => stateMobx1.set(stateMobx1.get() + 1))
       test('MobX: reaction', () => stateMobx2.set(stateMobx2.get() + 1))
       test('Effector', () => increment())
@@ -459,7 +459,7 @@ perfocode('speed.test', () => {
       jotai(get => get(jotaiAtom))
       effectorStore.map(value => value)
 
-      test('watch-state', () => wsAction())
+      test('watch-state', () => wsAction(), { highlight: true })
       test('MobX', () => mobxAction())
       test('Mazzard', () => mazzardEvent())
       test('Nano Stores', () => nanoAction())
@@ -546,7 +546,7 @@ perfocode('speed.test', () => {
         reduxSelector(reduxStore.getState())
       })
 
-      test('watch-state', () => wsAction())
+      test('watch-state', () => wsAction(), { highlight: true })
       test('MobX', () => mobxAction())
       test('Mazzard', () => mazzardEvent())
       test('Nano Stores', () => nanoAction())
@@ -642,7 +642,7 @@ perfocode('speed.test', () => {
         reduxSelector(reduxStore.getState())
       })
 
-      test('watch-state', () => wsAction())
+      test('watch-state', () => wsAction(), { highlight: true })
       test('MobX', () => mobxAction())
       test('Mazzard', () => mazzardEvent())
       test('Nano Stores', () => nanoAction())
@@ -736,7 +736,7 @@ perfocode('speed.test', () => {
       const unwatch7 = reduxStore.subscribe(() => {})
       const unwatch8 = storeon.on('inc', () => {})
 
-      test('watch-state', () => wsAction())
+      test('watch-state', () => wsAction(), { highlight: true })
       test('MobX', () => mobxAction())
       test('Mazzard', () => mazzardEvent())
       test('Nano Stores', () => nanoAction())
@@ -818,7 +818,7 @@ perfocode('speed.test', () => {
         for (let i = 0; i < 10; i++) storeon.dispatch('inc')
       }
 
-      test('watch-state', () => wsAction())
+      test('watch-state', () => wsAction(), { highlight: true })
       test('MobX', () => mobxAction())
       test('Mazzard', () => mazzardEvent())
       test('Nano Stores', () => nanoAction())
@@ -916,7 +916,7 @@ perfocode('speed.test', () => {
         reduxSelector(reduxStore.getState())
       })
 
-      test('watch-state', () => wsAction())
+      test('watch-state', () => wsAction(), { highlight: true })
       test('MobX', () => mobxAction())
       test('Mazzard', () => mazzardEvent())
       test('Nano Stores', () => nanoAction())
@@ -999,7 +999,7 @@ perfocode('speed.test', () => {
       jotai(get => get(jotaiAtom))
       effectorStore.map(value => value)
 
-      test('watch-state', () => wsAction())
+      test('watch-state', () => wsAction(), { highlight: true })
       test('MobX', () => mobxAction())
       test('Mazzard', () => mazzardEvent())
       test('Nano Stores', () => nanoAction())
@@ -1043,7 +1043,7 @@ perfocode('speed.test', () => {
 
         testLog(log)
         unsubscribe()
-      })
+      }, { highlight: true })
 
       test('watch-state: auto', () => {
         const log: number[] = []
@@ -1054,7 +1054,7 @@ perfocode('speed.test', () => {
 
         testLog(log)
         watcher.destroy()
-      })
+      }, { highlight: true })
 
       test('MobX', () => {
         const log: number[] = []
@@ -1224,7 +1224,7 @@ perfocode('speed.test', () => {
 
         testLogs(logs)
         destructors.forEach(destroy => destroy())
-      })
+      }, { highlight: true })
 
       test('watch-state: auto', () => {
         const logs: number[][] = counters.map(() => [])
@@ -1237,7 +1237,7 @@ perfocode('speed.test', () => {
 
         testLogs(logs)
         watchers.forEach(watcher => watcher.destroy())
-      })
+      }, { highlight: true })
 
       test('Nano Stores', () => {
         const logs: number[][] = counters.map(() => [])

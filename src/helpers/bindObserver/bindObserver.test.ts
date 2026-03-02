@@ -9,7 +9,7 @@ describe('bindObserver', () => {
     const parent = new Watch(() => {})
     const child = new Watch(() => {})
 
-    child.destructors.add(() => {
+    child.destructors.push(() => {
       log++
     })
 

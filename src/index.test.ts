@@ -231,6 +231,67 @@ describe('cases', () => {
     })
   })
 
+  it('Should not stop calculation on unsubscribe', () => {
+    const doubleLog: number[] = []
+    const strListenerLog: string[] = []
+    const strLog: string[] = []
+    const doubleListenerLog: number[] = []
+
+    const count = new State(1)
+
+    const double = new Compute(() => {
+      const value = count.value + count.value
+      doubleLog.push(value)
+
+      return value
+    })
+
+    const str = new Compute(() => {
+      const value = String(double.value)
+      strLog.push(value)
+
+      return value
+    })
+
+    const unsubscribeStr = new Watch(() => {
+      strListenerLog.push(str.value)
+    })
+
+    const unsubscribeDouble = new Watch(() => {
+      doubleListenerLog.push(double.value)
+    })
+
+    expect(doubleLog).toEqual([2])
+    expect(strLog).toEqual(['2'])
+    expect(strListenerLog).toEqual(['2'])
+    expect(doubleListenerLog).toEqual([2])
+
+    count.value = 2
+
+    expect(doubleLog).toEqual([2, 4])
+    expect(strLog).toEqual(['2', '4'])
+    expect(strListenerLog).toEqual(['2', '4'])
+    expect(doubleListenerLog).toEqual([2, 4])
+
+    unsubscribeStr.destroy()
+
+    count.value = 3
+
+    expect(strLog).toEqual(['2', '4'])
+    expect(doubleLog).toEqual([2, 4, 6])
+    expect(strListenerLog).toEqual(['2', '4'])
+    expect(doubleListenerLog).toEqual([2, 4, 6])
+
+    unsubscribeDouble.destroy()
+
+    count.value = 4
+
+    expect(strLog).toEqual(['2', '4'])
+    expect(doubleLog).toEqual([2, 4, 6])
+    expect(strListenerLog).toEqual(['2', '4'])
+    expect(doubleListenerLog).toEqual([2, 4, 6])
+  })
+
   describe('Compute', () => {
     test('simple', () => {
       const name = new State('Mike')

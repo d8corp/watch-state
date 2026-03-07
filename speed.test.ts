@@ -3,7 +3,7 @@ import { createEvent as createEffectorEvent, createStore as createEffectorStore 
 import mazzard from 'mazzard'
 import { action, autorun, computed, configure, observable, reaction } from 'mobx'
 import { atom, computed as nanoComputed } from 'nanostores'
-import perfocode, { describe, test } from 'perfocode'
+import { describe, perfocode, test } from 'perfocode'
 import { createStore } from 'redux'
 import { createStoreon } from 'storeon'
 
